@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log Visualization &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="mixk package" href="sources/mixk.html" />
+    <link rel="prev" title="Tutorial 6: Finetuning Models" href="tutorials/Tutorial6-finetune.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Log Visualization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#output-runs">Output Runs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visualize-runs">Visualize Runs</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Log Visualization</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/log_visualization.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="log-visualization">
+<h1>Log Visualization<a class="headerlink" href="#log-visualization" title="Permalink to this heading"></a></h1>
+<p>The utility let you log PyTorch models and metrics into a directory for visualization with the TensorBoard. Such as, visualizing the fluctuate trend of the load data time, the iter time, the model loss, the total loss, the learning rate and etc.</p>
+<p>There are two steps to visualize your data:</p>
+<ol class="simple">
+<li><p>use log_buffer to generate <code class="docutils literal notranslate"><span class="pre">mixk/tools/work_dirs/runs</span></code>  of your data;</p></li>
+<li><p>use TensorBoard to generate scalar/image/histogram of your data.</p></li>
+</ol>
+<section id="output-runs">
+<h2>Output Runs<a class="headerlink" href="#output-runs" title="Permalink to this heading"></a></h2>
+<p>First you should make sure which directory your data is in:</p>
+<ol>
+<li><p>if your data is in <code class="docutils literal notranslate"><span class="pre">mixk/engine/hooks</span></code>, like the <code class="docutils literal notranslate"><span class="pre">lr</span></code> of  in the <code class="docutils literal notranslate"><span class="pre">mixk/engine/hooks/lr_scheduler.py</span></code>, you can add the following line below the <code class="docutils literal notranslate"><span class="pre">lr</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@HOOKS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">LRSchedulerHook</span><span class="p">(</span><span class="n">HookBase</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="k">def</span> <span class="nf">_record_lr_log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">lr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_best_param_group_idx</span><span class="p">][</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">log_buffer</span><span class="o">.</span><span class="n">put_scalar</span><span class="p">(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">smoothing_hint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>if your data is in other place of <code class="docutils literal notranslate"><span class="pre">mixk/engine</span></code>, like the <code class="docutils literal notranslate"><span class="pre">loss</span></code> of the <code class="docutils literal notranslate"><span class="pre">output</span></code> in the <code class="docutils literal notranslate"><span class="pre">mixk/engine/mixk_engine.py</span></code>, you can add the following line below the <code class="docutils literal notranslate"><span class="pre">output</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CommonEngine</span><span class="p">(</span><span class="n">EngineBase</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="k">def</span> <span class="nf">run_train_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="o">...</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_output</span><span class="p">)</span>
+        <span class="c1"># add the following line to visualize the logits</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_buffer</span><span class="o">.</span><span class="n">put_scalar</span><span class="p">(</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">smoothing_hint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>if your data is in other directory under <code class="docutils literal notranslate"><span class="pre">mixk</span></code>, like the <code class="docutils literal notranslate"><span class="pre">logits</span></code> in the <code class="docutils literal notranslate"><span class="pre">mixk/models/encoder/lxmert.py</span></code>, you can add the following line below the <code class="docutils literal notranslate"><span class="pre">logits</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@ENCODER</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">LXMERTForClassification</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+         <span class="o">...</span>
+         <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span><span class="p">(</span><span class="n">pooled_output</span><span class="p">)</span>
+         <span class="c1"># add the following line to visualize the logits</span>
+         <span class="kn">from</span> <span class="nn">.log_buffer_mixk</span> <span class="kn">import</span> <span class="n">get_log_buffer</span>
+         <span class="n">logger_buffer</span> <span class="o">=</span> <span class="n">get_log_buffer</span><span class="p">()</span>
+         <span class="n">logger_buffer</span><span class="o">.</span><span class="n">put_scalar</span><span class="p">(</span><span class="s1">&#39;logits&#39;</span><span class="p">,</span> <span class="n">logits</span><span class="p">,</span> <span class="n">smoothing_hint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="visualize-runs">
+<h2>Visualize Runs<a class="headerlink" href="#visualize-runs" title="Permalink to this heading"></a></h2>
+<p>After the steps above, the data can then be visualized with TensorBoard,  the commands are as below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">tensorboard</span>
+<span class="n">cd</span> <span class="n">MIX</span><span class="o">-</span><span class="n">Kalman</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">work_dirs</span>
+<span class="n">tensorboard</span> <span class="o">--</span><span class="n">logdir</span><span class="o">=</span><span class="n">runs</span>
+</pre></div>
+</div>
+<p>Example result:</p>
+<p><img alt="data-time" src="_images/data-time.png" /></p>
+<p><img alt="iter-time" src="_images/iter-time.png" /></p>
+<p><img alt="lr" src="_images/lr.png" /></p>
+<p><img alt="total-los" src="_images/total-los.png" /></p>
+<p><img alt="loss" src="_images/loss.png" /></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorials/Tutorial6-finetune.html" class="btn btn-neutral float-left" title="Tutorial 6: Finetuning Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sources/mixk.html" class="btn btn-neutral float-right" title="mixk package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

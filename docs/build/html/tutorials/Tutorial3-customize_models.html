@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial 3: Customize Models &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorial 4: Customize Schedule and Runtime Settings" href="Tutorial4-customize_Schedule_and_Runtime_Settings.html" />
+    <link rel="prev" title="Tutorial 2: Customize Datasets" href="Tutorial2-customize_dataset.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial 3: Customize Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#customize-model-in-source-code">Customize model in source code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customize-model-in-mix-kalman-style">Customize model in MIX-Kalman style</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#build-up-model">Build up model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#customize-the-model-py">Customize the model.py</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#develop-new-components">Develop new components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#add-a-new-embedding">Add a new embedding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#add-a-new-encoder">Add a new encoder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#add-a-new-backbone">Add a new backbone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#add-new-combine-model">Add new combine_model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#add-new-heads">Add new heads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#add-new-loss">Add new loss</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#an-example-of-customized-model-config">An example of customized model config</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="tutorial.html">&lt;no title&gt;</a> &raquo;</li>
+      <li>Tutorial 3: Customize Models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/Tutorial3-customize_models.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial-3-customize-models">
+<h1>Tutorial 3: Customize Models<a class="headerlink" href="#tutorial-3-customize-models" title="Permalink to this heading"></a></h1>
+<p>In MIX-Kalman, we support two kinds of model structure: BERT-Base style model and others. And there are two chooses when you customize model:</p>
+<ol class="simple">
+<li><p>use the source code model;</p></li>
+<li><p>use MIX-Kalman model sturcture.</p></li>
+</ol>
+<section id="customize-model-in-source-code">
+<h2>Customize model in source code<a class="headerlink" href="#customize-model-in-source-code" title="Permalink to this heading"></a></h2>
+<p>Use LXMERT (BERT-Base style model) model as an example in the following content. You should customize one necessary file <code class="docutils literal notranslate"><span class="pre">MIX-Kalman/models/vqa_models/lxmert/lxmert_task.py</span></code></p>
+<p>There are some key point you should do before using the model of source code:</p>
+<ul class="simple">
+<li><p>import the <code class="docutils literal notranslate"><span class="pre">VQA_MODELS</span></code> register and BaseModel;</p></li>
+<li><p>decorate the LXMERT class by <code class="docutils literal notranslate"><span class="pre">&#64;VQA_MODELS.register_module()</span></code> to register it;</p></li>
+<li><p>the class <code class="docutils literal notranslate"><span class="pre">LXMERT</span></code> should inherit from the parent class <code class="docutils literal notranslate"><span class="pre">BaseModel</span></code> ;</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mixk.models.builder</span> <span class="kn">import</span> <span class="n">VQA_MODELS</span>   <span class="c1"># import the VQA_MODELS register</span>
+
+<span class="kn">from</span> <span class="nn">mixk.models.vqa_models.base_model</span> <span class="kn">import</span> <span class="n">BaseModel</span>  <span class="c1"># import BaseModel</span>
+
+<span class="c1"># inherit from the parent class and register the model</span>
+<span class="nd">@VQA_MODELS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">LXMERT</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="o">...</span>
+
+    <span class="c1"># writer the specific `forward_train` and `forward_test` according to your task</span>
+    <span class="k">def</span> <span class="nf">forward_train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">forward_test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+<section id="customize-model-in-mix-kalman-style">
+<h2>Customize model in MIX-Kalman style<a class="headerlink" href="#customize-model-in-mix-kalman-style" title="Permalink to this heading"></a></h2>
+<p>In the following part of this tutorial, we introduce how to customize model of non BERT-Base style.</p>
+<p>In MIX-Kalman, We basically categorize model components into 6 types: embedding, encoder, backbone, combine_model, head and loss, which are as the follows:</p>
+<p><img alt="data-config-structure" src="../_images/model-config-structure.png" /></p>
+<p>There are many options for each component, you could choose one or more from each component to build up a model according to your task.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>componet</th>
+<th>option</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>embedding</td>
+<td>'WordEmbedding', 'TextEmbedding', ...</td>
+</tr>
+<tr>
+<td>encoder</td>
+<td>'ImageFeatureEncoder', 'LCGNEncoder', ...</td>
+</tr>
+<tr>
+<td>backbone</td>
+<td>'HGL_BACKBONE', 'TwoBranchEmbedding', 'R2C_BACKBONE', 'LCGN_BACKBONE', ...</td>
+</tr>
+<tr>
+<td>combine_model</td>
+<td>'BranchCombineLayer', 'ModalCombineLayer',...</td>
+</tr>
+<tr>
+<td>head</td>
+<td>'R2CHead', 'TripleLinearHead', 'LCGNClassiferHead', ...</td>
+</tr>
+<tr>
+<td>loss</td>
+<td>'TripleLogitBinaryCrossEntropy', 'CrossEntropyLoss', 'OBJCrossEntropyLoss', ...</td>
+</tr>
+</tbody>
+</table><section id="build-up-model">
+<h3>Build up model<a class="headerlink" href="#build-up-model" title="Permalink to this heading"></a></h3>
+<p>You can build up model by the components above. Next we will introduce how to build up model in detail, use MCAN model as an example in the following content.</p>
+<section id="customize-the-model-py">
+<h4>Customize the model.py<a class="headerlink" href="#customize-the-model-py" title="Permalink to this heading"></a></h4>
+<p>There you should customize one necessary file <code class="docutils literal notranslate"><span class="pre">mixk/models/vqa_models/mcan_mixk.py</span></code> to build your model, the key point is as follows:</p>
+<ul class="simple">
+<li><p>import the choosed components and BaseModel in the <code class="docutils literal notranslate"><span class="pre">mixk/models/vqa_models/mcan_mixk.py</span></code>;</p></li>
+<li><p>the class <code class="docutils literal notranslate"><span class="pre">MCAN</span></code> should inherit from the parent class <code class="docutils literal notranslate"><span class="pre">BaseModel</span></code> and register the model by decorator <code class="docutils literal notranslate"><span class="pre">&#64;VQA_MODELS.register_module()</span></code>;</p></li>
+<li><p>build instantiate object of the componet in the <code class="docutils literal notranslate"><span class="pre">__init__</span></code> function;</p></li>
+<li><p>writer the specific <code class="docutils literal notranslate"><span class="pre">forward_train</span></code> and <code class="docutils literal notranslate"><span class="pre">forward_test</span></code> function according to your task.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the choosed components and BaseModel</span>
+<span class="kn">from</span> <span class="nn">..builder</span> <span class="kn">import</span> <span class="n">VQA_MODELS</span><span class="p">,</span> <span class="n">build_backbone</span><span class="p">,</span> <span class="n">build_combine_layer</span><span class="p">,</span> <span class="n">build_embedding</span><span class="p">,</span> <span class="n">build_encoder</span><span class="p">,</span> <span class="n">build_head</span>
+
+<span class="kn">from</span> <span class="nn">.base_model</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+
+<span class="c1"># inherit from the parent class and register the model</span>
+<span class="nd">@VQA_MODELS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">MCAN</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">embedding</span><span class="p">,</span> <span class="n">encoder</span><span class="p">,</span> <span class="n">backbone</span><span class="p">,</span> <span class="n">combine_model</span><span class="p">,</span> <span class="n">head</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># build instantiate object of the componet</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding_model</span> <span class="o">=</span> <span class="n">build_embedding</span><span class="p">(</span><span class="n">embedding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_model</span> <span class="o">=</span> <span class="n">build_encoder</span><span class="p">(</span><span class="n">encoder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backbone</span> <span class="o">=</span> <span class="n">build_backbone</span><span class="p">(</span><span class="n">backbone</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">combine_model</span> <span class="o">=</span> <span class="n">build_combine_layer</span><span class="p">(</span><span class="n">combine_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">build_head</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
+
+    <span class="c1"># writer the specific `forward_train` and `forward_test` according to your task</span>
+    <span class="k">def</span> <span class="nf">forward_train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">forward_test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="develop-new-components">
+<h3>Develop new components<a class="headerlink" href="#develop-new-components" title="Permalink to this heading"></a></h3>
+<p>If the existing component option can not meet your needs, you can add a new one for your task. Here we show how to develop new components with an example of MCAN.</p>
+<p>The model file structure is as below:</p>
+<div class="highlight-plain notranslate"><div class="highlight"><pre><span></span>MIX-Kalman
+├── configs
+├── mixk
+│   ├── models
+│   │   ├── embedding
+│   │   │   ├── TextEmbedding.py
+│   │   ├── encoder
+│   │   │   ├── imageencoder.py
+│   │   ├── backbone
+│   │   │   ├── twobranchembedding.py
+│   │   ├── combine_layers
+│   │   │   ├── branchcombinelayers.py
+│   │   ├── head
+│   │   │   ├── classifier_mix.py
+│   │   ├── loss
+│   │   │   ├── triple_logit_binary_cross_entropy.py
+│   ├── ...
+├── ...
+</pre></div>
+</div>
+<section id="add-a-new-embedding">
+<h4>Add a new embedding<a class="headerlink" href="#add-a-new-embedding" title="Permalink to this heading"></a></h4>
+<ol>
+<li><p>Define a new embedding in the construction method (e.g. TextEmbedding)</p>
+<p>Create a new file <code class="docutils literal notranslate"><span class="pre">mixk/models/embedding/textembedding.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import EMBEDDING</span>
+<span class="kn">from</span> <span class="nn">..builder</span> <span class="kn">import</span> <span class="n">EMBEDDING</span>
+
+<span class="c1"># register the EMBEDDING by decorator</span>
+<span class="nd">@EMBEDDING</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">TextEmbedding</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">emb_type</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># add input parameters</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</li>
+<li><p>Import the module</p>
+<p>You can add the following line to <code class="docutils literal notranslate"><span class="pre">mixk/models/embedding/__init__.py</span></code>, and add <code class="docutils literal notranslate"><span class="pre">'TextEmbedding'</span></code> in <code class="docutils literal notranslate"><span class="pre">__all__</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.wordembedding</span> <span class="kn">import</span> <span class="n">WordEmbedding</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;TextEmbedding&#39;</span><span class="p">,</span> <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use the embedding in your config file</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="o">...</span>
+    <span class="n">embedding</span><span class="o">=</span><span class="p">[</span>
+        <span class="nb">dict</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;TextEmbedding&#39;</span><span class="p">,</span>
+        <span class="n">arg1</span><span class="o">=</span><span class="n">xxx</span><span class="p">,</span>
+        <span class="n">arg2</span><span class="o">=</span><span class="n">xxx</span><span class="p">,</span>
+        <span class="o">...</span><span class="p">),</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="add-a-new-encoder">
+<h4>Add a new encoder<a class="headerlink" href="#add-a-new-encoder" title="Permalink to this heading"></a></h4>
+<ol>
+<li><p>Define a new encoder in the construction method (e.g. imageencoder)</p>
+<p>Create a new file <code class="docutils literal notranslate"><span class="pre">mixk/models/encoder/imageencoder.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">..builder</span> <span class="kn">import</span> <span class="n">ENCODER</span>
+
+
+<span class="nd">@ENCODER</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">ImageFeatureEncoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoder_type</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</li>
+<li><p>Import the module</p>
+<p>You can add the following line to <code class="docutils literal notranslate"><span class="pre">mixk/models/encoder/__init__.py</span></code>, and add <code class="docutils literal notranslate"><span class="pre">'ImageFeatureEncoder'</span></code> in <code class="docutils literal notranslate"><span class="pre">__all__</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.imageencoder</span> <span class="kn">import</span> <span class="n">ImageFeatureEncoder</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;ImageFeatureEncoder&#39;</span><span class="p">,</span> <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use the encoder in your config file</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="o">...</span>
+    <span class="n">encoder</span><span class="o">=</span><span class="p">[</span>
+        <span class="nb">dict</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;ImageFeatureEncoder&#39;</span><span class="p">,</span>
+        <span class="n">arg1</span><span class="o">=</span><span class="n">xxx</span><span class="p">,</span>
+        <span class="n">arg2</span><span class="o">=</span><span class="n">xxx</span><span class="p">,</span>
+        <span class="o">...</span><span class="p">),</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="add-a-new-backbone">
+<h4>Add a new backbone<a class="headerlink" href="#add-a-new-backbone" title="Permalink to this heading"></a></h4>
+<ol>
+<li><p>Define a new backbone  in the construction method (e.g. twobranchembedding)</p>
+<p>Create a new file <code class="docutils literal notranslate"><span class="pre">mixk/models/backbones/twobranchembedding.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">..builder</span> <span class="kn">import</span> <span class="n">BACKBONES</span>
+
+
+<span class="nd">@BACKBONES</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">TwoBranchEmbedding</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</li>
+<li><p>Import the module</p>
+<p>You can add the following line to <code class="docutils literal notranslate"><span class="pre">mixk/models/backbones/__init__.py</span></code>, and add <code class="docutils literal notranslate"><span class="pre">'TwoBranchEmbedding'</span></code> in <code class="docutils literal notranslate"><span class="pre">__all__</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.twobranchembedding</span> <span class="kn">import</span> <span class="n">TwoBranchEmbedding</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;TwoBranchEmbedding&#39;</span><span class="p">,</span> <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use the backbone in your config file</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="o">...</span>
+    <span class="n">backbone</span><span class="o">=</span><span class="p">[</span>
+        <span class="nb">dict</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;TwoBranchEmbedding&#39;</span><span class="p">,</span>
+        <span class="n">arg1</span><span class="o">=</span><span class="n">xxx</span><span class="p">,</span>
+        <span class="n">arg2</span><span class="o">=</span><span class="n">xxx</span><span class="p">,</span>
+        <span class="o">...</span><span class="p">),</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="add-new-combine-model">
+<h4>Add new combine_model<a class="headerlink" href="#add-new-combine-model" title="Permalink to this heading"></a></h4>
+<ol>
+<li><p>Define a new combine_model  in the construction method (e.g. branchcombinelayers)</p>
+<p>Create a new file <code class="docutils literal notranslate"><span class="pre">mixk/models/combine_layers/branchcombinelayers.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">..builder</span> <span class="kn">import</span> <span class="n">COMBINE_LAYERS</span>
+
+
+<span class="nd">@COMBINE_LAYERS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">BranchCombineLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</li>
+<li><p>Import the module</p>
+<p>You can add the following line to <code class="docutils literal notranslate"><span class="pre">mixk/models/combine_layers/__init__.py</span></code>, and add <code class="docutils literal notranslate"><span class="pre">'BranchCombineLayer'</span></code> in <code class="docutils literal notranslate"><span class="pre">__all__</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.branchcombinelayers</span> <span class="kn">import</span> <span class="n">BranchCombineLayer</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;BranchCombineLayer&#39;</span><span class="p">,</span> <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use the combine_model in your config file</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="o">...</span>
+    <span class="n">combine_model</span><span class="o">=</span><span class="p">[</span>
+        <span class="nb">dict</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;BranchCombineLayer&#39;</span><span class="p">,</span>
+        <span class="n">arg1</span><span class="o">=</span><span class="n">xxx</span><span class="p">,</span>
+        <span class="n">arg2</span><span class="o">=</span><span class="n">xxx</span><span class="p">,</span>
+        <span class="o">...</span><span class="p">),</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="add-new-heads">
+<h4>Add new heads<a class="headerlink" href="#add-new-heads" title="Permalink to this heading"></a></h4>
+<ol>
+<li><p>Define a new heads  in the construction method (e.g. TripleLinearHead)</p>
+<p>Create a new file <code class="docutils literal notranslate"><span class="pre">mixk/models/heads/classifier_mix.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">..builder</span> <span class="kn">import</span> <span class="n">HEADS</span>
+
+
+<span class="nd">@HEADS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">ClassifierHead</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<span class="nd">@HEADS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">TripleLinearHead</span><span class="p">(</span><span class="n">ClassifierHead</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</li>
+<li><p>Import the module</p>
+<p>You can add the following line to <code class="docutils literal notranslate"><span class="pre">mixk/models/heads/__init__.py</span></code>, and add <code class="docutils literal notranslate"><span class="pre">'ClassifierHead'</span></code> in <code class="docutils literal notranslate"><span class="pre">__all__</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.classifier_mix</span> <span class="kn">import</span> <span class="n">ClassifierHead</span><span class="p">,</span> <span class="o">...</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;ClassifierHead&#39;</span><span class="p">,</span> <span class="s1">&#39;TripleLinearHead&#39;</span><span class="p">,</span> <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use the head in your config file</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="o">...</span>
+    <span class="n">head</span><span class="o">=</span><span class="p">[</span>
+        <span class="nb">dict</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;TripleLinearHead&#39;</span><span class="p">,</span>
+        <span class="n">arg1</span><span class="o">=</span><span class="n">xxx</span><span class="p">,</span>
+        <span class="n">arg2</span><span class="o">=</span><span class="n">xxx</span><span class="p">,</span>
+        <span class="o">...</span><span class="p">),</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="add-new-loss">
+<h4>Add new loss<a class="headerlink" href="#add-new-loss" title="Permalink to this heading"></a></h4>
+<ol>
+<li><p>Define a new loss  in the construction method (e.g. triple_logit_binary_cross_entropy)</p>
+<p>Create a new file <code class="docutils literal notranslate"><span class="pre">mixk/models/losses/triple_logit_binary_cross_entropy.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">..builder</span> <span class="kn">import</span> <span class="n">LOSSES</span>
+<span class="kn">from</span> <span class="nn">.base_loss</span> <span class="kn">import</span> <span class="n">BaseLoss</span>
+
+
+<span class="nd">@LOSSES</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">TripleLogitBinaryCrossEntropy</span><span class="p">(</span><span class="n">BaseLoss</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">loss_name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;triple_logit_binary_cross_entropy_loss&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Import the module</p>
+<p>You can add the following line to <code class="docutils literal notranslate"><span class="pre">mixk/models/losses/__init__.py</span></code>, and add <code class="docutils literal notranslate"><span class="pre">'TripleLogitBinaryCrossEntropy'</span></code> in <code class="docutils literal notranslate"><span class="pre">__all__</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.triple_logit_binary_cross_entropy</span> <span class="kn">import</span> <span class="n">TripleLogitBinaryCrossEntropy</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;TripleLogitBinaryCrossEntropy&#39;</span><span class="p">,</span> <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use the loss in your config file</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;TripleLogitBinaryCrossEntropy&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p><strong>NOTE</strong>:</p>
+<ul class="simple">
+<li><p><strong>the input args in the construction method should be one to one correspond to config file.</strong></p></li>
+</ul>
+</section>
+</section>
+<section id="an-example-of-customized-model-config">
+<h3>An example of customized model config<a class="headerlink" href="#an-example-of-customized-model-config" title="Permalink to this heading"></a></h3>
+<p>To help the users have a basic idea of a complete model config, we make brief comments on the config of MCAN as the following.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># model settings</span>
+<span class="n">model</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="c1"># related parameters for MCAN model formatted as a dic</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;MCAN&#39;</span><span class="p">,</span>  <span class="c1"># the method class name, implemented in /mixk/models/vqa_models/mcan_mix.py</span>
+    <span class="n">embedding</span><span class="o">=</span><span class="p">[</span>  <span class="c1"># parameters for embedding module</span>
+        <span class="nb">dict</span><span class="p">(</span>  <span class="c1"># parameters for word embedding layer</span>
+            <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;WordEmbedding&#39;</span><span class="p">,</span>  <span class="c1"># class name, implemented in /mixk/models/embedding/wordembedding.py</span>
+     <span class="n">vocab_file</span><span class="o">=</span><span class="s1">&#39;~/.cache/torch/mmf/data/datasets/textvqa/defaults/extras/vocabs/vocabulary_100k.txt&#39;</span><span class="p">,</span>
+            <span class="c1"># path to store the vocabulary in txt</span>
+            <span class="n">embedding_dim</span><span class="o">=</span><span class="mi">300</span><span class="p">),</span>  <span class="c1"># dimension of word vector</span>
+        <span class="nb">dict</span><span class="p">(</span>  <span class="c1"># parameters for text embedding layer</span>
+            <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;TextEmbedding&#39;</span><span class="p">,</span>  <span class="c1"># class name, implemented in /mixk/models/embedding/textembedding.py</span>
+            <span class="n">emb_type</span><span class="o">=</span><span class="s1">&#39;mcan&#39;</span><span class="p">,</span>  <span class="c1"># the type chosen for text embedding</span>
+            <span class="n">hidden_dim</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>  <span class="c1">#  the dimension of hidden states in LSTM</span>
+            <span class="n">embedding_dim</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>  <span class="c1"># embedding dimension of word, should be same with that in &#39;WordEmbedding&#39;</span>
+            <span class="n">num_attn</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>  <span class="c1"># the number for multi-head attention</span>
+            <span class="n">dropout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># drop out rate in self-attention layer</span>
+            <span class="n">num_layers</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>  <span class="c1"># the times to conduct self-attention</span>
+            <span class="n">num_attn_pool</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># the number of attention pooling layer</span>
+            <span class="n">num_feat</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># the number of features in attention pooling layer</span>
+    <span class="p">],</span>
+    <span class="n">encoder</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>  <span class="c1"># parameters for encoder module</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;ImageFeatureEncoder&#39;</span><span class="p">,</span>  <span class="c1"># class name, implemented in /mixk/models/encoder/imageencoder.py</span>
+        <span class="n">encoder_type</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">),</span>  <span class="c1"># type chosen for image encoder, &#39;default&#39; means read the feature from feature files</span>
+    <span class="n">backbone</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>  <span class="c1"># parameters for backbone module</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;TwoBranchEmbedding&#39;</span><span class="p">,</span>  <span class="c1"># class name, implemented in /mixk/models/backbones/twobranchembedding.py</span>
+        <span class="n">embedding_dim</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span>  <span class="c1"># embedding dimension</span>
+        <span class="n">hidden_dim</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>  <span class="c1"># hidden dimension of TwoBranchEmbedding</span>
+        <span class="n">cond_dim</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>  <span class="c1"># a paramter for MoVie bottleneck layers</span>
+        <span class="n">num_attn</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>  <span class="c1"># number of attention in SelfGuidedAttention layer</span>
+        <span class="n">dropout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># dropout rate in SelfGuidedAttention layer</span>
+        <span class="n">num_layers</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>  <span class="c1"># number of layer in SelfGuidedAttention layer</span>
+        <span class="n">cbn_num_layers</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span>  <span class="c1"># the number of  MoVie bottleneck layer</span>
+    <span class="n">combine_model</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>  <span class="c1"># parameters of branch combination module</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;BranchCombineLayer&#39;</span><span class="p">,</span>  <span class="c1"># class name, implemented in /mixk/models/combine_layers/branchcombinelayers.py</span>
+        <span class="n">img_dim</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>  <span class="c1"># dimension of image feature</span>
+        <span class="n">ques_dim</span><span class="o">=</span><span class="mi">1024</span><span class="p">),</span>  <span class="c1"># dimension of question feature</span>
+    <span class="n">head</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>  <span class="c1"># parameters of branch head module</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;TripleLinearHead&#39;</span><span class="p">,</span>  <span class="c1"># class name, implemented in /mixk/models/head/classifier_mix.py</span>
+        <span class="n">in_dim</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span>  <span class="c1"># input dimension</span>
+        <span class="n">out_dim</span><span class="o">=</span><span class="mi">3129</span><span class="p">,</span>  <span class="c1"># output dimension</span>
+    <span class="p">))</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>  <span class="c1"># parameters of branch loss function</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;TripleLogitBinaryCrossEntropy&#39;</span><span class="p">)</span>  <span class="c1"># class name, implemented in /mixk/models/losses/triple_logit_binary_cross_entropy.py</span>
+</pre></div>
+</div>
+<p>You should convert the model config format to the expected format above and save it to a py file in the <code class="docutils literal notranslate"><span class="pre">mixk/configs/_base_/models/model_config.py</span></code>. The file path is as below:</p>
+<div class="highlight-plain notranslate"><div class="highlight"><pre><span></span>MIX-Kalman
+├── configs
+│   ├── _base_
+│   │   ├── models
+│   │   │   ├── mcan_config.py
+│   │   │   ├── yourmodel_config.py
+│   │   │   ├── ...
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Tutorial2-customize_dataset.html" class="btn btn-neutral float-left" title="Tutorial 2: Customize Datasets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Tutorial4-customize_Schedule_and_Runtime_Settings.html" class="btn btn-neutral float-right" title="Tutorial 4: Customize Schedule and Runtime Settings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

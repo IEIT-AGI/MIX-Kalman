@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mixk.utils.modeling &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>mixk.utils.modeling</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mixk.utils.modeling</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">ACT2FN</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;relu&#39;</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">,</span>
+    <span class="s1">&#39;sigmoid&#39;</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">,</span>
+    <span class="s1">&#39;tanh&#39;</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">,</span>
+    <span class="s1">&#39;leaky_relu&#39;</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="get_bert_configured_parameters"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.modeling.get_bert_configured_parameters">[docs]</a><span class="k">def</span> <span class="nf">get_bert_configured_parameters</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">param_optimizer</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">())</span>
+
+    <span class="n">no_decay</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="s1">&#39;LayerNorm.bias&#39;</span><span class="p">,</span> <span class="s1">&#39;LayerNorm.weight&#39;</span><span class="p">]</span>
+    <span class="n">optimizer_grouped_params</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">param_optimizer</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">nd</span> <span class="ow">in</span> <span class="n">n</span> <span class="k">for</span> <span class="n">nd</span> <span class="ow">in</span> <span class="n">no_decay</span><span class="p">)],</span>
+            <span class="s1">&#39;weight_decay&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">param_optimizer</span> <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">nd</span> <span class="ow">in</span> <span class="n">n</span> <span class="k">for</span> <span class="n">nd</span> <span class="ow">in</span> <span class="n">no_decay</span><span class="p">)],</span>
+            <span class="s1">&#39;weight_decay&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">lr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">optimizer_grouped_params</span><span class="p">:</span>
+            <span class="n">p</span><span class="p">[</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lr</span>
+
+    <span class="k">return</span> <span class="n">optimizer_grouped_params</span></div>
+
+
+<div class="viewcode-block" id="get_optimizer_parameters_for_bert"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.modeling.get_optimizer_parameters_for_bert">[docs]</a><span class="k">def</span> <span class="nf">get_optimizer_parameters_for_bert</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    1.For pre-training or when finetune_lr_multiplier is equal to 1 , all modules will be trained with default lr .</span>
+<span class="sd">    2.For non pre-training heads, where finetune_lr_multiplier is not qual to 1, all modules other than classifier</span>
+<span class="sd">    will be trained with (lr * finetune_lr_multiplier), Classifier will be trained with default lr .</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">lr</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">lr</span>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">model_config</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">finetune_lr_multiplier</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model_config</span><span class="p">,</span> <span class="s1">&#39;finetune_lr_multiplier&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">training_head_type</span> <span class="o">==</span> <span class="s1">&#39;pretraining&#39;</span> <span class="ow">or</span> <span class="n">finetune_lr_multiplier</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="n">get_bert_configured_parameters</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">submodule</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">named_children</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;classifier&#39;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">parameters</span> <span class="o">+=</span> <span class="n">get_bert_configured_parameters</span><span class="p">(</span><span class="n">submodule</span><span class="p">,</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">finetune_lr_multiplier</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Overriding </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> module&#39;s LR to </span><span class="si">{</span><span class="n">lr</span> <span class="o">*</span> <span class="n">finetune_lr_multiplier</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">parameters</span> <span class="o">+=</span> <span class="n">get_bert_configured_parameters</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">classifier</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parameters</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

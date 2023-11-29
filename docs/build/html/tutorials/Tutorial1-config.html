@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial 1: Learn about Configs &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorial 2: Customize Datasets" href="Tutorial2-customize_dataset.html" />
+    <link rel="prev" title="Tutorial: Engine" href="Tutorial-engine.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial 1: Learn about Configs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-configuration">The configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-script-configuration">The script configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-base-config-file">The <code class="docutils literal notranslate"><span class="pre">_base_</span></code> config file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-reading-process">Configuration Reading Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#faq">FAQ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#use-common-variables-in-configs">Use common variables in configs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="tutorial.html">&lt;no title&gt;</a> &raquo;</li>
+      <li>Tutorial 1: Learn about Configs</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/Tutorial1-config.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial-1-learn-about-configs">
+<h1>Tutorial 1: Learn about Configs<a class="headerlink" href="#tutorial-1-learn-about-configs" title="Permalink to this heading"></a></h1>
+<p>In MIX-Kalman, we provide you with multiple models, datasets, schedules configs and default runtime setting. Users can update parameter value by command line. And all the config information will be saved to <code class="docutils literal notranslate"><span class="pre">tools/work_dirs/config.json</span></code> and print on the console when you run task if you want to have a check.</p>
+<section id="the-configuration">
+<h2>The configuration<a class="headerlink" href="#the-configuration" title="Permalink to this heading"></a></h2>
+<p>The configuration include two parts: the script and the <code class="docutils literal notranslate"><span class="pre">_base_</span></code>, which is as follow:</p>
+<p><img alt="configuration_1" src="../_images/configuration_1.png" /></p>
+<section id="the-script-configuration">
+<h3>The script configuration<a class="headerlink" href="#the-script-configuration" title="Permalink to this heading"></a></h3>
+<p>Before submitting jobs using <code class="docutils literal notranslate"><span class="pre">tools/run.py</span></code>, you may specify some argument through script. You can get help of all arguments by running</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python tools/run.py --h  <span class="c1"># run script</span>
+</pre></div>
+</div>
+<p>which are shown as belows:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python tools/run.py --h  <span class="c1"># run script</span>
+
+usage: run.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--config-file FILE<span class="o">]</span> <span class="o">[</span>--resume-from RESUME_FROM<span class="o">]</span>
+                    <span class="o">[</span>--load-from LOAD_FROM<span class="o">]</span> <span class="o">[</span>--eval-only<span class="o">]</span> <span class="o">[</span>--build-submit<span class="o">]</span>
+                    <span class="o">[</span>--gpus GPUS<span class="o">]</span> <span class="o">[</span>--machines MACHINES<span class="o">]</span>
+                    <span class="o">[</span>--node-rank NODE_RANK<span class="o">]</span> <span class="o">[</span>--work-dir WORK_DIR<span class="o">]</span>
+                    <span class="o">[</span>--seed SEED<span class="o">]</span> <span class="o">[</span>--master-port MASTER_PORT<span class="o">]</span>
+                    <span class="o">[</span>--master-addr MASTER_ADDR<span class="o">]</span>
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --config-file FILE    train config file path
+  --resume-from RESUME_FROM
+                        resume from the checkpoint file
+  --load-from LOAD_FROM
+                        load from the checkpoint file
+  --eval-only           just run evaluation
+  --build-submit        generate submission results
+  --gpus GPUS           the number of gpus on each machine
+  --machines MACHINES   the total number of machine to use
+  --node-rank NODE_RANK
+                        the rank of current node<span class="o">(</span>unique per machine<span class="o">)</span>
+  --work-dir WORK_DIR   the dir to save logs and models
+  --seed SEED           random seed
+  --master-port MASTER_PORT
+                        it is the free port of mast node<span class="o">(</span>rank <span class="m">0</span><span class="o">)</span> and is used
+                        <span class="k">for</span> communication <span class="k">in</span> distributed training
+  --master-addr MASTER_ADDR
+                        the IP address of mast node<span class="o">(</span>rank <span class="m">0</span><span class="o">)</span>
+</pre></div>
+</div>
+</section>
+<section id="the-base-config-file">
+<h3>The <code class="docutils literal notranslate"><span class="pre">_base_</span></code> config file<a class="headerlink" href="#the-base-config-file" title="Permalink to this heading"></a></h3>
+<p>Before submitting jobs using <code class="docutils literal notranslate"><span class="pre">tools/run.py</span></code>, you also need to specify the <code class="docutils literal notranslate"><span class="pre">_base_</span></code>config file. Use MCAN model as an example. And assume that you want to do VQA task, then you should set as</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python tools/run.py --config-file  yourpath/MIX-Kalman/configs/MCAN/mcan_vqa.py
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">mcan_vqa.py</span></code> config file path is as below:</p>
+<div class="highlight-plain notranslate"><div class="highlight"><pre><span></span>MIX-Kalman
+├── configs
+│   ├── mcan
+│   │   ├── mcan_vqa.py
+│   │   ├── ...
+│   ├── ...
+├── demo
+├── ...
+</pre></div>
+</div>
+<p>And in the <code class="docutils literal notranslate"><span class="pre">mcan_vqa.py</span></code>, we set the <code class="docutils literal notranslate"><span class="pre">_base_</span> </code> config as below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_base_</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;../_base_/models/mcan_config.py&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;../_base_/datasets/vqa_dataset_grid_data.py&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;../_base_/schedules/schedule_vqa.py&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;../_base_/default_runtime.py&#39;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>There are 4 component in the <code class="docutils literal notranslate"><span class="pre">_base_</span> </code> config, which are corresponds to the four basic component under <code class="docutils literal notranslate"><span class="pre">config/_base_</span></code>: datasets, models, schedules, default_runtime. Many methods could be easily constructed with one of each in models.</p>
+<div class="highlight-plain notranslate"><div class="highlight"><pre><span></span>MIX-Kalman
+├── configs
+│   ├── _base_
+│   │   ├── datasets
+│   │   │   ├── vqa_dataset_grid_data.py
+│   │   │   ├── ...
+│   │   ├── models
+│   │   │   ├── mcan_config.py
+│   │   │   ├── ...
+│   │   ├── schedules
+│   │   │   ├── schedule_vqa.py
+│   │   ├── default_runtime.py
+│   ├── mcan
+│   │   ├── mcan_vqa.py
+│   │   ├── ...
+│   ├── ...
+├── demo
+├── ...
+</pre></div>
+</div>
+<p>If you are building an entirely new method that does not share the config with any of the existing methods, you may do the following steps:</p>
+<ol class="simple">
+<li><p>Create a folder <code class="docutils literal notranslate"><span class="pre">xxx</span></code> under <code class="docutils literal notranslate"><span class="pre">configs</span></code> , like <code class="docutils literal notranslate"><span class="pre">mcan</span></code>.</p></li>
+<li><p>Add the module in that folder to specify the <code class="docutils literal notranslate"><span class="pre">_base_</span></code>.</p></li>
+<li><p>Add the new configs under the four basic components if necessary, such as:</p>
+<ul class="simple">
+<li><p>add the corresponding <code class="docutils literal notranslate"><span class="pre">model.py</span></code> under <code class="docutils literal notranslate"><span class="pre">configs/_base_/models/</span></code>;</p></li>
+<li><p>modify or add the <code class="docutils literal notranslate"><span class="pre">dataset.py</span></code>  under <code class="docutils literal notranslate"><span class="pre">configs/_base_/datasets/</span></code>;</p></li>
+<li><p>modify or add the <code class="docutils literal notranslate"><span class="pre">schedule.py</span></code> under <code class="docutils literal notranslate"><span class="pre">configs/_base_/schedules/</span></code>.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="configuration-reading-process">
+<h2>Configuration Reading Process<a class="headerlink" href="#configuration-reading-process" title="Permalink to this heading"></a></h2>
+<p>the script path should be set as <code class="docutils literal notranslate"><span class="pre">your_path/MIX-Kalman/tools/run.py</span></code>. In the run, it will finish the following steps as follows:</p>
+<ol class="simple">
+<li><p>read and parse the parameters in script;</p></li>
+<li><p>configrate the parameters and pytorch enviroment by script parameters;</p></li>
+<li><p>read all the <em>base</em> config files;</p></li>
+<li><p>delete some args in script if none;</p></li>
+<li><p>merge the args in script and <em>base</em>;</p></li>
+<li><p>setting logging.</p></li>
+</ol>
+<p><img alt="configuration_2" src="../_images/configuration_2.png" /></p>
+<p>The code about the config in the run.py is as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">del_some_args</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">seed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">args</span><span class="o">.</span><span class="n">seed</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">work_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">args</span><span class="o">.</span><span class="n">work_dir</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">load_from</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">args</span><span class="o">.</span><span class="n">load_from</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">resume_from</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">args</span><span class="o">.</span><span class="n">resume_from</span>
+
+
+<span class="k">def</span> <span class="nf">merge_args_to_cfg</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">cfg</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">cfg</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+
+<span class="k">def</span> <span class="nf">init_set</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">mixk_config</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">config_file</span><span class="p">)</span>  <span class="c1"># read all the _base_ config files</span>
+    <span class="n">del_some_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>  <span class="c1"># delete some args in script if none</span>
+    <span class="n">merge_args_to_cfg</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>  <span class="c1"># merge the args in script and _base_</span>
+    <span class="n">default_setup</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>  <span class="c1"># setting logging</span>
+
+    <span class="k">return</span> <span class="n">cfg</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">init_set</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">eval_only</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">test</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">train</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">default_argument_parser</span><span class="p">()</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>  <span class="c1"># read and parse the parameters in script</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Command line Args:&#39;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+    <span class="n">ddp_launch</span><span class="p">(</span>
+        <span class="n">run_fn</span><span class="o">=</span><span class="n">main</span><span class="p">,</span>
+        <span class="n">gpus</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">gpus</span><span class="p">,</span>
+        <span class="n">machines</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">machines</span><span class="p">,</span>
+        <span class="n">master_addr</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">master_addr</span><span class="p">,</span>
+        <span class="n">master_port</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">master_port</span><span class="p">,</span>
+        <span class="n">run_fn_args</span><span class="o">=</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="faq">
+<h2>FAQ<a class="headerlink" href="#faq" title="Permalink to this heading"></a></h2>
+<section id="use-common-variables-in-configs">
+<h3>Use common variables in configs<a class="headerlink" href="#use-common-variables-in-configs" title="Permalink to this heading"></a></h3>
+<p>Some common variables are used in the configs files, like <code class="docutils literal notranslate"><span class="pre">train_data</span></code>,<code class="docutils literal notranslate"><span class="pre">test_data</span></code>,<code class="docutils literal notranslate"><span class="pre">post_processor</span></code> in datasets.
+It’s worth noting that when modifying common variables in the children configs, user need to pass the common variables into corresponding fields again.
+The common variables in the <code class="docutils literal notranslate"><span class="pre">vqa_dataset.py</span></code> are as below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">samples_per_gpu</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">workers_per_gpu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">sampler_name</span><span class="o">=</span><span class="s1">&#39;TrainingSampler&#39;</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">dataset_type</span><span class="p">,</span>
+        <span class="n">reader</span><span class="o">=</span><span class="n">vqa_reader_train_cfg</span><span class="p">,</span>
+        <span class="n">info_cpler</span><span class="o">=</span><span class="n">vqa_info_cpler_cfg</span><span class="p">,</span>
+        <span class="n">limit_nums</span><span class="o">=</span><span class="mi">400</span><span class="p">))</span>
+
+<span class="n">test_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">samples_per_gpu</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">workers_per_gpu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">sampler_name</span><span class="o">=</span><span class="s1">&#39;TestingSampler&#39;</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">dataset_type</span><span class="p">,</span>
+        <span class="n">reader</span><span class="o">=</span><span class="n">vqa_reader_test_cfg</span><span class="p">,</span>
+        <span class="n">info_cpler</span><span class="o">=</span><span class="n">vqa_info_cpler_cfg</span><span class="p">),</span>
+    <span class="n">eval_period</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+
+<span class="n">post_processor</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Evaluator&#39;</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;VQAAccuracyMetric&#39;</span><span class="p">)],</span>
+    <span class="n">dataset_converters</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;VQADatasetConverter&#39;</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>We first define the new <code class="docutils literal notranslate"><span class="pre">train_data</span></code>/<code class="docutils literal notranslate"><span class="pre">test_data</span></code>/<code class="docutils literal notranslate"><span class="pre">post_processor</span></code>and pass them into <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Tutorial-engine.html" class="btn btn-neutral float-left" title="Tutorial: Engine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Tutorial2-customize_dataset.html" class="btn btn-neutral float-right" title="Tutorial 2: Customize Datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

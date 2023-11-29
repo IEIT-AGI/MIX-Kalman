@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mixk.utils.data_utils &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>mixk.utils.data_utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mixk.utils.data_utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Variable</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="sequence_mask"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.data_utils.sequence_mask">[docs]</a><span class="k">def</span> <span class="nf">sequence_mask</span><span class="p">(</span><span class="n">sequence_length</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">max_len</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">max_len</span> <span class="o">=</span> <span class="n">sequence_length</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">sequence_length</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">seq_range</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_len</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
+    <span class="n">seq_range_expand</span> <span class="o">=</span> <span class="n">seq_range</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">max_len</span><span class="p">)</span>
+    <span class="n">seq_range_expand</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">seq_range_expand</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sequence_length</span><span class="o">.</span><span class="n">is_cuda</span><span class="p">:</span>
+        <span class="n">seq_range_expand</span> <span class="o">=</span> <span class="n">seq_range_expand</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    <span class="n">seq_length_expand</span> <span class="o">=</span> <span class="p">(</span><span class="n">sequence_length</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand_as</span><span class="p">(</span><span class="n">seq_range_expand</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">seq_range_expand</span> <span class="o">&lt;</span> <span class="n">seq_length_expand</span></div>
+
+
+<div class="viewcode-block" id="batch_iter"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.data_utils.batch_iter">[docs]</a><span class="k">def</span> <span class="nf">batch_iter</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">epochId</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;num_epochs&#39;</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">epochId</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">batch</span></div>
+
+
+<div class="viewcode-block" id="list2tensorpad"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.data_utils.list2tensorpad">[docs]</a><span class="k">def</span> <span class="nf">list2tensorpad</span><span class="p">(</span><span class="n">inp_list</span><span class="p">,</span> <span class="n">max_seq_len</span><span class="p">):</span>
+
+    <span class="n">inp_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">([</span><span class="n">inp_list</span><span class="p">])</span>
+    <span class="n">inp_tensor_zeros</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_seq_len</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+    <span class="n">inp_tensor_zeros</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="n">inp_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">inp_tensor</span>
+    <span class="n">inp_tensor</span> <span class="o">=</span> <span class="n">inp_tensor_zeros</span>
+    <span class="k">return</span> <span class="n">inp_tensor</span></div>
+
+
+<div class="viewcode-block" id="encode_input"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.data_utils.encode_input">[docs]</a><span class="k">def</span> <span class="nf">encode_input</span><span class="p">(</span><span class="n">utterances</span><span class="p">,</span> <span class="n">start_segment</span><span class="p">,</span> <span class="n">CLS</span><span class="p">,</span> <span class="n">SEP</span><span class="p">,</span> <span class="n">MASK</span><span class="p">,</span> <span class="n">max_seq_len</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">max_sep_len</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">mask_prob</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
+
+    <span class="n">cur_segment</span> <span class="o">=</span> <span class="n">start_segment</span>
+    <span class="n">token_id_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">segment_id_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">sep_token_indices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">masked_token_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">token_id_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CLS</span><span class="p">)</span>
+    <span class="n">segment_id_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_segment</span><span class="p">)</span>
+    <span class="n">masked_token_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">cur_sep_token_index</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">cur_utterance</span> <span class="ow">in</span> <span class="n">utterances</span><span class="p">:</span>
+        <span class="c1"># add the masked token and keep track</span>
+        <span class="n">cur_masked_index</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">mask_prob</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cur_utterance</span><span class="p">))]</span>
+        <span class="n">masked_token_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">cur_masked_index</span><span class="p">)</span>
+        <span class="n">token_id_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">cur_utterance</span><span class="p">)</span>
+        <span class="n">segment_id_list</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">cur_segment</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">cur_utterance</span><span class="p">))</span>
+
+        <span class="n">token_id_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SEP</span><span class="p">)</span>
+        <span class="n">segment_id_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_segment</span><span class="p">)</span>
+        <span class="n">masked_token_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">cur_sep_token_index</span> <span class="o">=</span> <span class="n">cur_sep_token_index</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">cur_utterance</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">sep_token_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_sep_token_index</span><span class="p">)</span>
+        <span class="n">cur_segment</span> <span class="o">=</span> <span class="n">cur_segment</span> <span class="o">^</span> <span class="mi">1</span>  <span class="c1"># cur segment osciallates between 0 and 1</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">segment_id_list</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">token_id_list</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">masked_token_list</span><span class="p">)</span> <span class="o">==</span> <span class="n">sep_token_indices</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="c1"># convert to tensors and pad to maximum seq length</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">list2tensorpad</span><span class="p">(</span><span class="n">token_id_list</span><span class="p">,</span> <span class="n">max_seq_len</span><span class="p">)</span>
+    <span class="n">masked_tokens</span> <span class="o">=</span> <span class="n">list2tensorpad</span><span class="p">(</span><span class="n">masked_token_list</span><span class="p">,</span> <span class="n">max_seq_len</span><span class="p">)</span>
+    <span class="n">masked_tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">masked_tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">masked_tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">masked_tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">mask</span><span class="p">]</span>
+    <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">MASK</span>
+
+    <span class="c1"># print(&quot;mask&quot;, mask)</span>
+    <span class="c1"># print(&quot;tokens&quot;, tokens)</span>
+    <span class="c1"># print(&quot;masked tokens&quot;, masked_tokens)</span>
+    <span class="c1"># print(&quot;num mask tokens&quot;, torch.sum(mask))</span>
+
+    <span class="n">segment_id_list</span> <span class="o">=</span> <span class="n">list2tensorpad</span><span class="p">(</span><span class="n">segment_id_list</span><span class="p">,</span> <span class="n">max_seq_len</span><span class="p">)</span>
+    <span class="c1"># segment_id_list += 2</span>
+    <span class="k">return</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">segment_id_list</span><span class="p">,</span> <span class="n">list2tensorpad</span><span class="p">(</span><span class="n">sep_token_indices</span><span class="p">,</span> <span class="n">max_sep_len</span><span class="p">),</span> <span class="n">masked_tokens</span></div>
+
+
+<div class="viewcode-block" id="encode_image_input"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.data_utils.encode_image_input">[docs]</a><span class="k">def</span> <span class="nf">encode_image_input</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">num_boxes</span><span class="p">,</span> <span class="n">boxes</span><span class="p">,</span> <span class="n">image_target</span><span class="p">,</span> <span class="n">max_regions</span><span class="o">=</span><span class="mi">37</span><span class="p">,</span> <span class="n">mask_prob</span><span class="o">=</span><span class="mf">0.15</span><span class="p">):</span>
+    <span class="n">output_label</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">num_boxes</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">num_boxes</span><span class="p">),</span> <span class="n">max_regions</span><span class="p">)</span>
+
+    <span class="n">mix_boxes_pad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">max_regions</span><span class="p">,</span> <span class="n">boxes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">mix_features_pad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">max_regions</span><span class="p">,</span> <span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">mix_image_target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">max_regions</span><span class="p">,</span> <span class="n">image_target</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="n">mix_boxes_pad</span><span class="p">[:</span><span class="n">num_boxes</span><span class="p">]</span> <span class="o">=</span> <span class="n">boxes</span><span class="p">[:</span><span class="n">num_boxes</span><span class="p">]</span>
+    <span class="n">mix_features_pad</span><span class="p">[:</span><span class="n">num_boxes</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="p">[:</span><span class="n">num_boxes</span><span class="p">]</span>
+    <span class="n">mix_image_target</span><span class="p">[:</span><span class="n">num_boxes</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_target</span><span class="p">[:</span><span class="n">num_boxes</span><span class="p">]</span>
+
+    <span class="n">boxes</span> <span class="o">=</span> <span class="n">mix_boxes_pad</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">mix_features_pad</span>
+    <span class="n">image_target</span> <span class="o">=</span> <span class="n">mix_image_target</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_boxes</span><span class="p">):</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+        <span class="c1"># mask token with 15% probability</span>
+        <span class="k">if</span> <span class="n">prob</span> <span class="o">&lt;</span> <span class="n">mask_prob</span><span class="p">:</span>
+            <span class="n">prob</span> <span class="o">/=</span> <span class="n">mask_prob</span>
+
+            <span class="c1"># 80% randomly change token to mask token</span>
+            <span class="k">if</span> <span class="n">prob</span> <span class="o">&lt;</span> <span class="mf">0.9</span><span class="p">:</span>
+                <span class="n">features</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">output_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># no masking token (will be ignored by loss function later)</span>
+            <span class="n">output_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">image_mask</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">num_boxes</span><span class="p">))</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_mask</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">max_regions</span><span class="p">:</span>
+        <span class="n">image_mask</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">output_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># ensure we have atleast one region being predicted</span>
+    <span class="n">output_label</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">output_label</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">image_label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">(</span><span class="n">output_label</span><span class="p">)</span>
+    <span class="n">image_label</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># make sure the &lt;IMG&gt; token doesn&#39;t contribute to the masked loss</span>
+    <span class="n">image_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">image_mask</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+
+    <span class="n">features</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">features</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+    <span class="n">spatials</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">boxes</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+    <span class="n">image_target</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">image_target</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">features</span><span class="p">,</span> <span class="n">spatials</span><span class="p">,</span> <span class="n">image_mask</span><span class="p">,</span> <span class="n">image_target</span><span class="p">,</span> <span class="n">image_label</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

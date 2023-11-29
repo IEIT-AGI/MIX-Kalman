@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mixk.models.combine_layers.modalcombinelayer &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      <li>mixk.models.combine_layers.modalcombinelayer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mixk.models.combine_layers.modalcombinelayer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">from</span> <span class="nn">torch.nn.utils.weight_norm</span> <span class="kn">import</span> <span class="n">weight_norm</span>
+
+<span class="kn">from</span> <span class="nn">..builder</span> <span class="kn">import</span> <span class="n">COMBINE_LAYERS</span>
+
+
+<div class="viewcode-block" id="ModalCombineLayer"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.ModalCombineLayer">[docs]</a><span class="nd">@COMBINE_LAYERS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">ModalCombineLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combine_type</span><span class="p">,</span> <span class="n">img_feat_dim</span><span class="p">,</span> <span class="n">txt_emb_dim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">combine_type</span> <span class="o">==</span> <span class="s1">&#39;MFH&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">MFH</span><span class="p">(</span><span class="n">img_feat_dim</span><span class="p">,</span> <span class="n">txt_emb_dim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">combine_type</span> <span class="o">==</span> <span class="s1">&#39;non_linear_element_multiply&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">NonLinearElementMultiply</span><span class="p">(</span><span class="n">img_feat_dim</span><span class="p">,</span> <span class="n">txt_emb_dim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">combine_type</span> <span class="o">==</span> <span class="s1">&#39;two_layer_element_multiply&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">TwoLayerElementMultiply</span><span class="p">(</span><span class="n">img_feat_dim</span><span class="p">,</span> <span class="n">txt_emb_dim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">combine_type</span> <span class="o">==</span> <span class="s1">&#39;top_down_attention_lstm&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">TopDownAttentionLSTM</span><span class="p">(</span><span class="n">img_feat_dim</span><span class="p">,</span> <span class="n">txt_emb_dim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Not implemented combine type: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">combine_type</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">out_dim</span>
+
+<div class="viewcode-block" id="ModalCombineLayer.forward"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.ModalCombineLayer.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MfbExpand"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.MfbExpand">[docs]</a><span class="k">class</span> <span class="nc">MfbExpand</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_feat_dim</span><span class="p">,</span> <span class="n">txt_emb_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">,</span> <span class="n">dropout</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lc_image</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="n">img_feat_dim</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="n">hidden_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lc_ques</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="n">txt_emb_dim</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="n">hidden_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MfbExpand.forward"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.MfbExpand.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_feat</span><span class="p">,</span> <span class="n">question_embed</span><span class="p">):</span>
+        <span class="n">image1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lc_image</span><span class="p">(</span><span class="n">image_feat</span><span class="p">)</span>
+        <span class="n">ques1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lc_ques</span><span class="p">(</span><span class="n">question_embed</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_feat</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">num_location</span> <span class="o">=</span> <span class="n">image_feat</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">ques1_expand</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">ques1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_location</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ques1_expand</span> <span class="o">=</span> <span class="n">ques1</span>
+        <span class="n">joint_feature</span> <span class="o">=</span> <span class="n">image1</span> <span class="o">*</span> <span class="n">ques1_expand</span>
+        <span class="n">joint_feature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">joint_feature</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">joint_feature</span></div></div>
+
+
+<div class="viewcode-block" id="MFH"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.MFH">[docs]</a><span class="k">class</span> <span class="nc">MFH</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_feat_dim</span><span class="p">,</span> <span class="n">ques_emb_dim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mfb_expand_list</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mfb_sqz_list</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+
+        <span class="n">hidden_sizes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;hidden_sizes&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_dim</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">hidden_sizes</span><span class="p">)</span> <span class="o">/</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;pool_size&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;order&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;pool_size&#39;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">):</span>
+            <span class="n">mfb_exp_i</span> <span class="o">=</span> <span class="n">MfbExpand</span><span class="p">(</span>
+                <span class="n">img_feat_dim</span><span class="o">=</span><span class="n">image_feat_dim</span><span class="p">,</span>
+                <span class="n">txt_emb_dim</span><span class="o">=</span><span class="n">ques_emb_dim</span><span class="p">,</span>
+                <span class="n">hidden_dim</span><span class="o">=</span><span class="n">hidden_sizes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">dropout</span><span class="o">=</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;dropout&#39;</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mfb_expand_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mfb_exp_i</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mfb_sqz_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mfb_squeeze</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MFH.forward"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.MFH.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_feat</span><span class="p">,</span> <span class="n">question_embedding</span><span class="p">):</span>
+        <span class="n">feature_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">prev_mfb_exp</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">):</span>
+            <span class="n">mfb_exp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mfb_expand_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">mfb_sqz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mfb_sqz_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">z_exp_i</span> <span class="o">=</span> <span class="n">mfb_exp</span><span class="p">(</span><span class="n">image_feat</span><span class="p">,</span> <span class="n">question_embedding</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">z_exp_i</span> <span class="o">=</span> <span class="n">prev_mfb_exp</span> <span class="o">*</span> <span class="n">z_exp_i</span>
+            <span class="n">prev_mfb_exp</span> <span class="o">=</span> <span class="n">z_exp_i</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">mfb_sqz</span><span class="p">(</span><span class="n">z_exp_i</span><span class="p">)</span>
+            <span class="n">feature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+        <span class="c1"># append at last feature</span>
+        <span class="n">cat_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">feature_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">feature_list</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="n">cat_dim</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">feature</span></div>
+
+<div class="viewcode-block" id="MFH.mfb_squeeze"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.MFH.mfb_squeeze">[docs]</a>    <span class="k">def</span> <span class="nf">mfb_squeeze</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_feature</span><span class="p">):</span>
+        <span class="c1"># joint_feature dim: N x k x dim or N x dim</span>
+
+        <span class="n">orig_feature_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">joint_feature</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">orig_feature_size</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">joint_feature</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">joint_feature</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">batch_size</span><span class="p">,</span> <span class="n">num_loc</span><span class="p">,</span> <span class="n">dim</span> <span class="o">=</span> <span class="n">joint_feature</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">dim</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">exit</span><span class="p">(</span><span class="s1">&#39;the dim </span><span class="si">%d</span><span class="s1"> is not multiply of </span><span class="se">\</span>
+<span class="s1">             pool_size </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span><span class="p">))</span>
+
+        <span class="n">joint_feature_reshape</span> <span class="o">=</span> <span class="n">joint_feature</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_loc</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">dim</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span><span class="p">)</span>
+
+        <span class="c1"># N x 100 x 1000 x 1</span>
+        <span class="n">iatt_iq_sumpool</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">joint_feature_reshape</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+        <span class="n">iatt_iq_sqrt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">iatt_iq_sumpool</span><span class="p">))</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="o">-</span><span class="n">iatt_iq_sumpool</span><span class="p">))</span>
+
+        <span class="n">iatt_iq_sqrt</span> <span class="o">=</span> <span class="n">iatt_iq_sqrt</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># N x 100000</span>
+        <span class="n">iatt_iq_l2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">iatt_iq_sqrt</span><span class="p">)</span>
+        <span class="n">iatt_iq_l2</span> <span class="o">=</span> <span class="n">iatt_iq_l2</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_loc</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">dim</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">orig_feature_size</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">iatt_iq_l2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">iatt_iq_l2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">iatt_iq_l2</span></div></div>
+
+
+<div class="viewcode-block" id="NonLinearElementMultiply"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.NonLinearElementMultiply">[docs]</a><span class="k">class</span> <span class="nc">NonLinearElementMultiply</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_feat_dim</span><span class="p">,</span> <span class="n">ques_emb_dim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fa_image</span> <span class="o">=</span> <span class="n">ReLUWithWeightNormFC</span><span class="p">(</span><span class="n">image_feat_dim</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fa_txt</span> <span class="o">=</span> <span class="n">ReLUWithWeightNormFC</span><span class="p">(</span><span class="n">ques_emb_dim</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">])</span>
+
+        <span class="n">context_dim</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;context_dim&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">context_dim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fa_context</span> <span class="o">=</span> <span class="n">ReLUWithWeightNormFC</span><span class="p">(</span><span class="n">context_dim</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;dropout&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_dim</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="NonLinearElementMultiply.forward"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.NonLinearElementMultiply.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_feat</span><span class="p">,</span> <span class="n">question_embedding</span><span class="p">,</span> <span class="n">context_embedding</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">image_fa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fa_image</span><span class="p">(</span><span class="n">image_feat</span><span class="p">)</span>
+        <span class="n">question_fa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fa_txt</span><span class="p">(</span><span class="n">question_embedding</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_feat</span><span class="o">.</span><span class="n">size</span><span class="p">())</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">question_fa</span><span class="o">.</span><span class="n">size</span><span class="p">())</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">question_fa_expand</span> <span class="o">=</span> <span class="n">question_fa</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">question_fa_expand</span> <span class="o">=</span> <span class="n">question_fa</span>
+
+        <span class="n">joint_feature</span> <span class="o">=</span> <span class="n">image_fa</span> <span class="o">*</span> <span class="n">question_fa_expand</span>
+
+        <span class="k">if</span> <span class="n">context_embedding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">context_fa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fa_context</span><span class="p">(</span><span class="n">context_embedding</span><span class="p">)</span>
+
+            <span class="n">context_text_joint_feaure</span> <span class="o">=</span> <span class="n">context_fa</span> <span class="o">*</span> <span class="n">question_fa_expand</span>
+            <span class="n">joint_feature</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">joint_feature</span><span class="p">,</span> <span class="n">context_text_joint_feaure</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">joint_feature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">joint_feature</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">joint_feature</span></div></div>
+
+
+<div class="viewcode-block" id="TopDownAttentionLSTM"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.TopDownAttentionLSTM">[docs]</a><span class="k">class</span> <span class="nc">TopDownAttentionLSTM</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_feat_dim</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fa_image</span> <span class="o">=</span> <span class="n">weight_norm</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">image_feat_dim</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;attention_dim&#39;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fa_hidden</span> <span class="o">=</span> <span class="n">weight_norm</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">],</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;attention_dim&#39;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_down_lstm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LSTMCell</span><span class="p">(</span>
+            <span class="n">embed_dim</span> <span class="o">+</span> <span class="n">image_feat_dim</span> <span class="o">+</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">],</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">],</span>
+            <span class="n">bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;dropout&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_dim</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;attention_dim&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="TopDownAttentionLSTM.forward"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.TopDownAttentionLSTM.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_feat</span><span class="p">,</span> <span class="n">embedding</span><span class="p">):</span>
+        <span class="n">image_feat_mean</span> <span class="o">=</span> <span class="n">image_feat</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Get LSTM state</span>
+        <span class="c1"># state = registry.get(f&#39;{image_feat.device}_lstm_state&#39;)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">h1</span><span class="p">,</span> <span class="n">c1</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;td_hidden&#39;</span><span class="p">]</span>
+        <span class="n">h2</span><span class="p">,</span> <span class="n">c2</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;lm_hidden&#39;</span><span class="p">]</span>
+
+        <span class="n">h1</span><span class="p">,</span> <span class="n">c1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_down_lstm</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">h2</span><span class="p">,</span> <span class="n">image_feat_mean</span><span class="p">,</span> <span class="n">embedding</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">h1</span><span class="p">,</span> <span class="n">c1</span><span class="p">))</span>
+
+        <span class="n">state</span><span class="p">[</span><span class="s1">&#39;td_hidden&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">h1</span><span class="p">,</span> <span class="n">c1</span><span class="p">)</span>
+
+        <span class="n">image_fa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fa_image</span><span class="p">(</span><span class="n">image_feat</span><span class="p">)</span>
+        <span class="n">hidden_fa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fa_hidden</span><span class="p">(</span><span class="n">h1</span><span class="p">)</span>
+
+        <span class="n">joint_feature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">image_fa</span> <span class="o">+</span> <span class="n">hidden_fa</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">joint_feature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">joint_feature</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">joint_feature</span></div></div>
+
+
+<div class="viewcode-block" id="TwoLayerElementMultiply"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.TwoLayerElementMultiply">[docs]</a><span class="k">class</span> <span class="nc">TwoLayerElementMultiply</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_feat_dim</span><span class="p">,</span> <span class="n">ques_emb_dim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fa_image1</span> <span class="o">=</span> <span class="n">ReLUWithWeightNormFC</span><span class="p">(</span><span class="n">image_feat_dim</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fa_image2</span> <span class="o">=</span> <span class="n">ReLUWithWeightNormFC</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">],</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fa_txt1</span> <span class="o">=</span> <span class="n">ReLUWithWeightNormFC</span><span class="p">(</span><span class="n">ques_emb_dim</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fa_txt2</span> <span class="o">=</span> <span class="n">ReLUWithWeightNormFC</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">],</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;dropout&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_dim</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="TwoLayerElementMultiply.forward"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.TwoLayerElementMultiply.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_feat</span><span class="p">,</span> <span class="n">question_embedding</span><span class="p">):</span>
+        <span class="n">image_fa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fa_image2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fa_image1</span><span class="p">(</span><span class="n">image_feat</span><span class="p">))</span>
+        <span class="n">question_fa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fa_txt2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fa_txt1</span><span class="p">(</span><span class="n">question_embedding</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_feat</span><span class="o">.</span><span class="n">size</span><span class="p">())</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">num_location</span> <span class="o">=</span> <span class="n">image_feat</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">question_fa_expand</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">question_fa</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_location</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">question_fa_expand</span> <span class="o">=</span> <span class="n">question_fa</span>
+
+        <span class="n">joint_feature</span> <span class="o">=</span> <span class="n">image_fa</span> <span class="o">*</span> <span class="n">question_fa_expand</span>
+        <span class="n">joint_feature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">joint_feature</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">joint_feature</span></div></div>
+
+
+<div class="viewcode-block" id="TransformLayer"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.TransformLayer">[docs]</a><span class="k">class</span> <span class="nc">TransformLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transform_type</span><span class="p">,</span> <span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">transform_type</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">LinearTransform</span><span class="p">(</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">transform_type</span> <span class="o">==</span> <span class="s1">&#39;conv&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">ConvTransform</span><span class="p">(</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Unknown post combine transform type: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">transform_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">out_dim</span>
+
+<div class="viewcode-block" id="TransformLayer.forward"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.TransformLayer.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="LinearTransform"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.LinearTransform">[docs]</a><span class="k">class</span> <span class="nc">LinearTransform</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lc</span> <span class="o">=</span> <span class="n">weight_norm</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="n">out_dim</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_dim</span> <span class="o">=</span> <span class="n">out_dim</span>
+
+<div class="viewcode-block" id="LinearTransform.forward"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.LinearTransform.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ConvTransform"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.ConvTransform">[docs]</a><span class="k">class</span> <span class="nc">ConvTransform</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">hidden_dim</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">hidden_dim</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">out_dim</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_dim</span> <span class="o">=</span> <span class="n">out_dim</span>
+
+<div class="viewcode-block" id="ConvTransform.forward"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.ConvTransform.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">())</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># N x k xdim</span>
+            <span class="c1"># N x dim x k x 1</span>
+            <span class="n">x_reshape</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">())</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># N x dim</span>
+            <span class="c1"># N x dim x 1 x 1</span>
+            <span class="n">x_reshape</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+
+        <span class="n">iatt_conv1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x_reshape</span><span class="p">)</span>  <span class="c1"># N x hidden_dim x * x 1</span>
+        <span class="n">iatt_relu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">iatt_conv1</span><span class="p">)</span>
+        <span class="n">iatt_conv2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">iatt_relu</span><span class="p">)</span>  <span class="c1"># N x out_dim x * x 1</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">())</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">iatt_conv3</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">iatt_conv2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">())</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">iatt_conv3</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">iatt_conv2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">iatt_conv3</span></div></div>
+
+
+<div class="viewcode-block" id="BCNet"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.BCNet">[docs]</a><span class="k">class</span> <span class="nc">BCNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simple class for non-linear bilinear connect network.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v_dim</span><span class="p">,</span> <span class="n">q_dim</span><span class="p">,</span> <span class="n">h_dim</span><span class="p">,</span> <span class="n">h_out</span><span class="p">,</span> <span class="n">act</span><span class="o">=</span><span class="s1">&#39;ReLU&#39;</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="mi">32</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_dim</span> <span class="o">=</span> <span class="n">v_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_dim</span> <span class="o">=</span> <span class="n">q_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_dim</span> <span class="o">=</span> <span class="n">h_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_out</span> <span class="o">=</span> <span class="n">h_out</span>
+        <span class="k">if</span> <span class="n">dropout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dropout</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_net</span> <span class="o">=</span> <span class="n">FCNet</span><span class="p">([</span><span class="n">v_dim</span><span class="p">,</span> <span class="n">h_dim</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">],</span> <span class="n">act</span><span class="o">=</span><span class="n">act</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="n">dropout</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_net</span> <span class="o">=</span> <span class="n">FCNet</span><span class="p">([</span><span class="n">q_dim</span><span class="p">,</span> <span class="n">h_dim</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">],</span> <span class="n">act</span><span class="o">=</span><span class="n">act</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="n">dropout</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">p_net</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">AvgPool1d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">h_out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">elif</span> <span class="n">h_out</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">h_mat</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">h_out</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">h_dim</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">normal_</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">h_bias</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">h_out</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">normal_</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">h_net</span> <span class="o">=</span> <span class="n">weight_norm</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">h_dim</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="n">h_out</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BCNet.forward"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.BCNet.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">v_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_net</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">q_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_net</span><span class="p">(</span><span class="n">q</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">d_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">v_</span><span class="p">,</span> <span class="n">q_</span><span class="p">)</span>
+            <span class="n">logits</span> <span class="o">=</span> <span class="n">d_</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">logits</span>
+
+        <span class="c1"># broadcast Hadamard product, matrix-matrix production</span>
+        <span class="c1"># fast computation but memory inefficient</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_out</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">:</span>
+            <span class="n">v_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_net</span><span class="p">(</span><span class="n">v</span><span class="p">))</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">q_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_net</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+            <span class="n">h_</span> <span class="o">=</span> <span class="n">v_</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_mat</span>
+            <span class="n">logits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">h_</span><span class="p">,</span> <span class="n">q_</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+            <span class="n">logits</span> <span class="o">=</span> <span class="n">logits</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_bias</span>
+            <span class="k">return</span> <span class="n">logits</span>
+
+        <span class="c1"># batch outer product, linear projection</span>
+        <span class="c1"># memory efficient but slow computation</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">v_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_net</span><span class="p">(</span><span class="n">v</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">q_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_net</span><span class="p">(</span><span class="n">q</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">d_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">v_</span><span class="p">,</span> <span class="n">q_</span><span class="p">)</span>
+            <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_net</span><span class="p">(</span><span class="n">d_</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">logits</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BCNet.forward_with_weights"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.BCNet.forward_with_weights">[docs]</a>    <span class="k">def</span> <span class="nf">forward_with_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+        <span class="n">v_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_net</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">q_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_net</span><span class="p">(</span><span class="n">q</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">logits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">v_</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span> <span class="n">q_</span><span class="p">)</span>
+        <span class="n">logits</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">logits</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_net</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span>
+
+        <span class="k">return</span> <span class="n">logits</span></div></div>
+
+
+<div class="viewcode-block" id="FCNet"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.FCNet">[docs]</a><span class="k">class</span> <span class="nc">FCNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simple class for non-linear fully connect network.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dims</span><span class="p">,</span> <span class="n">act</span><span class="o">=</span><span class="s1">&#39;ReLU&#39;</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="n">layers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">in_dim</span> <span class="o">=</span> <span class="n">dims</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">out_dim</span> <span class="o">=</span> <span class="n">dims</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">dropout</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout</span><span class="p">))</span>
+
+            <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">weight_norm</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">act</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">act</span><span class="p">)())</span>
+
+        <span class="k">if</span> <span class="n">dropout</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout</span><span class="p">))</span>
+
+        <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">weight_norm</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dim</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">act</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">act</span><span class="p">)())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">main</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FCNet.forward"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.FCNet.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="BiAttention"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.BiAttention">[docs]</a><span class="k">class</span> <span class="nc">BiAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span><span class="p">,</span> <span class="n">z_dim</span><span class="p">,</span> <span class="n">glimpse</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">dropout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dropout</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">glimpse</span> <span class="o">=</span> <span class="n">glimpse</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logits</span> <span class="o">=</span> <span class="n">weight_norm</span><span class="p">(</span>
+            <span class="n">BCNet</span><span class="p">(</span><span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span><span class="p">,</span> <span class="n">z_dim</span><span class="p">,</span> <span class="n">glimpse</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="n">dropout</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;h_mat&#39;</span><span class="p">,</span>
+            <span class="n">dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="BiAttention.forward"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.BiAttention.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">v_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">p</span><span class="p">,</span> <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_all</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">v_mask</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">p</span><span class="p">,</span> <span class="n">logits</span></div>
+
+<div class="viewcode-block" id="BiAttention.forward_all"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.BiAttention.forward_all">[docs]</a>    <span class="k">def</span> <span class="nf">forward_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">v_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">v_num</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">q_num</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logits</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">v_mask</span><span class="p">:</span>
+            <span class="n">v_abs_sum</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">v_abs_sum</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">logits</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+            <span class="n">logits</span><span class="o">.</span><span class="n">masked_fill_</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">))</span>
+
+        <span class="n">expanded_logits</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">glimpse</span><span class="p">,</span> <span class="n">v_num</span> <span class="o">*</span> <span class="n">q_num</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">expanded_logits</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">p</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">glimpse</span><span class="p">,</span> <span class="n">v_num</span><span class="p">,</span> <span class="n">q_num</span><span class="p">),</span> <span class="n">logits</span></div></div>
+
+
+<div class="viewcode-block" id="ReLUWithWeightNormFC"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.ReLUWithWeightNormFC">[docs]</a><span class="k">class</span> <span class="nc">ReLUWithWeightNormFC</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="n">layers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">weight_norm</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+        <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ReLUWithWeightNormFC.forward"><a class="viewcode-back" href="../../../../sources/mixk.models.combine_layers.html#mixk.models.combine_layers.modalcombinelayer.ReLUWithWeightNormFC.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mixk.models.backbones package &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mixk.models.combine_layers package" href="mixk.models.combine_layers.html" />
+    <link rel="prev" title="mixk.models package" href="mixk.models.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="mixk.html">mixk package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="mixk.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mixk.data.html">mixk.data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.engine.html">mixk.engine package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.evaluation.html">mixk.evaluation package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="mixk.models.html">mixk.models package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="mixk.models.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.html#mixk-models-builder-module">mixk.models.builder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.solver.html">mixk.solver package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.utils.html">mixk.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.html#module-mixk.version">mixk.version module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.html#module-mixk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="mixk.html">mixk package</a> &raquo;</li>
+          <li><a href="mixk.models.html">mixk.models package</a> &raquo;</li>
+      <li>mixk.models.backbones package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/sources/mixk.models.backbones.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mixk-models-backbones-package">
+<h1>mixk.models.backbones package<a class="headerlink" href="#mixk-models-backbones-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-mixk.models.backbones.ban">
+<span id="mixk-models-backbones-ban-module"></span><h2>mixk.models.backbones.ban module<a class="headerlink" href="#module-mixk.models.backbones.ban" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.models.backbones.ban.BAN_BACKBONE">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.models.backbones.ban.</span></span><span class="sig-name descname"><span class="pre">BAN_BACKBONE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_hidden</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/ban.html#BAN_BACKBONE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.ban.BAN_BACKBONE" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.models.backbones.ban.BAN_BACKBONE.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_emb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/ban.html#BAN_BACKBONE.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.ban.BAN_BACKBONE.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.models.backbones.ban.BAN_BACKBONE.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#mixk.models.backbones.ban.BAN_BACKBONE.training" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mixk.models.backbones.cagraph_backbone">
+<span id="mixk-models-backbones-cagraph-backbone-module"></span><h2>mixk.models.backbones.cagraph_backbone module<a class="headerlink" href="#module-mixk.models.backbones.cagraph_backbone" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.models.backbones.cagraph_backbone.CAGRAPH_BACKBONE">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.models.backbones.cagraph_backbone.</span></span><span class="sig-name descname"><span class="pre">CAGRAPH_BACKBONE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rnn_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nlayers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ninp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nhid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cagraph_backbone.html#CAGRAPH_BACKBONE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cagraph_backbone.CAGRAPH_BACKBONE" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.models.backbones.cagraph_backbone.CAGRAPH_BACKBONE.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ques_feat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">his_feat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rcnn_feat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ques_emb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rnd</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cagraph_backbone.html#CAGRAPH_BACKBONE.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cagraph_backbone.CAGRAPH_BACKBONE.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.models.backbones.cagraph_backbone.CAGRAPH_BACKBONE.init_hidden">
+<span class="sig-name descname"><span class="pre">init_hidden</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bsz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cagraph_backbone.html#CAGRAPH_BACKBONE.init_hidden"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cagraph_backbone.CAGRAPH_BACKBONE.init_hidden" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.models.backbones.cagraph_backbone.CAGRAPH_BACKBONE.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#mixk.models.backbones.cagraph_backbone.CAGRAPH_BACKBONE.training" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.models.backbones.cagraph_backbone.FCNet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.models.backbones.cagraph_backbone.</span></span><span class="sig-name descname"><span class="pre">FCNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cagraph_backbone.html#FCNet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cagraph_backbone.FCNet" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Simple class for non-linear fully connect network.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.models.backbones.cagraph_backbone.FCNet.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cagraph_backbone.html#FCNet.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cagraph_backbone.FCNet.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.models.backbones.cagraph_backbone.FCNet.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#mixk.models.backbones.cagraph_backbone.FCNet.training" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mixk.models.backbones.cmrin_backbone">
+<span id="mixk-models-backbones-cmrin-backbone-module"></span><h2>mixk.models.backbones.cmrin_backbone module<a class="headerlink" href="#module-mixk.models.backbones.cmrin_backbone" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.models.backbones.cmrin_backbone.CMRIN_BACKBONE">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.models.backbones.cmrin_backbone.</span></span><span class="sig-name descname"><span class="pre">CMRIN_BACKBONE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emb_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jemb_drop_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NFilm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">light</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intmd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mstage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convlstm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tunebert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leaky</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cmrin_backbone.html#CMRIN_BACKBONE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cmrin_backbone.CMRIN_BACKBONE" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.models.backbones.cmrin_backbone.CMRIN_BACKBONE.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_flang</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw_fvisu</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cmrin_backbone.html#CMRIN_BACKBONE.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cmrin_backbone.CMRIN_BACKBONE.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.models.backbones.cmrin_backbone.CMRIN_BACKBONE.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#mixk.models.backbones.cmrin_backbone.CMRIN_BACKBONE.training" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.models.backbones.cmrin_backbone.ConvBatchNormReLU">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.models.backbones.cmrin_backbone.</span></span><span class="sig-name descname"><span class="pre">ConvBatchNormReLU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dilation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leaky</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cmrin_backbone.html#ConvBatchNormReLU"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cmrin_backbone.ConvBatchNormReLU" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequential</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.models.backbones.cmrin_backbone.ConvBatchNormReLU.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cmrin_backbone.html#ConvBatchNormReLU.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cmrin_backbone.ConvBatchNormReLU.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.models.backbones.cmrin_backbone.ConvLSTM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.models.backbones.cmrin_backbone.</span></span><span class="sig-name descname"><span class="pre">ConvLSTM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_all_layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cmrin_backbone.html#ConvLSTM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cmrin_backbone.ConvLSTM" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.models.backbones.cmrin_backbone.ConvLSTM.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cmrin_backbone.html#ConvLSTM.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cmrin_backbone.ConvLSTM.forward" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_tensor</strong> – 5-D Tensor either of shape (t, b, c, h, w) or (b, t, c, h, w)</p></li>
+<li><p><strong>hidden_state</strong> – None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>last_state_list, layer_output</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.models.backbones.cmrin_backbone.ConvLSTM.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#mixk.models.backbones.cmrin_backbone.ConvLSTM.training" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.models.backbones.cmrin_backbone.ConvLSTMCell">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.models.backbones.cmrin_backbone.</span></span><span class="sig-name descname"><span class="pre">ConvLSTMCell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cmrin_backbone.html#ConvLSTMCell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cmrin_backbone.ConvLSTMCell" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.models.backbones.cmrin_backbone.ConvLSTMCell.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cur_state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cmrin_backbone.html#ConvLSTMCell.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cmrin_backbone.ConvLSTMCell.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.models.backbones.cmrin_backbone.ConvLSTMCell.init_hidden">
+<span class="sig-name descname"><span class="pre">init_hidden</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cmrin_backbone.html#ConvLSTMCell.init_hidden"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cmrin_backbone.ConvLSTMCell.init_hidden" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.models.backbones.cmrin_backbone.ConvLSTMCell.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#mixk.models.backbones.cmrin_backbone.ConvLSTMCell.training" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.models.backbones.cmrin_backbone.generate_coord">
+<span class="sig-prename descclassname"><span class="pre">mixk.models.backbones.cmrin_backbone.</span></span><span class="sig-name descname"><span class="pre">generate_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cmrin_backbone.html#generate_coord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cmrin_backbone.generate_coord" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.models.backbones.cmrin_backbone.init_modules">
+<span class="sig-prename descclassname"><span class="pre">mixk.models.backbones.cmrin_backbone.</span></span><span class="sig-name descname"><span class="pre">init_modules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uniform'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cmrin_backbone.html#init_modules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cmrin_backbone.init_modules" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.models.backbones.cmrin_backbone.mask_softmax">
+<span class="sig-prename descclassname"><span class="pre">mixk.models.backbones.cmrin_backbone.</span></span><span class="sig-name descname"><span class="pre">mask_softmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attn_score</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word_mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tempuature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clssep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lstm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/models/backbones/cmrin_backbone.html#mask_softmax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.models.backbones.cmrin_backbone.mask_softmax" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="mixk-models-backbones-hgl-backbone-module">
+<h2>mixk.models.backbones.hgl_backbone module<a class="headerlink" href="#mixk-models-backbones-hgl-backbone-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="mixk-models-backbones-imageembedding-module">
+<h2>mixk.models.backbones.imageembedding module<a class="headerlink" href="#mixk-models-backbones-imageembedding-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="mixk-models-backbones-lcgn-backbone-module">
+<h2>mixk.models.backbones.lcgn_backbone module<a class="headerlink" href="#mixk-models-backbones-lcgn-backbone-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="mixk-models-backbones-mmt-module">
+<h2>mixk.models.backbones.mmt module<a class="headerlink" href="#mixk-models-backbones-mmt-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="mixk-models-backbones-r2c-backbone-module">
+<h2>mixk.models.backbones.r2c_backbone module<a class="headerlink" href="#mixk-models-backbones-r2c-backbone-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="mixk-models-backbones-resc-backbone-module">
+<h2>mixk.models.backbones.resc_backbone module<a class="headerlink" href="#mixk-models-backbones-resc-backbone-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="mixk-models-backbones-twobranchembedding-module">
+<h2>mixk.models.backbones.twobranchembedding module<a class="headerlink" href="#mixk-models-backbones-twobranchembedding-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="mixk-models-backbones-visdial-principles-backbone-module">
+<h2>mixk.models.backbones.visdial_principles_backbone module<a class="headerlink" href="#mixk-models-backbones-visdial-principles-backbone-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mixk.models.html" class="btn btn-neutral float-left" title="mixk.models package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mixk.models.combine_layers.html" class="btn btn-neutral float-right" title="mixk.models.combine_layers package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorial: Engine" href="Tutorial-engine.html" />
+    <link rel="prev" title="3: Train with customized models and existing datasets" href="../Quickrun/3_exist_data_new_model.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/tutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial1-config.html">Tutorial 1: Learn about Configs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial1-config.html#the-configuration">The configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial1-config.html#configuration-reading-process">Configuration Reading Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial1-config.html#faq">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial2-customize_dataset.html#customize-dataset-in-source-code">Customize dataset in source code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial2-customize_dataset.html#customize-dataset-in-mix-kalman">Customize dataset in MIX-Kalman</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial3-customize_models.html">Tutorial 3: Customize Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial3-customize_models.html#customize-model-in-source-code">Customize model in source code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial3-customize_models.html#customize-model-in-mix-kalman-style">Customize model in MIX-Kalman style</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial4-customize_Schedule_and_Runtime_Settings.html#customize-optimization-schedules">Customize optimization schedules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial4-customize_Schedule_and_Runtime_Settings.html#customize-fp16-schedules">Customize FP16 schedules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial4-customize_Schedule_and_Runtime_Settings.html#customize-lr-schedules">Customize LR schedules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial4-customize_Schedule_and_Runtime_Settings.html#customize-train-mode">Customize train mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial4-customize_Schedule_and_Runtime_Settings.html#modify-default-runtime-settings">Modify default runtime settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial5-customize_hooks.html#customize-self-implemented-hooks">Customize self-implemented hooks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial6-finetune.html#modify-dataset">Modify dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial6-finetune.html#modify-head">Modify head</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial6-finetune.html#modify-training-schedule">Modify training schedule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial6-finetune.html#set-base-configs">Set base configs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial6-finetune.html#use-pre-trained-model">Use pre-trained model</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../Quickrun/3_exist_data_new_model.html" class="btn btn-neutral float-left" title="3: Train with customized models and existing datasets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Tutorial-engine.html" class="btn btn-neutral float-right" title="Tutorial: Engine" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

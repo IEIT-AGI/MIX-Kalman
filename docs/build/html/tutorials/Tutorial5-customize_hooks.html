@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial 5: Customize hooks &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorial 6: Finetuning Models" href="Tutorial6-finetune.html" />
+    <link rel="prev" title="Tutorial 4: Customize Schedule and Runtime Settings" href="Tutorial4-customize_Schedule_and_Runtime_Settings.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial 5: Customize hooks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#customize-self-implemented-hooks">Customize self-implemented hooks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="tutorial.html">&lt;no title&gt;</a> &raquo;</li>
+      <li>Tutorial 5: Customize hooks</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/Tutorial5-customize_hooks.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial-5-customize-hooks">
+<h1>Tutorial 5: Customize hooks<a class="headerlink" href="#tutorial-5-customize-hooks" title="Permalink to this heading"></a></h1>
+<p>In MIX-Kalman, we encapsulates most of the calculation in the deep learning process into hooks, such as <code class="docutils literal notranslate"><span class="pre">autograd_anomally_detect</span></code>, <code class="docutils literal notranslate"><span class="pre">lr_scheduler</span></code>, <code class="docutils literal notranslate"><span class="pre">iteration_time</span></code>,<code class="docutils literal notranslate"><span class="pre">periodic_logger</span></code>,  <code class="docutils literal notranslate"><span class="pre">evaluate</span></code> and so on. Those hooks will be called by mixkEngine.</p>
+<p>In EngineBase( parent class of mixkEngine), we use <code class="docutils literal notranslate"><span class="pre">weakref.prox</span></code> to transfer mixkEngine object to each hook as <code class="docutils literal notranslate"><span class="pre">hk.trainer</span></code>. Since <code class="docutils literal notranslate"><span class="pre">hk.trainer</span></code> contains all hooks, data can also be transferred between each hooks.</p>
+<p>In MIX-Kalman, the whole process of deep learning process is abstracted and modularized into several stages. Different hook run in different stage depending on its functionality, as mentioned in <a class="reference internal" href="Tutorial-engine.html"><span class="doc">Engine</span></a>. All the default hooks supported by MIX-Kalman are shown below.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="left">hook name</th>
+<th align="left">hook function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">AutogradAnomalyDetectHook</td>
+<td align="left">anomaly detection for the autograd engine</td>
+</tr>
+<tr>
+<td align="left">AutogradProfilerHook</td>
+<td align="left">run <code>torch.autograd.profiler.profile</code></td>
+</tr>
+<tr>
+<td align="left">CheckPointHook</td>
+<td align="left">save model or model_dict</td>
+</tr>
+<tr>
+<td align="left">EvaluateHook</td>
+<td align="left">run an evaluation function periodically, and at the end of training</td>
+</tr>
+<tr>
+<td align="left">IterationTimerHook</td>
+<td align="left">track each iteration time and print a summary in the end of training.</td>
+</tr>
+<tr>
+<td align="left">LRSchedulerHook</td>
+<td align="left">executes a torch builtin LR scheduler and summarizes the LR</td>
+</tr>
+<tr>
+<td align="left">OptimizerHook</td>
+<td align="left">execute <code>clip_grad_norm</code></td>
+</tr>
+<tr>
+<td align="left">Fp16OptimizerHook</td>
+<td align="left">inherit from OptimizerHook and execute Fp16 training</td>
+</tr>
+<tr>
+<td align="left">PeriodicLogger</td>
+<td align="left">record train result every interval time</td>
+</tr>
+<tr>
+<td align="left">CommonMetricLoggerHook</td>
+<td align="left">print iteration time, loss, lr and ETA on the terminal</td>
+</tr>
+<tr>
+<td align="left">JSONLoggerHook</td>
+<td align="left">save scalars like data_time, loss ,iteration... to a json file</td>
+</tr>
+<tr>
+<td align="left">TensorboardLoggerHook</td>
+<td align="left">save all scalars to a tensorboard file</td>
+</tr>
+</tbody>
+</table><section id="customize-self-implemented-hooks">
+<h2>Customize self-implemented hooks<a class="headerlink" href="#customize-self-implemented-hooks" title="Permalink to this heading"></a></h2>
+<p>There are some occasions users might need to implement a new hook. mixk supports customized hooks. (e.g. <code class="docutils literal notranslate"><span class="pre">EMAIterHook</span></code>)</p>
+<ol>
+<li><p>Define a new hook</p>
+<p>Create a new file <code class="docutils literal notranslate"><span class="pre">mixk/engine/hooks/ema.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.base_hook</span> <span class="kn">import</span> <span class="n">HookBase</span>  <span class="c1"># import HookBase</span>
+<span class="kn">from</span> <span class="nn">.builder</span> <span class="kn">import</span> <span class="n">HOOKS</span>  <span class="c1"># import HOOKS register</span>
+
+<span class="c1"># register the EMAIterHook by decorator and inherit from the parent class</span>
+<span class="nd">@HOOKS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">EMAIterHook</span><span class="p">(</span><span class="n">HookBase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">before_train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">init_ema</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">init_ema</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">after_train_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">update_ema</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">update_ema</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>NOTE</strong>:</p>
+<ul>
+<li><p>import the <code class="docutils literal notranslate"><span class="pre">HOOKS</span></code> register and <code class="docutils literal notranslate"><span class="pre">HookBase</span></code>;</p></li>
+<li><p>decorate the <code class="docutils literal notranslate"><span class="pre">EMAIterHook</span></code> class by <code class="docutils literal notranslate"><span class="pre">&#64;HOOKS.register_module()</span></code> to register it;</p></li>
+<li><p>the class <code class="docutils literal notranslate"><span class="pre">EMAIterHook</span></code> should inherit from the parent class <code class="docutils literal notranslate"><span class="pre">HookBase</span></code> ;</p></li>
+<li><p>choose <code class="docutils literal notranslate"><span class="pre">before_train()</span></code>and <code class="docutils literal notranslate"><span class="pre">after_train_iter</span></code> , rewrite the function;</p>
+<p>We have six functions in <code class="docutils literal notranslate"><span class="pre">HookBase</span></code> , which are<code class="docutils literal notranslate"><span class="pre">before_train</span></code>, <code class="docutils literal notranslate"><span class="pre">after_train</span></code>, <code class="docutils literal notranslate"><span class="pre">before_train_iter</span></code>, <code class="docutils literal notranslate"><span class="pre">after_train_iter</span></code>, <code class="docutils literal notranslate"><span class="pre">before_train_epoch</span></code> and  <code class="docutils literal notranslate"><span class="pre">after_train_epoch</span></code>.  Each function represents different  stage of the deep learning process. Depending on the functionality of the hook, the users need to rewrite corresponding functions to decide in which stage hook runs.</p>
+</li>
+</ul>
+</li>
+<li><p>Import the module</p>
+<p>You can add the following line to <code class="docutils literal notranslate"><span class="pre">mixk/engine/hooks/__init__.py</span></code>, and add <code class="docutils literal notranslate"><span class="pre">'EMAIterHook'</span></code> in <code class="docutils literal notranslate"><span class="pre">__all__</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.lr_scheduler</span> <span class="kn">import</span> <span class="n">LRSchedulerHook</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;EMAIterHook&#39;</span><span class="p">,</span> <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Prepare a hook config file</p>
+<p>Create a new hook config file <code class="docutils literal notranslate"><span class="pre">mixk/configs/_base_/custom_hook/devlbert_ema_hook.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">custom_hooks</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;EMAIterHook&#39;</span><span class="p">,</span>
+        <span class="n">level</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>  <span class="c1"># set the hook level,  level type : PriorityStatus, str, int</span>
+    <span class="p">),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;EMAEpochHook&#39;</span><span class="p">,</span>
+        <span class="n">level</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p><strong>NOTE</strong>:</p>
+<ul class="simple">
+<li><p>each customized hook should have a parameter <code class="docutils literal notranslate"><span class="pre">dict</span></code>, which gives hook class type and hook level. And put all customized hook dicts in a list <code class="docutils literal notranslate"><span class="pre">custom_hooks</span></code>.</p></li>
+<li><p>set the hook level. The level type can be str or int. For the reason that we have many hooks in each stage, so we should set the hook level to decide the priority of  the hook. We have seven levels in total for you to choose, which is listed as below (the lower the number, the higher the priority). If the parameter is not given,  it will be set to level <code class="docutils literal notranslate"><span class="pre">NORMAL</span></code> in default.</p></li>
+</ul>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="left">PriorityStatus</th>
+<th align="left">level</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">HIGHEST</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="left">HIGHER</td>
+<td align="left">10</td>
+</tr>
+<tr>
+<td align="left">HIGH</td>
+<td align="left">20</td>
+</tr>
+<tr>
+<td align="left">NORMAL</td>
+<td align="left">30</td>
+</tr>
+<tr>
+<td align="left">LOW</td>
+<td align="left">40</td>
+</tr>
+<tr>
+<td align="left">LOWER</td>
+<td align="left">50</td>
+</tr>
+<tr>
+<td align="left">LOWEST</td>
+<td align="left">60</td>
+</tr>
+</tbody>
+</table><ul class="simple">
+<li><p>when sorting hooks, we compare the priority level(the lower the number, the higher the ranking). If the customized hook level same with the default hook, it append behind the default hook.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Tutorial4-customize_Schedule_and_Runtime_Settings.html" class="btn btn-neutral float-left" title="Tutorial 4: Customize Schedule and Runtime Settings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Tutorial6-finetune.html" class="btn btn-neutral float-right" title="Tutorial 6: Finetuning Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

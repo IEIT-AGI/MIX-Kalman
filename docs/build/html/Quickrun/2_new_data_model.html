@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2: Train with customized datasets &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3: Train with customized models and existing datasets" href="3_exist_data_new_model.html" />
+    <link rel="prev" title="1: Inference and train with existing models and datasets" href="1_exist_data_model.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2: Train with customized datasets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prepare-the-customized-dataset">Prepare the customized dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#download-dataset-files">Download dataset files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prepare-the-dataset-config-file">Prepare the dataset config file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#add-dataset-process-module">Add dataset process module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#prepare-other-necessary-configs">Prepare other necessary configs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#train-model">Train model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-and-inference">Test and inference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="quickrun.html">&lt;no title&gt;</a> &raquo;</li>
+      <li>2: Train with customized datasets</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Quickrun/2_new_data_model.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="train-with-customized-datasets">
+<h1>2: Train with customized datasets<a class="headerlink" href="#train-with-customized-datasets" title="Permalink to this heading"></a></h1>
+<p>The basic steps are as below:</p>
+<ol class="simple">
+<li><p>Prepare the customized dataset;</p></li>
+<li><p>Prepare other necessary configs;</p></li>
+<li><p>Train, test, inference models on the customized dataset.</p></li>
+</ol>
+<p>In this part, we use <a class="reference external" href="https://github.com/IEIT-AGI/MIX-Kalman/tree/master/configs/lxmert/LXMERT.md">LXMERT</a> model and VQA task as an example.</p>
+<section id="prepare-the-customized-dataset">
+<h2>Prepare the customized dataset<a class="headerlink" href="#prepare-the-customized-dataset" title="Permalink to this heading"></a></h2>
+<p>We provide you with two choices when you customize dataset: use MIX-Kalman or directly use source code data process module. In this section, we only introduce how to customized dataset in MIX-Kalman. For more details, please refer to the <a class="reference internal" href="../tutorials/Tutorial2-customize_dataset.html"><span class="doc">Tutorial2</span></a>.</p>
+<section id="download-dataset-files">
+<h3>Download dataset files<a class="headerlink" href="#download-dataset-files" title="Permalink to this heading"></a></h3>
+<p>In MIX-Kalman, we use the extracted feature files refer to the source code papers(i.e. VQA dataset).</p>
+<p>Download the feature and annotation files like <code class="docutils literal notranslate"><span class="pre">train.json</span></code>, <code class="docutils literal notranslate"><span class="pre">trainval_ans2label.json</span></code>, <code class="docutils literal notranslate"><span class="pre">train2014_obj36.tsv</span></code> and so on. You can download the data file according to the original paper or source code of <a class="reference external" href="https://github.com/IEIT-AGI/MIX-Kalman/tree/master/configs/lxmert/LXMERT.md">LXMERT</a>.</p>
+<p>Put all those files outside the project directory and symlink the dataset root to <code class="docutils literal notranslate"><span class="pre">MIX-Kalman/configs/_base_/datasets/lxmert/lxmert_vqa.py</span></code></p>
+</section>
+<section id="prepare-the-dataset-config-file">
+<h3>Prepare the dataset config file<a class="headerlink" href="#prepare-the-dataset-config-file" title="Permalink to this heading"></a></h3>
+<p>You should set the train data, test data path and so on in the config file, thus it can be loaded successfully.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># set dataset type for registry</span>
+<span class="n">dataset_type</span> <span class="o">=</span> <span class="s1">&#39;VQATorchDataset&#39;</span>
+<span class="c1"># set dataset path for root, feature, annotation, vocab, etc</span>
+<span class="n">data_root</span> <span class="o">=</span> <span class="s1">&#39;/home/datasets/mix_data/lxmert/&#39;</span>
+<span class="n">feature_path</span> <span class="o">=</span> <span class="s1">&#39;mscoco_imgfeat/&#39;</span>
+<span class="n">annotation_path</span> <span class="o">=</span> <span class="s1">&#39;vqa/&#39;</span>
+<span class="o">...</span>
+<span class="c1"># set default parameter and train data for vqa_reader.py</span>
+<span class="n">vqa_reader_train_cfg</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">annotations</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">train</span><span class="o">=</span><span class="n">data_root</span> <span class="o">+</span> <span class="n">annotation_path</span> <span class="o">+</span> <span class="s1">&#39;train.json&#39;</span><span class="p">,</span>
+        <span class="o">...</span><span class="p">),</span>
+    <span class="o">...</span>
+<span class="p">)</span>
+
+<span class="c1"># set default config for train data</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">samples_per_gpu</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">workers_per_gpu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="n">dataset_type</span><span class="p">,</span>
+        <span class="n">reader</span><span class="o">=</span><span class="n">vqa_reader_train_cfg</span><span class="p">,</span>
+        <span class="c1"># limit_nums=400,</span>
+    <span class="p">),</span>
+    <span class="n">drop_last</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,)</span>
+</pre></div>
+</div>
+</section>
+<section id="add-dataset-process-module">
+<h3>Add dataset process module<a class="headerlink" href="#add-dataset-process-module" title="Permalink to this heading"></a></h3>
+<ol class="simple">
+<li><p>add dataset_loader.py</p>
+<ul class="simple">
+<li><p>the class <code class="docutils literal notranslate"><span class="pre">VQADATASET</span></code> should inherit from the parent class <code class="docutils literal notranslate"><span class="pre">BaseLoader</span></code> and register the dataset by decorator <code class="docutils literal notranslate"><span class="pre">&#64;DATASETS.register_module()</span></code>;</p></li>
+<li><p>writer the specific item dictionary in the <code class="docutils literal notranslate"><span class="pre">__getitem__()</span></code> function according to different task.</p></li>
+</ul>
+</li>
+<li><p>add dataset_reader.py</p>
+<ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">VQAReader</span></code> should inherit from the parent class <code class="docutils literal notranslate"><span class="pre">mixkDataReader</span></code> . It will read the parameters of the <code class="docutils literal notranslate"><span class="pre">vqa_reader_train_cfg</span></code> in the parent class;</p></li>
+<li><p>writer the <code class="docutils literal notranslate"><span class="pre">__getitem__()</span></code> function according to different task.</p></li>
+</ul>
+</li>
+<li><p>add dataset_infocpler.py (some datasets don’t need infocpler.py)</p>
+<ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">VQAInfoCpler</span></code> should inherit from the parent class <code class="docutils literal notranslate"><span class="pre">BaseInfoCpler</span></code> . It will read the parameters of the <code class="docutils literal notranslate"><span class="pre">vqa_info_cpler_cfg</span></code> in the parent class;</p></li>
+<li><p>writer <code class="docutils literal notranslate"><span class="pre">completeInfo</span></code> function according to different task.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="prepare-other-necessary-configs">
+<h2>Prepare other necessary configs<a class="headerlink" href="#prepare-other-necessary-configs" title="Permalink to this heading"></a></h2>
+<p>There are three configs you should prepare:</p>
+<ol>
+<li><p>Prepare model config file</p>
+<p>You should modify the output dimension in the model config file to match with the class numbers of the new datasets and set the pre-trained model weight path in the <code class="docutils literal notranslate"><span class="pre">from_pretrained</span></code> or <code class="docutils literal notranslate"><span class="pre">--load-from</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;LXMERT&#39;</span><span class="p">,</span>
+    <span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">num_labels</span><span class="o">=</span><span class="mi">3129</span><span class="p">,</span>  <span class="c1"># set the output dimension same with the dataset class</span>
+       <span class="n">pretrained_path</span><span class="o">=</span><span class="s1">&#39;/home/datasets/mix_data/MIX-Kalman/data/models/model_LXRT.pth&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+    <span class="p">))</span>
+</pre></div>
+</div>
+<p>For more detailed usages, please refer to the <a class="reference internal" href="../tutorials/Tutorial6-finetune.html"><span class="doc">Tutorial6</span></a>.</p>
+</li>
+<li><p>prepare the schedule and runtime config</p>
+<p>You could modify some default settings like the directory path to save logs and models and so on.</p>
+<p>For more detailed usages, please refer to the <a class="reference internal" href="../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html"><span class="doc">Tutorial4</span></a>.</p>
+</li>
+<li><p>Prepare base configs</p>
+<p>You should set the configuration path of the model, dataset, and default runtime in the <code class="docutils literal notranslate"><span class="pre">configs</span></code> directory. (e.g. <a class="reference external" href="https://github.com/IEIT-AGI/MIX-Kalman/tree/master/configs/lxmert/lxmert_vqa.py">LXMERT model and VQA task</a>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">_base_</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;../_base_/models/lxmert/lxmert_vqa_config.py&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;../_base_/datasets/lxmert/lxmert_vqa.py&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;../_base_/default_runtime.py&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="train-model">
+<h2>Train model<a class="headerlink" href="#train-model" title="Permalink to this heading"></a></h2>
+<p>To train a model with the new config, you can simply run</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python tools/run.py --config-file configs/lxmert/lxmert_vqa.py --resume-from ./work_dirs/lxmert_vqa.pth
+</pre></div>
+</div>
+<p>For more detailed usages, please refer to the <a class="reference internal" href="1_exist_data_model.html"><span class="doc">Case 1</span></a>.</p>
+</section>
+<section id="test-and-inference">
+<h2>Test and inference<a class="headerlink" href="#test-and-inference" title="Permalink to this heading"></a></h2>
+<p>To test the trained model, you can simply run</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python tools/run.py --config-file configs/lxmert/lxmert_vqa.py --load-from ./work_dirs/lxmert_vqa.pth --eval-only
+</pre></div>
+</div>
+<p>For more detailed usages, please refer to the <a class="reference internal" href="1_exist_data_model.html"><span class="doc">Case 1</span></a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="1_exist_data_model.html" class="btn btn-neutral float-left" title="1: Inference and train with existing models and datasets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="3_exist_data_new_model.html" class="btn btn-neutral float-right" title="3: Train with customized models and existing datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

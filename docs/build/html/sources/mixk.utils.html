@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mixk.utils package &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mixk.utils.third_party_libs package" href="mixk.utils.third_party_libs.html" />
+    <link rel="prev" title="mixk.solver package" href="mixk.solver.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="mixk.html">mixk package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="mixk.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mixk.data.html">mixk.data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.engine.html">mixk.engine package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.evaluation.html">mixk.evaluation package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.models.html">mixk.models package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.solver.html">mixk.solver package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">mixk.utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.utils.Timer">mixk.utils.Timer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.utils.checkpoint">mixk.utils.checkpoint module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.utils.collect_running_env">mixk.utils.collect_running_env module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.utils.common_function">mixk.utils.common_function module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mixk-utils-config-module">mixk.utils.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.utils.data_utils">mixk.utils.data_utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mixk-utils-default-argument-module">mixk.utils.default_argument module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.utils.disable_ouput">mixk.utils.disable_ouput module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.utils.distributed_info">mixk.utils.distributed_info module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.utils.enable_ouput">mixk.utils.enable_ouput module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.utils.history_buffer">mixk.utils.history_buffer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.utils.imix_checkpoint">mixk.utils.imix_checkpoint module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.utils.launch">mixk.utils.launch module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.utils.logger">mixk.utils.logger module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.utils.modeling">mixk.utils.modeling module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.utils.registry">mixk.utils.registry module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.html#module-mixk.version">mixk.version module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.html#module-mixk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="mixk.html">mixk package</a> &raquo;</li>
+      <li>mixk.utils package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/sources/mixk.utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mixk-utils-package">
+<h1>mixk.utils package<a class="headerlink" href="#mixk-utils-package" title="Permalink to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mixk.utils.third_party_libs.html">mixk.utils.third_party_libs package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mixk.utils.third_party_libs.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.utils.third_party_libs.html#module-mixk.utils.third_party_libs.download">mixk.utils.third_party_libs.download module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.utils.third_party_libs.html#module-mixk.utils.third_party_libs.eval_ai_answer_processor">mixk.utils.third_party_libs.eval_ai_answer_processor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.utils.third_party_libs.html#module-mixk.utils.third_party_libs.file_io">mixk.utils.third_party_libs.file_io module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.utils.third_party_libs.html#module-mixk.utils.third_party_libs.text">mixk.utils.third_party_libs.text module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.utils.third_party_libs.html#module-mixk.utils.third_party_libs.visdial_metrics">mixk.utils.third_party_libs.visdial_metrics module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.utils.third_party_libs.html#module-mixk.utils.third_party_libs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-mixk.utils.Timer">
+<span id="mixk-utils-timer-module"></span><h2>mixk.utils.Timer module<a class="headerlink" href="#module-mixk.utils.Timer" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.Timer.Timer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.Timer.</span></span><span class="sig-name descname"><span class="pre">Timer</span></span><a class="reference internal" href="../_modules/mixk/utils/Timer.html#Timer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.Timer.Timer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.Timer.Timer.now">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">now</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/mixk/utils/Timer.html#Timer.now"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.Timer.Timer.now" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.Timer.Timer.passed_seconds">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">passed_seconds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/mixk/utils/Timer.html#Timer.passed_seconds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.Timer.Timer.passed_seconds" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.Timer.Timer.run_time">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/Timer.html#Timer.run_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.Timer.Timer.run_time" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.Timer.batch_iter">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.Timer.</span></span><span class="sig-name descname"><span class="pre">batch_iter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/Timer.html#batch_iter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.Timer.batch_iter" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-mixk.utils.checkpoint">
+<span id="mixk-utils-checkpoint-module"></span><h2>mixk.utils.checkpoint module<a class="headerlink" href="#module-mixk.utils.checkpoint" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.checkpoint.Checkpointer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.checkpoint.</span></span><span class="sig-name descname"><span class="pre">Checkpointer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_save_disk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_record_ck</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">other_train_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/checkpoint.html#Checkpointer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.checkpoint.Checkpointer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="mixk.utils.checkpoint.Checkpointer.checkpoint_files">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">checkpoint_files</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#mixk.utils.checkpoint.Checkpointer.checkpoint_files" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mixk.utils.checkpoint.Checkpointer.is_record_ck">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_record_ck</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#mixk.utils.checkpoint.Checkpointer.is_record_ck" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.checkpoint.Checkpointer.load_checkpoint">
+<span class="sig-name descname"><span class="pre">load_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">specify_load_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="reference internal" href="../_modules/mixk/utils/checkpoint.html#Checkpointer.load_checkpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.checkpoint.Checkpointer.load_checkpoint" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.checkpoint.Checkpointer.remove_first_from_checkpoint">
+<span class="sig-name descname"><span class="pre">remove_first_from_checkpoint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/checkpoint.html#Checkpointer.remove_first_from_checkpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.checkpoint.Checkpointer.remove_first_from_checkpoint" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.checkpoint.Checkpointer.resume_or_load">
+<span class="sig-name descname"><span class="pre">resume_or_load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/checkpoint.html#Checkpointer.resume_or_load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.checkpoint.Checkpointer.resume_or_load" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.checkpoint.Checkpointer.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/mixk/utils/checkpoint.html#Checkpointer.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.checkpoint.Checkpointer.save" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.checkpoint.PeriodicCheckpointer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.checkpoint.</span></span><span class="sig-name descname"><span class="pre">PeriodicCheckpointer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpointer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#mixk.utils.checkpoint.Checkpointer" title="mixk.utils.checkpoint.Checkpointer"><span class="pre">Checkpointer</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter_period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch_period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_epoch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_num_checkpoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/checkpoint.html#PeriodicCheckpointer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.checkpoint.PeriodicCheckpointer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.checkpoint.PeriodicCheckpointer.record_epoch_checkpoint">
+<span class="sig-name descname"><span class="pre">record_epoch_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/mixk/utils/checkpoint.html#PeriodicCheckpointer.record_epoch_checkpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.checkpoint.PeriodicCheckpointer.record_epoch_checkpoint" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.checkpoint.PeriodicCheckpointer.record_iter_checkpoint">
+<span class="sig-name descname"><span class="pre">record_iter_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iteration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/mixk/utils/checkpoint.html#PeriodicCheckpointer.record_iter_checkpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.checkpoint.PeriodicCheckpointer.record_iter_checkpoint" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.checkpoint.PeriodicCheckpointer.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/mixk/utils/checkpoint.html#PeriodicCheckpointer.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.checkpoint.PeriodicCheckpointer.save" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mixk.utils.collect_running_env">
+<span id="mixk-utils-collect-running-env-module"></span><h2>mixk.utils.collect_running_env module<a class="headerlink" href="#module-mixk.utils.collect_running_env" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.collect_running_env.collect_env_info">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.collect_running_env.</span></span><span class="sig-name descname"><span class="pre">collect_env_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/collect_running_env.html#collect_env_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.collect_running_env.collect_env_info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-mixk.utils.common_function">
+<span id="mixk-utils-common-function-module"></span><h2>mixk.utils.common_function module<a class="headerlink" href="#module-mixk.utils.common_function" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.common_function.byte_tensor_to_object">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.common_function.</span></span><span class="sig-name descname"><span class="pre">byte_tensor_to_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byte_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4094</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/common_function.html#byte_tensor_to_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.common_function.byte_tensor_to_object" title="Permalink to this definition"></a></dt>
+<dd><p>Decode PyTorch byte tensors to Python objects.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.common_function.object_to_byte_tensor">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.common_function.</span></span><span class="sig-name descname"><span class="pre">object_to_byte_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4094</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/common_function.html#object_to_byte_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.common_function.object_to_byte_tensor" title="Permalink to this definition"></a></dt>
+<dd><p>Encode Python objects to PyTorch byte tensors.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.common_function.update_d1_with_d2">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.common_function.</span></span><span class="sig-name descname"><span class="pre">update_d1_with_d2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/common_function.html#update_d1_with_d2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.common_function.update_d1_with_d2" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="mixk-utils-config-module">
+<h2>mixk.utils.config module<a class="headerlink" href="#mixk-utils-config-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-mixk.utils.data_utils">
+<span id="mixk-utils-data-utils-module"></span><h2>mixk.utils.data_utils module<a class="headerlink" href="#module-mixk.utils.data_utils" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.data_utils.batch_iter">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">batch_iter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/data_utils.html#batch_iter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.data_utils.batch_iter" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.data_utils.encode_image_input">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">encode_image_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_boxes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boxes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_regions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">37</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_prob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.15</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/data_utils.html#encode_image_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.data_utils.encode_image_input" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.data_utils.encode_input">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">encode_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">utterances</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_segment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CLS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SEP</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MASK</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_seq_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_sep_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_prob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/data_utils.html#encode_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.data_utils.encode_input" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.data_utils.list2tensorpad">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">list2tensorpad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_seq_len</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/data_utils.html#list2tensorpad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.data_utils.list2tensorpad" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.data_utils.sequence_mask">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">sequence_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/data_utils.html#sequence_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.data_utils.sequence_mask" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="mixk-utils-default-argument-module">
+<h2>mixk.utils.default_argument module<a class="headerlink" href="#mixk-utils-default-argument-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-mixk.utils.disable_ouput">
+<span id="mixk-utils-disable-ouput-module"></span><h2>mixk.utils.disable_ouput module<a class="headerlink" href="#module-mixk.utils.disable_ouput" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-mixk.utils.distributed_info">
+<span id="mixk-utils-distributed-info-module"></span><h2>mixk.utils.distributed_info module<a class="headerlink" href="#module-mixk.utils.distributed_info" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.DistributedStatus">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.distributed_info.</span></span><span class="sig-name descname"><span class="pre">DistributedStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/distributed_info.html#DistributedStatus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.distributed_info.DistributedStatus" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.DistributedStatus.AVAILABLE">
+<span class="sig-name descname"><span class="pre">AVAILABLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#mixk.utils.distributed_info.DistributedStatus.AVAILABLE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.DistributedStatus.AVAILABLE_AND_INITIALIZED">
+<span class="sig-name descname"><span class="pre">AVAILABLE_AND_INITIALIZED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#mixk.utils.distributed_info.DistributedStatus.AVAILABLE_AND_INITIALIZED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.DistributedStatus.INITIALIZED">
+<span class="sig-name descname"><span class="pre">INITIALIZED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#mixk.utils.distributed_info.DistributedStatus.INITIALIZED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.DistributedStatus.NO_AVAILABLE_INITIALIZED">
+<span class="sig-name descname"><span class="pre">NO_AVAILABLE_INITIALIZED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#mixk.utils.distributed_info.DistributedStatus.NO_AVAILABLE_INITIALIZED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.all_gather">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.distributed_info.</span></span><span class="sig-name descname"><span class="pre">all_gather</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../_modules/mixk/utils/distributed_info.html#all_gather"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.distributed_info.all_gather" title="Permalink to this definition"></a></dt>
+<dd><p>Run all_gather on arbitrary picklable data (not necessarily tensors).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – any picklable object</p></li>
+<li><p><strong>group</strong> – a torch process group. By default, will use a group which
+contains all ranks on gloo backend.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of data gathered from each rank</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[data]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.gather">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.distributed_info.</span></span><span class="sig-name descname"><span class="pre">gather</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../_modules/mixk/utils/distributed_info.html#gather"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.distributed_info.gather" title="Permalink to this definition"></a></dt>
+<dd><p>Run gather on arbitrary picklable data (not necessarily tensors).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – any picklable object</p></li>
+<li><p><strong>dst</strong> (<em>int</em>) – destination rank</p></li>
+<li><p><strong>group</strong> – a torch process group. By default, will use a group which
+contains all ranks on gloo backend.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>on dst, a list of data gathered from each rank. Otherwise,</dt><dd><p>an empty list.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[data]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.get_dist_status">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.distributed_info.</span></span><span class="sig-name descname"><span class="pre">get_dist_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/distributed_info.html#get_dist_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.distributed_info.get_dist_status" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.get_local_rank">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.distributed_info.</span></span><span class="sig-name descname"><span class="pre">get_local_rank</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/mixk/utils/distributed_info.html#get_local_rank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.distributed_info.get_local_rank" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The rank of the current process within the local (per-machine) process group.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.get_local_size">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.distributed_info.</span></span><span class="sig-name descname"><span class="pre">get_local_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/mixk/utils/distributed_info.html#get_local_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.distributed_info.get_local_size" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>The size of the per-machine process group,</dt><dd><p>i.e. the number of processes per machine.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.get_rank">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.distributed_info.</span></span><span class="sig-name descname"><span class="pre">get_rank</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/mixk/utils/distributed_info.html#get_rank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.distributed_info.get_rank" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.get_world_size">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.distributed_info.</span></span><span class="sig-name descname"><span class="pre">get_world_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/mixk/utils/distributed_info.html#get_world_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.distributed_info.get_world_size" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.is_main_process">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.distributed_info.</span></span><span class="sig-name descname"><span class="pre">is_main_process</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/mixk/utils/distributed_info.html#is_main_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.distributed_info.is_main_process" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.is_single_processes">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.distributed_info.</span></span><span class="sig-name descname"><span class="pre">is_single_processes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/mixk/utils/distributed_info.html#is_single_processes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.distributed_info.is_single_processes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.master_only_run">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.distributed_info.</span></span><span class="sig-name descname"><span class="pre">master_only_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/distributed_info.html#master_only_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.distributed_info.master_only_run" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.reduce_dict">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.distributed_info.</span></span><span class="sig-name descname"><span class="pre">reduce_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_average</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/mixk/utils/distributed_info.html#reduce_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.distributed_info.reduce_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Reduce the values in the dictionary from all processes so that process
+with rank 0 has the reduced results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_dict</strong> (<em>dict</em>) – inputs to be reduced. All the values must be scalar CUDA Tensor.</p></li>
+<li><p><strong>is_average</strong> (<em>bool</em>) – whether to do average or sum</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a dict with the same keys as input_dict, after reduction.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.shared_random_seed">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.distributed_info.</span></span><span class="sig-name descname"><span class="pre">shared_random_seed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">low</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2147483648</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/mixk/utils/distributed_info.html#shared_random_seed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.distributed_info.shared_random_seed" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>a random number that is the same across all workers.</dt><dd><p>If workers need a shared RNG, they can use this shared seed to
+create one.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+<p>All workers must call this function, otherwise it will deadlock.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.distributed_info.synchronize">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.distributed_info.</span></span><span class="sig-name descname"><span class="pre">synchronize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/mixk/utils/distributed_info.html#synchronize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.distributed_info.synchronize" title="Permalink to this definition"></a></dt>
+<dd><p>Helper function to synchronize (barrier) among all processes when using
+distributed training.</p>
+</dd></dl>
+
+</section>
+<section id="module-mixk.utils.enable_ouput">
+<span id="mixk-utils-enable-ouput-module"></span><h2>mixk.utils.enable_ouput module<a class="headerlink" href="#module-mixk.utils.enable_ouput" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-mixk.utils.history_buffer">
+<span id="mixk-utils-history-buffer-module"></span><h2>mixk.utils.history_buffer module<a class="headerlink" href="#module-mixk.utils.history_buffer" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.history_buffer.HistoryBuffer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.history_buffer.</span></span><span class="sig-name descname"><span class="pre">HistoryBuffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capacity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1048576</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/history_buffer.html#HistoryBuffer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.history_buffer.HistoryBuffer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.history_buffer.HistoryBuffer.avg">
+<span class="sig-name descname"><span class="pre">avg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#mixk.utils.history_buffer.HistoryBuffer.avg" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mixk.utils.history_buffer.HistoryBuffer.data">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#mixk.utils.history_buffer.HistoryBuffer.data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mixk.utils.history_buffer.HistoryBuffer.global_mean">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">global_mean</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#mixk.utils.history_buffer.HistoryBuffer.global_mean" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.history_buffer.HistoryBuffer.lateset_window_mean">
+<span class="sig-name descname"><span class="pre">lateset_window_mean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/mixk/utils/history_buffer.html#HistoryBuffer.lateset_window_mean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.history_buffer.HistoryBuffer.lateset_window_mean" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.history_buffer.HistoryBuffer.latest">
+<span class="sig-name descname"><span class="pre">latest</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mixk.utils.history_buffer.HistoryBuffer.latest" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.history_buffer.HistoryBuffer.latest_data">
+<span class="sig-name descname"><span class="pre">latest_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/history_buffer.html#HistoryBuffer.latest_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.history_buffer.HistoryBuffer.latest_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.history_buffer.HistoryBuffer.latest_window_median">
+<span class="sig-name descname"><span class="pre">latest_window_median</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/mixk/utils/history_buffer.html#HistoryBuffer.latest_window_median"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.history_buffer.HistoryBuffer.latest_window_median" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.history_buffer.HistoryBuffer.median">
+<span class="sig-name descname"><span class="pre">median</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#mixk.utils.history_buffer.HistoryBuffer.median" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mixk.utils.history_buffer.HistoryBuffer.size">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#mixk.utils.history_buffer.HistoryBuffer.size" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.history_buffer.HistoryBuffer.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iteration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/history_buffer.html#HistoryBuffer.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.history_buffer.HistoryBuffer.update" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mixk.utils.history_buffer.HistoryBuffer.values">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#mixk.utils.history_buffer.HistoryBuffer.values" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.history_buffer.Scalar">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.history_buffer.</span></span><span class="sig-name descname"><span class="pre">Scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mixk.utils.history_buffer.Scalar" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.history_buffer.Scalar.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#mixk.utils.history_buffer.Scalar.data" title="Permalink to this definition"></a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.history_buffer.Scalar.iter">
+<span class="sig-name descname"><span class="pre">iter</span></span><a class="headerlink" href="#mixk.utils.history_buffer.Scalar.iter" title="Permalink to this definition"></a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mixk.utils.imix_checkpoint">
+<span id="mixk-utils-imix-checkpoint-module"></span><h2>mixk.utils.imix_checkpoint module<a class="headerlink" href="#module-mixk.utils.imix_checkpoint" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.imix_checkpoint.mixkCheckpointer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.imix_checkpoint.</span></span><span class="sig-name descname"><span class="pre">mixkCheckpointer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_save_disk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_record_ck</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">other_train_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/imix_checkpoint.html#mixkCheckpointer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.imix_checkpoint.mixkCheckpointer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.utils.checkpoint.Checkpointer" title="mixk.utils.checkpoint.Checkpointer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Checkpointer</span></code></a></p>
+</dd></dl>
+
+</section>
+<section id="module-mixk.utils.launch">
+<span id="mixk-utils-launch-module"></span><h2>mixk.utils.launch module<a class="headerlink" href="#module-mixk.utils.launch" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.launch.launch">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.launch.</span></span><span class="sig-name descname"><span class="pre">launch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpus</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">machines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">master_addr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tcp://127.0.0.1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">master_port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_fn_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/mixk/utils/launch.html#launch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.launch.launch" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run_fn</strong> – a function that will be called by <cite>run_fn(*args)</cite></p></li>
+<li><p><strong>machines</strong> (<em>int</em>) – the total number of machines</p></li>
+<li><p><strong>node_rank</strong> (<em>int</em>) – the rank of this machine (one per machine)</p></li>
+<li><p><strong>master_addr</strong> (<em>str</em>) – url to connect to for distributed jobs, including protocol
+e.g. “<a class="reference external" href="tcp://127.0.0.1:8686">tcp://127.0.0.1:8686</a>”.
+Can be set to “auto” to automatically select a free port on localhost</p></li>
+<li><p><strong>run_fn_args</strong> (<em>tuple</em>) – arguments passed to run_fn</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-mixk.utils.logger">
+<span id="mixk-utils-logger-module"></span><h2>mixk.utils.logger module<a class="headerlink" href="#module-mixk.utils.logger" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.logger.setup_logger">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.logger.</span></span><span class="sig-name descname"><span class="pre">setup_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distributed_rank</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mixk'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/logger.html#setup_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.logger.setup_logger" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-mixk.utils.modeling">
+<span id="mixk-utils-modeling-module"></span><h2>mixk.utils.modeling module<a class="headerlink" href="#module-mixk.utils.modeling" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.modeling.get_bert_configured_parameters">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.modeling.</span></span><span class="sig-name descname"><span class="pre">get_bert_configured_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/modeling.html#get_bert_configured_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.modeling.get_bert_configured_parameters" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.modeling.get_optimizer_parameters_for_bert">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.modeling.</span></span><span class="sig-name descname"><span class="pre">get_optimizer_parameters_for_bert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/modeling.html#get_optimizer_parameters_for_bert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.modeling.get_optimizer_parameters_for_bert" title="Permalink to this definition"></a></dt>
+<dd><p>1.For pre-training or when finetune_lr_multiplier is equal to 1 , all modules will be trained with default lr .
+2.For non pre-training heads, where finetune_lr_multiplier is not qual to 1, all modules other than classifier
+will be trained with (lr * finetune_lr_multiplier), Classifier will be trained with default lr .</p>
+</dd></dl>
+
+</section>
+<section id="module-mixk.utils.registry">
+<span id="mixk-utils-registry-module"></span><h2>mixk.utils.registry module<a class="headerlink" href="#module-mixk.utils.registry" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.registry.Registry">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.registry.</span></span><span class="sig-name descname"><span class="pre">Registry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/registry.html#Registry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.registry.Registry" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Registry class: mapping to the corresponding object based on the
+provided name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.registry.Registry.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="reference internal" href="../_modules/mixk/utils/registry.html#Registry.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.registry.Registry.get" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mixk.utils.registry.Registry.module_dict">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">module_dict</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span></em><a class="headerlink" href="#mixk.utils.registry.Registry.module_dict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mixk.utils.registry.Registry.module_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">module_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#mixk.utils.registry.Registry.module_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.registry.Registry.register_module">
+<span class="sig-name descname"><span class="pre">register_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/mixk/utils/registry.html#Registry.register_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.registry.Registry.register_module" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.registry.build_from_cfg">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.registry.</span></span><span class="sig-name descname"><span class="pre">build_from_cfg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">registry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#mixk.utils.registry.Registry" title="mixk.utils.registry.Registry"><span class="pre">Registry</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="reference internal" href="../_modules/mixk/utils/registry.html#build_from_cfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.registry.build_from_cfg" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.registry.check_var_type">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.registry.</span></span><span class="sig-name descname"><span class="pre">check_var_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_var_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/mixk/utils/registry.html#check_var_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.registry.check_var_type" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-mixk.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mixk.utils" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mixk.solver.html" class="btn btn-neutral float-left" title="mixk.solver package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mixk.utils.third_party_libs.html" class="btn btn-neutral float-right" title="mixk.utils.third_party_libs package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

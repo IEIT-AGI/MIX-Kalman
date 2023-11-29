@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mixk.models.backbones.cagraph_backbone &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      <li>mixk.models.backbones.cagraph_backbone</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mixk.models.backbones.cagraph_backbone</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Variable</span>
+<span class="kn">from</span> <span class="nn">torch.nn.utils.weight_norm</span> <span class="kn">import</span> <span class="n">weight_norm</span>
+
+<span class="kn">from</span> <span class="nn">..builder</span> <span class="kn">import</span> <span class="n">BACKBONES</span>
+
+
+<div class="viewcode-block" id="CAGRAPH_BACKBONE"><a class="viewcode-back" href="../../../../sources/mixk.models.backbones.html#mixk.models.backbones.cagraph_backbone.CAGRAPH_BACKBONE">[docs]</a><span class="nd">@BACKBONES</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">CAGRAPH_BACKBONE</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rnn_type</span><span class="p">,</span> <span class="n">nlayers</span><span class="p">,</span> <span class="n">ninp</span><span class="p">,</span> <span class="n">nhid</span><span class="p">,</span> <span class="n">dropout</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">dropout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ninp</span> <span class="o">=</span> <span class="n">ninp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span> <span class="o">=</span> <span class="n">nhid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nlayers</span> <span class="o">=</span> <span class="n">nlayers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rnn_type</span> <span class="o">=</span> <span class="n">rnn_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">neighbourhood_size</span> <span class="o">=</span> <span class="mi">8</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Wq_1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>  <span class="c1"># attention</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Wh_1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Wa_1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref_att</span> <span class="o">=</span> <span class="n">FCNet</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Wqt</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref_att2</span> <span class="o">=</span> <span class="n">FCNet</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Wqt2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref_att3</span> <span class="o">=</span> <span class="n">FCNet</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Wqt3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">W1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">W3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W4</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ninp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W5</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">W6</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W7</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ninp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W8</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">W9</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W10</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W11</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nhid</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ninp</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CAGRAPH_BACKBONE.forward"><a class="viewcode-back" href="../../../../sources/mixk.models.backbones.html#mixk.models.backbones.cagraph_backbone.CAGRAPH_BACKBONE.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ques_feat</span><span class="p">,</span> <span class="n">his_feat</span><span class="p">,</span> <span class="n">rcnn_feat</span><span class="p">,</span> <span class="n">ques_emb</span><span class="p">,</span> <span class="n">rnd</span><span class="p">):</span>
+
+        <span class="n">L</span> <span class="o">=</span> <span class="n">ques_emb</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># history attention ##############################</span>
+        <span class="n">ques_emb_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Wq_1</span><span class="p">(</span><span class="n">ques_feat</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>
+        <span class="n">his_emb_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Wh_1</span><span class="p">(</span><span class="n">his_feat</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">rnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>
+        <span class="n">atten_emb_1</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">his_emb_1</span> <span class="o">+</span> <span class="n">ques_emb_1</span><span class="o">.</span><span class="n">expand_as</span><span class="p">(</span><span class="n">his_emb_1</span><span class="p">))</span>
+        <span class="n">his_atten_weight</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Wa_1</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">atten_emb_1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">))</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">rnd</span><span class="p">))</span>
+        <span class="n">h_emb</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">his_atten_weight</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rnd</span><span class="p">),</span> <span class="n">his_feat</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">rnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">))</span>
+
+        <span class="c1"># graph constrution ############################</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">rcnn_feat</span><span class="p">,</span> <span class="n">h_emb</span><span class="o">.</span><span class="n">expand_as</span><span class="p">(</span><span class="n">rcnn_feat</span><span class="p">)),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># T == 1 #######################################</span>
+        <span class="c1"># question command #############################</span>
+        <span class="n">q_norm</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ref_att</span><span class="p">(</span><span class="n">ques_feat</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">at</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Wqt</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">q_norm</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">))</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>
+        <span class="n">q_c</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">L</span><span class="p">),</span> <span class="n">ques_emb</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># belief_matrix #############################</span>
+        <span class="n">mes_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W3</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">W4</span><span class="p">(</span><span class="n">q_c</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">belief_mat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W5</span><span class="p">(</span><span class="n">graph</span><span class="p">),</span> <span class="n">mes_b</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="c1"># belief = F.softmax(belief_mat, dim=2)</span>
+        <span class="c1"># message passing ###########################</span>
+        <span class="n">mes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W6</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">W7</span><span class="p">(</span><span class="n">q_c</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sum_mes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_neighbourhood</span><span class="p">(</span><span class="n">mes</span><span class="p">,</span> <span class="n">belief_mat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">neighbourhood_size</span><span class="p">)</span>
+        <span class="n">context_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W8</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">h_emb</span><span class="o">.</span><span class="n">expand_as</span><span class="p">(</span><span class="n">rcnn_feat</span><span class="p">),</span> <span class="n">sum_mes</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">graph2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">rcnn_feat</span><span class="p">,</span> <span class="n">context_1</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># T == 2 #######################################</span>
+        <span class="c1"># question command #############################</span>
+        <span class="n">q_norm2</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ref_att2</span><span class="p">(</span><span class="n">ques_feat</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">at2</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Wqt2</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">q_norm2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">))</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>
+        <span class="n">q_c2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">at2</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">L</span><span class="p">),</span> <span class="n">ques_emb</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># belief_matrix #############################</span>
+        <span class="n">mes_b2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W3</span><span class="p">(</span><span class="n">graph2</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">W4</span><span class="p">(</span><span class="n">q_c2</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">belief_mat2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W5</span><span class="p">(</span><span class="n">graph2</span><span class="p">),</span> <span class="n">mes_b2</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="c1"># belief2 = F.softmax(belief_mat2, dim=2)</span>
+        <span class="c1"># message passing ###########################</span>
+        <span class="n">mes2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W6</span><span class="p">(</span><span class="n">graph2</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">W7</span><span class="p">(</span><span class="n">q_c2</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sum_mes2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_neighbourhood</span><span class="p">(</span><span class="n">mes2</span><span class="p">,</span> <span class="n">belief_mat2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">neighbourhood_size</span><span class="p">)</span>
+        <span class="n">context_2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W8</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">context_1</span><span class="p">,</span> <span class="n">sum_mes2</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">graph3</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">rcnn_feat</span><span class="p">,</span> <span class="n">context_2</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># T == 3 #######################################</span>
+        <span class="c1"># question command #############################</span>
+        <span class="n">q_norm3</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ref_att3</span><span class="p">(</span><span class="n">ques_feat</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">at3</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Wqt3</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">q_norm3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">))</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>
+        <span class="n">q_c3</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">at3</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">L</span><span class="p">),</span> <span class="n">ques_emb</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># belief_matrix #############################</span>
+        <span class="n">mes_b3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W3</span><span class="p">(</span><span class="n">graph3</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">W4</span><span class="p">(</span><span class="n">q_c3</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">belief_mat3</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W5</span><span class="p">(</span><span class="n">graph3</span><span class="p">),</span> <span class="n">mes_b3</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="c1"># belief3 = F.softmax(belief_mat3, dim=2)</span>
+        <span class="c1"># message passing ###########################</span>
+        <span class="n">mes3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W6</span><span class="p">(</span><span class="n">graph3</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">W7</span><span class="p">(</span><span class="n">q_c3</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sum_mes3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_neighbourhood</span><span class="p">(</span><span class="n">mes3</span><span class="p">,</span> <span class="n">belief_mat3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">neighbourhood_size</span><span class="p">)</span>
+        <span class="n">context_3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W8</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">context_2</span><span class="p">,</span> <span class="n">sum_mes3</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">graph4</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">rcnn_feat</span><span class="p">,</span> <span class="n">context_3</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># Graph Attention ##############################</span>
+        <span class="n">g2_emb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W9</span><span class="p">(</span><span class="n">graph4</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>
+        <span class="n">q_emb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W10</span><span class="p">(</span><span class="n">ques_feat</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span>
+        <span class="n">att_gq_emb</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">g2_emb</span> <span class="o">+</span> <span class="n">q_emb</span><span class="o">.</span><span class="n">expand_as</span><span class="p">(</span><span class="n">g2_emb</span><span class="p">))</span>
+        <span class="n">graph_att</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">W11</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">att_gq_emb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">))</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                                                                                                     <span class="mi">36</span><span class="p">))</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">graph_emb</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">graph_att</span><span class="p">,</span> <span class="n">graph4</span><span class="p">)</span>
+
+        <span class="c1"># Multi-modal Fusion ############################</span>
+        <span class="n">concat_feat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">graph_emb</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">),</span> <span class="n">ques_feat</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">),</span> <span class="n">h_emb</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">final_feat</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">concat_feat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">final_feat</span></div>
+
+<div class="viewcode-block" id="CAGRAPH_BACKBONE.init_hidden"><a class="viewcode-back" href="../../../../sources/mixk.models.backbones.html#mixk.models.backbones.cagraph_backbone.CAGRAPH_BACKBONE.init_hidden">[docs]</a>    <span class="k">def</span> <span class="nf">init_hidden</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bsz</span><span class="p">):</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rnn_type</span> <span class="o">==</span> <span class="s1">&#39;LSTM&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nlayers</span><span class="p">,</span> <span class="n">bsz</span><span class="p">,</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span><span class="o">.</span><span class="n">zero_</span><span class="p">()),</span> <span class="n">Variable</span><span class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nlayers</span><span class="p">,</span> <span class="n">bsz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span><span class="o">.</span><span class="n">zero_</span><span class="p">()))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Variable</span><span class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nlayers</span><span class="p">,</span> <span class="n">bsz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nhid</span><span class="p">)</span><span class="o">.</span><span class="n">zero_</span><span class="p">())</span></div>
+
+    <span class="k">def</span> <span class="nf">_create_neighbourhood_mes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">top_ind</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;## Inputs:</span>
+
+<span class="sd">        - message (batch_size, K, feat_dim)</span>
+<span class="sd">        - top_ind (batch_size, K, neighbourhood_size)</span>
+<span class="sd">        ## Returns:</span>
+<span class="sd">        - neighbourhood_message (batch_size, K, neighbourhood_size, feat_dim)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">batch_size</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">feat_dim</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">neighbourhood_size</span> <span class="o">=</span> <span class="n">top_ind</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">feat_dim</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">top_ind</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">neighbourhood_size</span><span class="p">,</span> <span class="n">feat_dim</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">idx</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_create_neighbourhood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">belief_matrix</span><span class="p">,</span> <span class="n">neighbourhood_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a neighbourhood system for each graph node/image object.</span>
+
+<span class="sd">        ## Inputs:</span>
+<span class="sd">        - message (batch_size, K, feat_dim): input message features</span>
+<span class="sd">        - adjacency_matrix (batch_size, K, K): learned adjacency matrix</span>
+<span class="sd">        - neighbourhood_size (int)</span>
+<span class="sd">        - weight (bool): specify if the features should be weighted by the adjacency matrix values</span>
+
+<span class="sd">        ## Returns:</span>
+<span class="sd">        - sum_messages (batch_size, K, neighbourhood_size, feat_dim)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Number of graph nodes</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># pdb.set_trace()</span>
+
+        <span class="c1"># extract top k neighbours for each node and normalise</span>
+        <span class="n">top_k</span><span class="p">,</span> <span class="n">top_ind</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="n">belief_matrix</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">neighbourhood_size</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">sorted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">top_k</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">top_k</span><span class="p">[:,</span> <span class="n">k</span><span class="p">])</span>
+                             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">)])</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># (batch_size, K, neighbourhood_size)</span>
+
+        <span class="c1"># extract top k features</span>
+        <span class="n">neighbourhood_mes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_neighbourhood_mes</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">top_ind</span><span class="p">)</span>
+
+        <span class="n">sum_mes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">top_k</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">neighbourhood_mes</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">sum_mes</span></div>
+
+
+<div class="viewcode-block" id="FCNet"><a class="viewcode-back" href="../../../../sources/mixk.models.backbones.html#mixk.models.backbones.cagraph_backbone.FCNet">[docs]</a><span class="k">class</span> <span class="nc">FCNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simple class for non-linear fully connect network.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dims</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FCNet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="n">layers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">in_dim</span> <span class="o">=</span> <span class="n">dims</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">out_dim</span> <span class="o">=</span> <span class="n">dims</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">dropout</span><span class="p">:</span>
+                <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout</span><span class="p">))</span>
+            <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">weight_norm</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+            <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">())</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">dropout</span><span class="p">:</span>
+            <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout</span><span class="p">))</span>
+        <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">weight_norm</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dim</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+        <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">main</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FCNet.forward"><a class="viewcode-back" href="../../../../sources/mixk.models.backbones.html#mixk.models.backbones.cagraph_backbone.FCNet.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

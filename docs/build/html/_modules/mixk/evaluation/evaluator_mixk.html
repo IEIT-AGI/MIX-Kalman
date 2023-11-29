@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mixk.evaluation.evaluator_mixk &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>mixk.evaluation.evaluator_mixk</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mixk.evaluation.evaluator_mixk</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pickle</span> <span class="k">as</span> <span class="nn">pkl</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">distributed_info</span> <span class="k">as</span> <span class="n">comm</span>
+<span class="kn">from</span> <span class="nn">..utils.registry</span> <span class="kn">import</span> <span class="n">Registry</span><span class="p">,</span> <span class="n">build_from_cfg</span>
+
+<span class="n">METRICS</span> <span class="o">=</span> <span class="n">Registry</span><span class="p">(</span><span class="s1">&#39;metric&#39;</span><span class="p">)</span>
+<span class="n">DATASET_CONVERTER</span> <span class="o">=</span> <span class="n">Registry</span><span class="p">(</span><span class="s1">&#39;DatasetConverter&#39;</span><span class="p">)</span>
+<span class="n">POST_PROCESSOR</span> <span class="o">=</span> <span class="n">Registry</span><span class="p">(</span><span class="s1">&#39;PostProcessor&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="build"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.build">[docs]</a><span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">registry</span><span class="p">,</span> <span class="n">default_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Build a object.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cfg (dict, list[dict]): The config of modules, is is either a dict</span>
+<span class="sd">            or a list of configs.</span>
+<span class="sd">        registry (:obj:`Registry`): A registry the module belongs to.</span>
+<span class="sd">        default_args (dict, optional): Default arguments to build the module.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        obj</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">objs</span> <span class="o">=</span> <span class="p">[</span><span class="n">build_from_cfg</span><span class="p">(</span><span class="n">_cfg</span><span class="p">,</span> <span class="n">registry</span><span class="p">,</span> <span class="n">default_args</span><span class="p">)</span> <span class="k">for</span> <span class="n">_cfg</span> <span class="ow">in</span> <span class="n">cfg</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">objs</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">Dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">build_from_cfg</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">registry</span><span class="p">,</span> <span class="n">default_args</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span></div>
+
+
+<div class="viewcode-block" id="get_predictions_and_labels"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.get_predictions_and_labels">[docs]</a><span class="k">def</span> <span class="nf">get_predictions_and_labels</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">distributed</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predictions</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_labels&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_labels&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">def</span> <span class="nf">get_all_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+                <span class="n">data_list</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dst_rank</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">all_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">data_list</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">all_data</span>
+
+            <span class="n">comm</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+            <span class="n">predictions</span> <span class="o">=</span> <span class="n">get_all_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_predictions</span><span class="p">)</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">get_all_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_labels&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">comm</span><span class="o">.</span><span class="n">is_main_process</span><span class="p">():</span>
+                <span class="k">return</span> <span class="p">{}</span>
+
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;predictions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predictions</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span></div>
+
+
+<div class="viewcode-block" id="PostProcessor"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.PostProcessor">[docs]</a><span class="k">class</span> <span class="nc">PostProcessor</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distributed</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="PostProcessor.reset"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.PostProcessor.reset">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="PostProcessor.convert"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.PostProcessor.convert">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_data</span><span class="p">,</span> <span class="n">model_outputs</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="PostProcessor.process"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.PostProcessor.process">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="nd">@get_predictions_and_labels</span>
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="PostProcessor.list_to_tensor"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.PostProcessor.list_to_tensor">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">list_to_tensor</span><span class="p">(</span><span class="n">list_data</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">:</span>
+        <span class="c1"># tensor_size = (len(list_data), list_data[0].shape[1])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">list_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">list_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">list_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">tensor_data</span> <span class="o">=</span> <span class="n">list_data</span>
+                <span class="k">return</span> <span class="n">tensor_data</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">tensor_size</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">list_data</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">tensor_size</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">list_data</span><span class="p">),</span> <span class="n">list_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tensor_size</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">list_data</span><span class="p">),</span> <span class="n">list_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">tensor_dtype</span> <span class="o">=</span> <span class="n">list_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
+            <span class="n">tensor_data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">tensor_size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tensor_dtype</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_data</span><span class="p">):</span>
+                <span class="n">tensor_data</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tensor_data</span> <span class="o">=</span> <span class="n">list_data</span>
+
+        <span class="k">return</span> <span class="n">tensor_data</span></div></div>
+
+
+<div class="viewcode-block" id="Evaluator"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.Evaluator">[docs]</a><span class="nd">@POST_PROCESSOR</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">Evaluator</span><span class="p">(</span><span class="n">PostProcessor</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">dataset_converters</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metrics</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_metrics</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_converters</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_dataset_converters</span><span class="p">(</span>
+            <span class="n">dataset_converters</span><span class="o">=</span><span class="n">dataset_converters</span><span class="p">,</span> <span class="n">default_args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;post_process_type&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_predictions</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="Evaluator.reset"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.Evaluator.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_predictions</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="Evaluator.build_metrics"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.Evaluator.build_metrics">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">build_metrics</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">metrics</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">build</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="n">METRICS</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Evaluator.build_dataset_converters"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.Evaluator.build_dataset_converters">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">build_dataset_converters</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dataset_converters</span><span class="p">,</span> <span class="n">default_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]):</span>
+        <span class="n">dataset_converters</span> <span class="o">=</span> <span class="n">dataset_converters</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset_converters</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">dataset_converters</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">build</span><span class="p">(</span><span class="n">dataset_converters</span><span class="p">,</span> <span class="n">DATASET_CONVERTER</span><span class="p">,</span> <span class="n">default_args</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Evaluator.convert"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.Evaluator.convert">[docs]</a>    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_data</span><span class="p">,</span> <span class="n">model_outputs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">dataset_obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_converters</span><span class="p">:</span>
+            <span class="n">model_outputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">dataset_obj</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">batch_data</span><span class="p">,</span> <span class="n">model_outputs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_predictions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">model_outputs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Evaluator.process"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.Evaluator.process">[docs]</a>    <span class="nd">@get_predictions_and_labels</span>
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;predictions&#39;</span><span class="p">],</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_to_tensor</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_to_tensor</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+
+        <span class="n">eval_results</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">metric_obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metrics</span><span class="p">:</span>
+            <span class="n">eval_results</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">metric_obj</span><span class="p">)]</span> <span class="o">=</span> <span class="n">metric_obj</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_eval_results</span><span class="p">(</span><span class="n">eval_results</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">eval_results</span></div>
+
+<div class="viewcode-block" id="Evaluator.print_eval_results"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.Evaluator.print_eval_results">[docs]</a>    <span class="k">def</span> <span class="nf">print_eval_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eval_results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">metric_value</span> <span class="ow">in</span> <span class="n">eval_results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">:    --&gt;    </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric_name</span><span class="p">,</span> <span class="n">metric_value</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;evaluator&#39;</span></div>
+
+
+<div class="viewcode-block" id="Submitter"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.Submitter">[docs]</a><span class="nd">@POST_PROCESSOR</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">Submitter</span><span class="p">(</span><span class="n">PostProcessor</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">dataset_converters</span><span class="p">,</span>
+                 <span class="o">*</span><span class="p">,</span>
+                 <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;submit_result.json&#39;</span><span class="p">,</span>
+                 <span class="n">post_process_type</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_predictions</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span> <span class="o">=</span> <span class="n">file_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">output_dir</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">output_dir</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_output_dir</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_output_dir</span><span class="p">)</span>
+        <span class="n">post_process_type</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;post_process_type&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)}</span> <span class="k">if</span> <span class="n">post_process_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">post_process_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_output_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_converters</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">Evaluator</span><span class="o">.</span><span class="n">build_dataset_converters</span><span class="p">(</span>
+            <span class="n">dataset_converters</span><span class="o">=</span><span class="n">dataset_converters</span><span class="p">,</span> <span class="n">default_args</span><span class="o">=</span><span class="n">post_process_type</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Submitter.reset"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.Submitter.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_predictions</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="Submitter.convert"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.Submitter.convert">[docs]</a>    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_data</span><span class="p">,</span> <span class="n">model_outputs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">dataset_obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_converters</span><span class="p">:</span>
+            <span class="n">section_predictions</span> <span class="o">=</span> <span class="n">dataset_obj</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">batch_data</span><span class="p">,</span> <span class="n">model_outputs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_predictions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">section_predictions</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Submitter.process"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.Submitter.process">[docs]</a>    <span class="nd">@get_predictions_and_labels</span>
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;predictions&#39;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;predictions are empty!&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_file_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;The submit file has been saved to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_file_name</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;submitter&#39;</span></div>
+
+
+<div class="viewcode-block" id="Predictor"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.Predictor">[docs]</a><span class="nd">@POST_PROCESSOR</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">Predictor</span><span class="p">(</span><span class="n">Submitter</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_converters</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;predict_result.pkl&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">dataset_converters</span><span class="o">=</span><span class="n">dataset_converters</span><span class="p">,</span>
+            <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
+            <span class="n">file_name</span><span class="o">=</span><span class="n">file_name</span><span class="p">,</span>
+            <span class="n">post_process_type</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;post_process_type&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)})</span>
+
+<div class="viewcode-block" id="Predictor.process"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.Predictor.process">[docs]</a>    <span class="nd">@get_predictions_and_labels</span>
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;predictions&#39;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;predictions are empty!&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_file_name</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">pkl</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;The prediction file has been saved to path </span><span class="si">{}</span><span class="s1">:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_file_name</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;predictor&#39;</span></div>
+
+
+<div class="viewcode-block" id="build_post_processor"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.build_post_processor">[docs]</a><span class="k">def</span> <span class="nf">build_post_processor</span><span class="p">(</span><span class="n">cfg</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">build</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">POST_PROCESSOR</span><span class="p">,</span> <span class="n">default_args</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="inference_on_dataset"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.inference_on_dataset">[docs]</a><span class="k">def</span> <span class="nf">inference_on_dataset</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">data_loader</span><span class="p">):</span>
+    <span class="n">post_processor</span> <span class="o">=</span> <span class="n">build_post_processor</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">post_processor</span><span class="p">)</span>
+    <span class="n">post_processor</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Starting inference on </span><span class="si">{}</span><span class="s1"> batch images&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_loader</span><span class="p">)))</span>
+    <span class="k">with</span> <span class="n">to_inference</span><span class="p">(</span><span class="n">model</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">batch_data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_loader</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> running idx: </span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">post_processor</span><span class="p">),</span> <span class="n">idx</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_loader</span><span class="p">)))</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">batch_data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+            <span class="n">post_processor</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">batch_data</span><span class="o">=</span><span class="n">batch_data</span><span class="p">,</span> <span class="n">model_outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="n">post_processor</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">results</span> <span class="k">if</span> <span class="n">results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span></div>
+
+
+<div class="viewcode-block" id="to_inference"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.evaluator_mixk.to_inference">[docs]</a><span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">to_inference</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="n">old_mode</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">training</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="k">yield</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">old_mode</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

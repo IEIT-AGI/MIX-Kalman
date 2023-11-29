@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mixk.evaluation package &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mixk.models package" href="mixk.models.html" />
+    <link rel="prev" title="mixk.engine.hooks.periods package" href="mixk.engine.hooks.periods.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="mixk.html">mixk package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="mixk.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mixk.data.html">mixk.data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.engine.html">mixk.engine package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">mixk.evaluation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.evaluation.dataset_evaluator">mixk.evaluation.dataset_evaluator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.evaluation.evaluator_mixk">mixk.evaluation.evaluator_mixk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.evaluation.metric">mixk.evaluation.metric module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mixk.evaluation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.models.html">mixk.models package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.solver.html">mixk.solver package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.utils.html">mixk.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.html#module-mixk.version">mixk.version module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.html#module-mixk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="mixk.html">mixk package</a> &raquo;</li>
+      <li>mixk.evaluation package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/sources/mixk.evaluation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mixk-evaluation-package">
+<h1>mixk.evaluation package<a class="headerlink" href="#mixk-evaluation-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-mixk.evaluation.dataset_evaluator">
+<span id="mixk-evaluation-dataset-evaluator-module"></span><h2>mixk.evaluation.dataset_evaluator module<a class="headerlink" href="#module-mixk.evaluation.dataset_evaluator" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.BaseDatasetConverter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.dataset_evaluator.</span></span><span class="sig-name descname"><span class="pre">BaseDatasetConverter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">post_process_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#BaseDatasetConverter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.BaseDatasetConverter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.BaseDatasetConverter.CONVERTER_TO_FUNC">
+<span class="sig-name descname"><span class="pre">CONVERTER_TO_FUNC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'evaluator':</span> <span class="pre">'evaluation',</span> <span class="pre">'predictor':</span> <span class="pre">'predict',</span> <span class="pre">'submitter':</span> <span class="pre">'submit'}</span></em><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.BaseDatasetConverter.CONVERTER_TO_FUNC" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.BaseDatasetConverter.convert">
+<span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#BaseDatasetConverter.convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.BaseDatasetConverter.convert" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.BaseDatasetConverter.data_pre_process">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_pre_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#BaseDatasetConverter.data_pre_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.BaseDatasetConverter.data_pre_process" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.BaseDatasetConverter.evaluation">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaluation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#BaseDatasetConverter.evaluation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.BaseDatasetConverter.evaluation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.BaseDatasetConverter.list_to_tensor">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_to_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tensor</span></span></span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#BaseDatasetConverter.list_to_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.BaseDatasetConverter.list_to_tensor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.BaseDatasetConverter.logger">
+<span class="sig-name descname"><span class="pre">logger</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Logger</span> <span class="pre">mixk.evaluation.dataset_evaluator</span> <span class="pre">(WARNING)&gt;</span></em><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.BaseDatasetConverter.logger" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.BaseDatasetConverter.post_process_type">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">post_process_type</span></span><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.BaseDatasetConverter.post_process_type" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.BaseDatasetConverter.predict">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#BaseDatasetConverter.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.BaseDatasetConverter.predict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.BaseDatasetConverter.submit">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#BaseDatasetConverter.submit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.BaseDatasetConverter.submit" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.CaptionBleu4Converter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.dataset_evaluator.</span></span><span class="sig-name descname"><span class="pre">CaptionBleu4Converter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">post_process_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#CaptionBleu4Converter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.CaptionBleu4Converter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.dataset_evaluator.BaseDatasetConverter" title="mixk.evaluation.dataset_evaluator.BaseDatasetConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatasetConverter</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.CaptionBleu4Converter.evaluation">
+<span class="sig-name descname"><span class="pre">evaluation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#CaptionBleu4Converter.evaluation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.CaptionBleu4Converter.evaluation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.CaptionBleu4Converter.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#CaptionBleu4Converter.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.CaptionBleu4Converter.predict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.CaptionBleu4Converter.submit">
+<span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#CaptionBleu4Converter.submit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.CaptionBleu4Converter.submit" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.TextVQADatasetConvert">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.dataset_evaluator.</span></span><span class="sig-name descname"><span class="pre">TextVQADatasetConvert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">post_process_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vocab</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#TextVQADatasetConvert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.TextVQADatasetConvert" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.dataset_evaluator.BaseDatasetConverter" title="mixk.evaluation.dataset_evaluator.BaseDatasetConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatasetConverter</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.TextVQADatasetConvert.data_pre_process">
+<span class="sig-name descname"><span class="pre">data_pre_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#TextVQADatasetConvert.data_pre_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.TextVQADatasetConvert.data_pre_process" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.TextVQADatasetConvert.evaluation">
+<span class="sig-name descname"><span class="pre">evaluation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#TextVQADatasetConvert.evaluation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.TextVQADatasetConvert.evaluation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.TextVQADatasetConvert.init_text_vqa_info_cpler">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">init_text_vqa_info_cpler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vocab</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#TextVQADatasetConvert.init_text_vqa_info_cpler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.TextVQADatasetConvert.init_text_vqa_info_cpler" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.TextVQADatasetConvert.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#TextVQADatasetConvert.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.TextVQADatasetConvert.predict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.TextVQADatasetConvert.submit">
+<span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#TextVQADatasetConvert.submit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.TextVQADatasetConvert.submit" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.VCRDatasetConverter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.dataset_evaluator.</span></span><span class="sig-name descname"><span class="pre">VCRDatasetConverter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">post_process_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#VCRDatasetConverter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.VCRDatasetConverter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.dataset_evaluator.BaseDatasetConverter" title="mixk.evaluation.dataset_evaluator.BaseDatasetConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatasetConverter</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.VCRDatasetConverter.data_pre_process">
+<span class="sig-name descname"><span class="pre">data_pre_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#VCRDatasetConverter.data_pre_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.VCRDatasetConverter.data_pre_process" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.VCRDatasetConverter.evaluation">
+<span class="sig-name descname"><span class="pre">evaluation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#VCRDatasetConverter.evaluation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.VCRDatasetConverter.evaluation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.VCRDatasetConverter.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#VCRDatasetConverter.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.VCRDatasetConverter.predict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.VCRDatasetConverter.submit">
+<span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#VCRDatasetConverter.submit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.VCRDatasetConverter.submit" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.VQADatasetConverter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.dataset_evaluator.</span></span><span class="sig-name descname"><span class="pre">VQADatasetConverter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">post_process_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#VQADatasetConverter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.VQADatasetConverter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.dataset_evaluator.BaseDatasetConverter" title="mixk.evaluation.dataset_evaluator.BaseDatasetConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatasetConverter</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.VQADatasetConverter.data_pre_process">
+<span class="sig-name descname"><span class="pre">data_pre_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#VQADatasetConverter.data_pre_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.VQADatasetConverter.data_pre_process" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.VQADatasetConverter.evaluation">
+<span class="sig-name descname"><span class="pre">evaluation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#VQADatasetConverter.evaluation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.VQADatasetConverter.evaluation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.VQADatasetConverter.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#VQADatasetConverter.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.VQADatasetConverter.predict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.VQADatasetConverter.submit">
+<span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#VQADatasetConverter.submit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.VQADatasetConverter.submit" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.VisDialDatasetConverter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.dataset_evaluator.</span></span><span class="sig-name descname"><span class="pre">VisDialDatasetConverter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">post_process_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#VisDialDatasetConverter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.VisDialDatasetConverter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.dataset_evaluator.BaseDatasetConverter" title="mixk.evaluation.dataset_evaluator.BaseDatasetConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatasetConverter</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.VisDialDatasetConverter.data_pre_process">
+<span class="sig-name descname"><span class="pre">data_pre_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#VisDialDatasetConverter.data_pre_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.VisDialDatasetConverter.data_pre_process" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.VisDialDatasetConverter.evaluation">
+<span class="sig-name descname"><span class="pre">evaluation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#VisDialDatasetConverter.evaluation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.VisDialDatasetConverter.evaluation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.VisDialDatasetConverter.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#VisDialDatasetConverter.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.VisDialDatasetConverter.predict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.dataset_evaluator.VisDialDatasetConverter.submit">
+<span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/dataset_evaluator.html#VisDialDatasetConverter.submit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.dataset_evaluator.VisDialDatasetConverter.submit" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mixk.evaluation.evaluator_mixk">
+<span id="mixk-evaluation-evaluator-mixk-module"></span><h2>mixk.evaluation.evaluator_mixk module<a class="headerlink" href="#module-mixk.evaluation.evaluator_mixk" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.Evaluator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.evaluator_mixk.</span></span><span class="sig-name descname"><span class="pre">Evaluator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_converters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#Evaluator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.Evaluator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.evaluator_mixk.PostProcessor" title="mixk.evaluation.evaluator_mixk.PostProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">PostProcessor</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.Evaluator.build_dataset_converters">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_dataset_converters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_converters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#Evaluator.build_dataset_converters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.Evaluator.build_dataset_converters" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.Evaluator.build_metrics">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#Evaluator.build_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.Evaluator.build_metrics" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.Evaluator.convert">
+<span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#Evaluator.convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.Evaluator.convert" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.Evaluator.print_eval_results">
+<span class="sig-name descname"><span class="pre">print_eval_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eval_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#Evaluator.print_eval_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.Evaluator.print_eval_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.Evaluator.process">
+<span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#Evaluator.process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.Evaluator.process" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.Evaluator.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#Evaluator.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.Evaluator.reset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.PostProcessor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.evaluator_mixk.</span></span><span class="sig-name descname"><span class="pre">PostProcessor</span></span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#PostProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.PostProcessor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.PostProcessor.convert">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#PostProcessor.convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.PostProcessor.convert" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.PostProcessor.list_to_tensor">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_to_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tensor</span></span></span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#PostProcessor.list_to_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.PostProcessor.list_to_tensor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.PostProcessor.process">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#PostProcessor.process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.PostProcessor.process" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.PostProcessor.reset">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#PostProcessor.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.PostProcessor.reset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.Predictor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.evaluator_mixk.</span></span><span class="sig-name descname"><span class="pre">Predictor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_converters</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'predict_result.pkl'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#Predictor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.Predictor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.evaluator_mixk.Submitter" title="mixk.evaluation.evaluator_mixk.Submitter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Submitter</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.Predictor.process">
+<span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#Predictor.process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.Predictor.process" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.Submitter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.evaluator_mixk.</span></span><span class="sig-name descname"><span class="pre">Submitter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_converters</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'submit_result.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">post_process_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#Submitter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.Submitter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.evaluator_mixk.PostProcessor" title="mixk.evaluation.evaluator_mixk.PostProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">PostProcessor</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.Submitter.convert">
+<span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#Submitter.convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.Submitter.convert" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.Submitter.process">
+<span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#Submitter.process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.Submitter.process" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.Submitter.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#Submitter.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.Submitter.reset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.build">
+<span class="sig-prename descclassname"><span class="pre">mixk.evaluation.evaluator_mixk.</span></span><span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">registry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.build" title="Permalink to this definition"></a></dt>
+<dd><p>Build a object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cfg</strong> (<em>dict</em><em>, </em><em>list</em><em>[</em><em>dict</em><em>]</em>) – The config of modules, is is either a dict
+or a list of configs.</p></li>
+<li><p><strong>registry</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">Registry</span></code>) – A registry the module belongs to.</p></li>
+<li><p><strong>default_args</strong> (<em>dict</em><em>, </em><em>optional</em>) – Default arguments to build the module.
+Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>obj</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.build_post_processor">
+<span class="sig-prename descclassname"><span class="pre">mixk.evaluation.evaluator_mixk.</span></span><span class="sig-name descname"><span class="pre">build_post_processor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#build_post_processor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.build_post_processor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.get_predictions_and_labels">
+<span class="sig-prename descclassname"><span class="pre">mixk.evaluation.evaluator_mixk.</span></span><span class="sig-name descname"><span class="pre">get_predictions_and_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#get_predictions_and_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.get_predictions_and_labels" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.inference_on_dataset">
+<span class="sig-prename descclassname"><span class="pre">mixk.evaluation.evaluator_mixk.</span></span><span class="sig-name descname"><span class="pre">inference_on_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_loader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#inference_on_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.inference_on_dataset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.evaluation.evaluator_mixk.to_inference">
+<span class="sig-prename descclassname"><span class="pre">mixk.evaluation.evaluator_mixk.</span></span><span class="sig-name descname"><span class="pre">to_inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#to_inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.evaluator_mixk.to_inference" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-mixk.evaluation.metric">
+<span id="mixk-evaluation-metric-module"></span><h2>mixk.evaluation.metric module<a class="headerlink" href="#module-mixk.evaluation.metric" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.AccuracyMetric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">AccuracyMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#AccuracyMetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.AccuracyMetric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.BaseMetric" title="mixk.evaluation.metric.BaseMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMetric</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.AccuracyMetric.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#AccuracyMetric.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.AccuracyMetric.calculate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.AccuracyMetric.data_pre_process">
+<span class="sig-name descname"><span class="pre">data_pre_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#AccuracyMetric.data_pre_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.AccuracyMetric.data_pre_process" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.AccuracyMetric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'accuracy_metric'</span></em><a class="headerlink" href="#mixk.evaluation.metric.AccuracyMetric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.BaseMetric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">BaseMetric</span></span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#BaseMetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.BaseMetric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.BaseMetric.calculate">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#BaseMetric.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.BaseMetric.calculate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.BaseMetric.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#BaseMetric.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.BaseMetric.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.BaseMetric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'base_metric'</span></em><a class="headerlink" href="#mixk.evaluation.metric.BaseMetric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.CaptionBleu4Metric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">CaptionBleu4Metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#CaptionBleu4Metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.CaptionBleu4Metric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.BaseMetric" title="mixk.evaluation.metric.BaseMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMetric</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.CaptionBleu4Metric.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">references</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hypotheses</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#CaptionBleu4Metric.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.CaptionBleu4Metric.calculate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.CaptionBleu4Metric.data_pre_process">
+<span class="sig-name descname"><span class="pre">data_pre_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#CaptionBleu4Metric.data_pre_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.CaptionBleu4Metric.data_pre_process" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.CaptionBleu4Metric.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#CaptionBleu4Metric.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.CaptionBleu4Metric.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.CaptionBleu4Metric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'caption_bleu4_metric'</span></em><a class="headerlink" href="#mixk.evaluation.metric.CaptionBleu4Metric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.F1Metric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">F1Metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#F1Metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.F1Metric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.BaseMetric" title="mixk.evaluation.metric.BaseMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMetric</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.F1Metric.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#F1Metric.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.F1Metric.calculate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.F1Metric.data_pre_process">
+<span class="sig-name descname"><span class="pre">data_pre_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#F1Metric.data_pre_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.F1Metric.data_pre_process" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.F1Metric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'f1_metric'</span></em><a class="headerlink" href="#mixk.evaluation.metric.F1Metric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.MacroF1Metric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">MacroF1Metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#MacroF1Metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.MacroF1Metric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.F1Metric" title="mixk.evaluation.metric.F1Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">F1Metric</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.MacroF1Metric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'macro_f1_metric'</span></em><a class="headerlink" href="#mixk.evaluation.metric.MacroF1Metric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.MeanRankMetric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">MeanRankMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#MeanRankMetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.MeanRankMetric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.RecallAtK" title="mixk.evaluation.metric.RecallAtK"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecallAtK</span></code></a></p>
+<p>Calculate MeanRank which specifies what was the average rank of the
+chosen candidate.</p>
+<p><strong>Key</strong>: <code class="docutils literal notranslate"><span class="pre">mean_rank</span></code>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.MeanRankMetric.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#MeanRankMetric.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.MeanRankMetric.calculate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.MeanRankMetric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'mean_rank'</span></em><a class="headerlink" href="#mixk.evaluation.metric.MeanRankMetric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.MeanReciprocalRankMetric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">MeanReciprocalRankMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#MeanReciprocalRankMetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.MeanReciprocalRankMetric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.RecallAtK" title="mixk.evaluation.metric.RecallAtK"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecallAtK</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.MeanReciprocalRankMetric.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#MeanReciprocalRankMetric.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.MeanReciprocalRankMetric.calculate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.MeanReciprocalRankMetric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'mean_reciprocal_rank'</span></em><a class="headerlink" href="#mixk.evaluation.metric.MeanReciprocalRankMetric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.OCRVQAAccuracyMetric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">OCRVQAAccuracyMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#OCRVQAAccuracyMetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.OCRVQAAccuracyMetric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.STVQAAccuracyMetric" title="mixk.evaluation.metric.STVQAAccuracyMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">STVQAAccuracyMetric</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.OCRVQAAccuracyMetric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ocrvqa_accuracy_metric'</span></em><a class="headerlink" href="#mixk.evaluation.metric.OCRVQAAccuracyMetric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.RecallAt1">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">RecallAt1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#RecallAt1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.RecallAt1" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.RecallAtK" title="mixk.evaluation.metric.RecallAtK"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecallAtK</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.RecallAt1.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'r&#64;1'</span></em><a class="headerlink" href="#mixk.evaluation.metric.RecallAt1.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.RecallAt10">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">RecallAt10</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#RecallAt10"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.RecallAt10" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.RecallAtK" title="mixk.evaluation.metric.RecallAtK"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecallAtK</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.RecallAt10.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'r&#64;10'</span></em><a class="headerlink" href="#mixk.evaluation.metric.RecallAt10.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.RecallAt5">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">RecallAt5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#RecallAt5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.RecallAt5" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.RecallAtK" title="mixk.evaluation.metric.RecallAtK"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecallAtK</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.RecallAt5.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'r&#64;5'</span></em><a class="headerlink" href="#mixk.evaluation.metric.RecallAt5.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.RecallAtK">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">RecallAtK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#RecallAtK"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.RecallAtK" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.BaseMetric" title="mixk.evaluation.metric.BaseMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMetric</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.RecallAtK.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#RecallAtK.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.RecallAtK.calculate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.RecallAtK.data_pre_process">
+<span class="sig-name descname"><span class="pre">data_pre_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#RecallAtK.data_pre_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.RecallAtK.data_pre_process" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.RecallAtK.get_gt_ranks">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_gt_ranks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ranks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ans_ind</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#RecallAtK.get_gt_ranks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.RecallAtK.get_gt_ranks" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.RecallAtK.get_ranks">
+<span class="sig-name descname"><span class="pre">get_ranks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#RecallAtK.get_ranks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.RecallAtK.get_ranks" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.RecallAtK.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'recall&#64;k'</span></em><a class="headerlink" href="#mixk.evaluation.metric.RecallAtK.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.RecallAtK.score_to_ranks">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">score_to_ranks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#RecallAtK.score_to_ranks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.RecallAtK.score_to_ranks" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.RecallAtK.top_k">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">top_k</span></span><a class="headerlink" href="#mixk.evaluation.metric.RecallAtK.top_k" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.STVQAAccuracyMetric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">STVQAAccuracyMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#STVQAAccuracyMetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.STVQAAccuracyMetric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.TextVQAAccuracyMetric" title="mixk.evaluation.metric.TextVQAAccuracyMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextVQAAccuracyMetric</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.STVQAAccuracyMetric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'stvqa_accuracy_metric'</span></em><a class="headerlink" href="#mixk.evaluation.metric.STVQAAccuracyMetric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.STVQA_ANLS_Metric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">STVQA_ANLS_Metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#STVQA_ANLS_Metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.STVQA_ANLS_Metric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.TextVQAAccuracyMetric" title="mixk.evaluation.metric.TextVQAAccuracyMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextVQAAccuracyMetric</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.STVQA_ANLS_Metric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'stvqa_anls_metric'</span></em><a class="headerlink" href="#mixk.evaluation.metric.STVQA_ANLS_Metric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.TextCapsBleu4Metric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">TextCapsBleu4Metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#TextCapsBleu4Metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.TextCapsBleu4Metric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.TextVQAAccuracyMetric" title="mixk.evaluation.metric.TextVQAAccuracyMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextVQAAccuracyMetric</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.TextCapsBleu4Metric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'textcaps_bleu4_metric'</span></em><a class="headerlink" href="#mixk.evaluation.metric.TextCapsBleu4Metric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.TextVQAAccuracyMetric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">TextVQAAccuracyMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#TextVQAAccuracyMetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.TextVQAAccuracyMetric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.BaseMetric" title="mixk.evaluation.metric.BaseMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMetric</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.TextVQAAccuracyMetric.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#TextVQAAccuracyMetric.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.TextVQAAccuracyMetric.calculate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.TextVQAAccuracyMetric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'text_vqa_accuracy_metric'</span></em><a class="headerlink" href="#mixk.evaluation.metric.TextVQAAccuracyMetric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.VCRAccuracyMetric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">VCRAccuracyMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#VCRAccuracyMetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.VCRAccuracyMetric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.BaseMetric" title="mixk.evaluation.metric.BaseMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMetric</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.VCRAccuracyMetric.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#VCRAccuracyMetric.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.VCRAccuracyMetric.calculate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.VCRAccuracyMetric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'vcr_accuracy_metric'</span></em><a class="headerlink" href="#mixk.evaluation.metric.VCRAccuracyMetric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.VQAAccuracyMetric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">VQAAccuracyMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#VQAAccuracyMetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.VQAAccuracyMetric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.BaseMetric" title="mixk.evaluation.metric.BaseMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMetric</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.VQAAccuracyMetric.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#VQAAccuracyMetric.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.VQAAccuracyMetric.calculate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.VQAAccuracyMetric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'vqa_accuracy_metric'</span></em><a class="headerlink" href="#mixk.evaluation.metric.VQAAccuracyMetric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.VQAEvalAIAccuracyMetric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">VQAEvalAIAccuracyMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#VQAEvalAIAccuracyMetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.VQAEvalAIAccuracyMetric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.BaseMetric" title="mixk.evaluation.metric.BaseMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMetric</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.VQAEvalAIAccuracyMetric.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#VQAEvalAIAccuracyMetric.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.VQAEvalAIAccuracyMetric.calculate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.VQAEvalAIAccuracyMetric.data_pre_process">
+<span class="sig-name descname"><span class="pre">data_pre_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#VQAEvalAIAccuracyMetric.data_pre_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.VQAEvalAIAccuracyMetric.data_pre_process" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.VQAEvalAIAccuracyMetric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'vqa_eval_ai_accuracy_metric'</span></em><a class="headerlink" href="#mixk.evaluation.metric.VQAEvalAIAccuracyMetric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.VisDialMetric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.metric.</span></span><span class="sig-name descname"><span class="pre">VisDialMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#VisDialMetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.VisDialMetric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.BaseMetric" title="mixk.evaluation.metric.BaseMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMetric</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.VisDialMetric.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#VisDialMetric.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.metric.VisDialMetric.calculate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.metric.VisDialMetric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'visual_dialog_metric'</span></em><a class="headerlink" href="#mixk.evaluation.metric.VisDialMetric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mixk.evaluation">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mixk.evaluation" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.BaseMetric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.</span></span><span class="sig-name descname"><span class="pre">BaseMetric</span></span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#BaseMetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.BaseMetric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.BaseMetric.calculate">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#BaseMetric.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.BaseMetric.calculate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.BaseMetric.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#BaseMetric.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.BaseMetric.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.BaseMetric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'base_metric'</span></em><a class="headerlink" href="#mixk.evaluation.BaseMetric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.evaluation.VQAAccuracyMetric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.evaluation.</span></span><span class="sig-name descname"><span class="pre">VQAAccuracyMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#VQAAccuracyMetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.VQAAccuracyMetric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.evaluation.metric.BaseMetric" title="mixk.evaluation.metric.BaseMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMetric</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.evaluation.VQAAccuracyMetric.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/metric.html#VQAAccuracyMetric.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.VQAAccuracyMetric.calculate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.evaluation.VQAAccuracyMetric.metric_name">
+<span class="sig-name descname"><span class="pre">metric_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'vqa_accuracy_metric'</span></em><a class="headerlink" href="#mixk.evaluation.VQAAccuracyMetric.metric_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.evaluation.inference_on_dataset">
+<span class="sig-prename descclassname"><span class="pre">mixk.evaluation.</span></span><span class="sig-name descname"><span class="pre">inference_on_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_loader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/evaluation/evaluator_mixk.html#inference_on_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.evaluation.inference_on_dataset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mixk.engine.hooks.periods.html" class="btn btn-neutral float-left" title="mixk.engine.hooks.periods package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mixk.models.html" class="btn btn-neutral float-right" title="mixk.models package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

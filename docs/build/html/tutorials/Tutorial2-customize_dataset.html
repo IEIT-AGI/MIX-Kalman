@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial 2: Customize Datasets &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorial 3: Customize Models" href="Tutorial3-customize_models.html" />
+    <link rel="prev" title="Tutorial 1: Learn about Configs" href="Tutorial1-config.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial 2: Customize Datasets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#customize-dataset-in-source-code">Customize dataset in source code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#download-dataset-files">Download dataset files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prepare-the-dataset-config-file">Prepare the dataset config file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dataset-process-pipeline">Dataset process pipeline</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#customize-dataset-in-mix-kalman">Customize dataset in MIX-Kalman</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Download dataset files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Prepare the dataset config file</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#an-example-of-data-configuration">An example of data configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Dataset process pipeline</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#add-dataset-loader-py">add dataset_loader.py</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#add-dataset-reader-py">add dataset_reader.py</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#add-dataset-infocpler-py">add dataset_infocpler.py</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="tutorial.html">&lt;no title&gt;</a> &raquo;</li>
+      <li>Tutorial 2: Customize Datasets</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/Tutorial2-customize_dataset.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial-2-customize-datasets">
+<h1>Tutorial 2: Customize Datasets<a class="headerlink" href="#tutorial-2-customize-datasets" title="Permalink to this heading"></a></h1>
+<p>There are two choices when you customize dataset:</p>
+<ol class="simple">
+<li><p>use the dataset read and process module of the source code;</p></li>
+<li><p>use MIX-Kalman dataset read and process module.</p></li>
+</ol>
+<p>Next, we will introduce two cases in detail. There must be three steps in either case.</p>
+<ol class="simple">
+<li><p>Download dataset files;</p></li>
+<li><p>Prepare the dataset config file;</p></li>
+<li><p>Prepare dataset process pipeline.</p></li>
+</ol>
+<section id="customize-dataset-in-source-code">
+<h2>Customize dataset in source code<a class="headerlink" href="#customize-dataset-in-source-code" title="Permalink to this heading"></a></h2>
+<section id="download-dataset-files">
+<h3>Download dataset files<a class="headerlink" href="#download-dataset-files" title="Permalink to this heading"></a></h3>
+<p>Download the related data files of the source code.  Use LXMERT model and VQA task as an example, we download the <code class="docutils literal notranslate"><span class="pre">train.json</span></code>, <code class="docutils literal notranslate"><span class="pre">trainval_ans2label.json</span></code>, <code class="docutils literal notranslate"><span class="pre">train2014_obj36.tsv</span></code> and so on. And then we put all those files outside the project directory and symlink the dataset root to <code class="docutils literal notranslate"><span class="pre">MIX-Kalman/configs/_base_/datasets/lxmert/lxmert_vqa.py</span></code>.</p>
+<section id="prepare-the-dataset-config-file">
+<h4>Prepare the dataset config file<a class="headerlink" href="#prepare-the-dataset-config-file" title="Permalink to this heading"></a></h4>
+<p>Each dataset config file should include three basic elements: <code class="docutils literal notranslate"><span class="pre">train_data</span></code>, <code class="docutils literal notranslate"><span class="pre">test_data</span></code>, <code class="docutils literal notranslate"><span class="pre">post_processor</span></code>.</p>
+<p>The structure dataset configuration and the function of each part are as follows：</p>
+<p><img alt="data-config-structure" src="../_images/data-config-structure-1.png" /></p>
+<p>You should write the dataset configuration to the expected format above and save it in the <code class="docutils literal notranslate"><span class="pre">MIX-Kalman/configs/_base_/datasets/lxmert/lxmert_vqa.py</span></code>.</p>
+</section>
+<section id="dataset-process-pipeline">
+<h4>Dataset process pipeline<a class="headerlink" href="#dataset-process-pipeline" title="Permalink to this heading"></a></h4>
+<p>Use the source code data read and process module (i.e<code class="docutils literal notranslate"><span class="pre">mixk/models/vqa_models/lxmert/datasets/lxmert_vqa.py</span></code>).</p>
+<p>There are some key point you should do before using the functions of the class in source code:</p>
+<ul class="simple">
+<li><p>import the <code class="docutils literal notranslate"><span class="pre">DATASETS</span></code> register;</p></li>
+<li><p>decorate the dataset class by <code class="docutils literal notranslate"><span class="pre">&#64;DATASETS.register_module()</span></code> to register it;</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mixk.data.builder</span> <span class="kn">import</span> <span class="n">DATASETS</span>  <span class="c1"># import the DATASETS register</span>
+
+<span class="nd">@DATASETS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">VQATorchDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reader</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="o">...</span>
+        <span class="k">return</span> <span class="n">item</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>add your dataset type in the <code class="docutils literal notranslate"><span class="pre">mixk/data/_init_.py</span></code> before use it;</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">...</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;VQATorchDataset&#39;</span><span class="p">,</span>  <span class="c1"># add the dataset_type in the list</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="customize-dataset-in-mix-kalman">
+<h2>Customize dataset in MIX-Kalman<a class="headerlink" href="#customize-dataset-in-mix-kalman" title="Permalink to this heading"></a></h2>
+<section id="id1">
+<h3>Download dataset files<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p>In MIX-Kalman, we directly use the  extracted data files refer to the source code paper.</p>
+<p>Use VQA dataset as an example, we download the <code class="docutils literal notranslate"><span class="pre">trainval2014.lmdb</span></code>, <code class="docutils literal notranslate"><span class="pre">imdb_train2014.npy</span></code>, <code class="docutils literal notranslate"><span class="pre">imdb_minival2014.npy</span></code> and etc. And then we put all those files outside the project directory and symlink the dataset root to <code class="docutils literal notranslate"><span class="pre">MIX-Kalman/configs/_base_/datasets</span></code>.</p>
+</section>
+<section id="id2">
+<h3>Prepare the dataset config file<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<p>Each dataset config file should include three basic elements: <code class="docutils literal notranslate"><span class="pre">train_data</span></code>, <code class="docutils literal notranslate"><span class="pre">test_data</span></code>, <code class="docutils literal notranslate"><span class="pre">post_processor</span></code>.</p>
+<p>The structure of MIX-Kalman dataset configuration and the function of each part are as follows：</p>
+<p><img alt="data-config-structure" src="../_images/data-config-structure-0.png" /></p>
+<p><strong>Note</strong>: In MIX-Kalman, the<code class="docutils literal notranslate"><span class="pre">data_info_cpler_cfg</span></code> is used for data preprocessing.</p>
+<p>You should write the dataset configuration to the expected format above and save it in the <code class="docutils literal notranslate"><span class="pre">MIX-Kalman/configs/_base_/datasets/your_dataset.py</span></code>. The file path is as below:</p>
+<div class="highlight-plain notranslate"><div class="highlight"><pre><span></span>MIX-Kalman
+├── configs
+│   ├── _base_
+│   │   ├── datasets
+│   │   │   ├── vqa_dataset.py
+│   │   │   ├── your_dataset.py
+│   │   │   ├── ...
+</pre></div>
+</div>
+<section id="an-example-of-data-configuration">
+<h4>An example of data configuration<a class="headerlink" href="#an-example-of-data-configuration" title="Permalink to this heading"></a></h4>
+<p>To help the users have a basic idea of a complete dataset config, we make  brief comments on the VQA dataset config as the following.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># set dataset type for registry</span>
+<span class="n">dataset_type</span> <span class="o">=</span> <span class="s1">&#39;VQADATASET&#39;</span>
+<span class="c1"># set dataset path for root, feature, annotation, vocab, etc</span>
+<span class="n">data_root</span> <span class="o">=</span> <span class="s1">&#39;your_path&#39;</span>
+<span class="o">...</span>
+<span class="c1"># set dataset category, like ‘train’, ‘minival’, etc</span>
+<span class="n">train_datasets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span>
+<span class="o">...</span>
+<span class="c1"># set default parameter and train data path for vqa_reader.py</span>
+<span class="n">vqa_reader_train_cfg</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;VQAReader&#39;</span><span class="p">,</span>
+    <span class="n">card</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span>
+    <span class="n">mix_features</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">train</span><span class="o">=</span><span class="n">data_root</span> <span class="o">+</span> <span class="n">feature_default_path</span> <span class="o">+</span> <span class="s1">&#39;trainval2014.lmdb&#39;</span><span class="p">,</span>
+        <span class="o">...</span><span class="p">),</span>
+    <span class="o">...</span>
+    <span class="n">datasets</span><span class="o">=</span><span class="n">train_datasets</span><span class="p">,</span>
+    <span class="n">if_global</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1"># set default parameter and test data for vqa_reader.py</span>
+<span class="n">vqa_reader_test_cfg</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="c1"># set default parameter and test data for vqa_infocpler.py</span>
+<span class="n">vqa_info_cpler_cfg</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="c1"># set default config for train data</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">samples_per_gpu</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">workers_per_gpu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">sampler_name</span><span class="o">=</span><span class="s1">&#39;TrainingSampler&#39;</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">dataset_type</span><span class="p">,</span> <span class="n">reader</span><span class="o">=</span><span class="n">vqa_reader_train_cfg</span><span class="p">,</span> <span class="n">info_cpler</span><span class="o">=</span><span class="n">vqa_info_cpler_cfg</span><span class="p">,</span> <span class="n">limit_nums</span><span class="o">=</span><span class="mi">2000</span><span class="p">))</span>
+
+<span class="c1"># set default config for test data</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># eval_period set to 0 to disable</span>
+
+<span class="c1"># set default config for post_processor, like evaluation type, metrics, and dataset_converter type</span>
+<span class="n">post_processor</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Evaluator&#39;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;VQAAccuracyMetric&#39;</span><span class="p">)],</span> <span class="n">dataset_converters</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;VQADatasetConverter&#39;</span><span class="p">)])</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id3">
+<h3>Dataset process pipeline<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<p>The dataset will be prepared ready for train or test by several modules with the configs in <code class="docutils literal notranslate"><span class="pre">***_dataset.py</span></code>, use train mode as an example:</p>
+<ol class="simple">
+<li><p>register the type by <code class="docutils literal notranslate"><span class="pre">registry.py</span></code>, including dataset type, data_reader_train_cfg type, data_info_cpler type in <code class="docutils literal notranslate"><span class="pre">***_dataset.py</span></code>;</p></li>
+<li><p>prepare the data for train by <code class="docutils literal notranslate"><span class="pre">***_loader.py</span></code>:</p>
+<ul class="simple">
+<li><p>get the params of the <code class="docutils literal notranslate"><span class="pre">***_reader_train_cfg</span></code> and load the feature and annotation from disk to memory by <code class="docutils literal notranslate"><span class="pre">***_reader.py</span></code>;</p></li>
+<li><p>get the params of the <code class="docutils literal notranslate"><span class="pre">***_info_cpler_cfg</span></code>  and preprocess these data in  <code class="docutils literal notranslate"><span class="pre">***_infocpler.py</span></code>;</p></li>
+<li><p>choose the specific data items for different tasks.</p></li>
+</ul>
+</li>
+</ol>
+<p>There you should customize three necessary files: <code class="docutils literal notranslate"><span class="pre">***_loader.py</span></code>, <code class="docutils literal notranslate"><span class="pre">***_reader.py</span></code> and <code class="docutils literal notranslate"><span class="pre">***_infocpler.py</span></code> in the process.</p>
+<p>The data file structure is as below (use VQA dataset as an example in the following content, the necessary files include <code class="docutils literal notranslate"><span class="pre">vqa_loader.py</span></code>, <code class="docutils literal notranslate"><span class="pre">vqa_reader.py</span></code>, and <code class="docutils literal notranslate"><span class="pre">vqa_infocpler.py</span></code>.):</p>
+<div class="highlight-plain notranslate"><div class="highlight"><pre><span></span>MIX-Kalman
+├── configs
+├── mixk
+│   ├── data
+│   │   ├── _init_.py
+│   │   ├── loaders
+│   │   │   ├── vqa_loader.py
+│   │   ├── reader
+│   │   │   ├── _init_.py
+│   │   │   ├── vqa_reader.py
+│   │   ├── infocomp
+│   │   │   ├── _init_.py
+│   │   │   ├── vqa_infocpler.py
+│   ├── ...
+├── ...
+</pre></div>
+</div>
+<section id="add-dataset-loader-py">
+<h4>add dataset_loader.py<a class="headerlink" href="#add-dataset-loader-py" title="Permalink to this heading"></a></h4>
+<p>build your dataset_loader.py as vqa_loader.py, the key point is as follows:</p>
+<ul class="simple">
+<li><p>import the VQAReader and VQAInfoCpler in the <code class="docutils literal notranslate"><span class="pre">mixk/data/loaders/vqa_loader.py</span></code>;</p></li>
+<li><p>the class <code class="docutils literal notranslate"><span class="pre">VQADATASET</span></code> should inherit from the parent class <code class="docutils literal notranslate"><span class="pre">BaseLoader</span></code> and register the dataset by decorator <code class="docutils literal notranslate"><span class="pre">&#64;DATASETS.register_module()</span></code>;</p></li>
+<li><p>writer the specific item dictionary in the <code class="docutils literal notranslate"><span class="pre">__getitem__()</span></code> function according to different task.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import datasetReader and datasetInfoCpler</span>
+<span class="kn">from</span> <span class="nn">..reader.vqa_reader</span> <span class="kn">import</span> <span class="n">VQAReader</span> <span class="k">as</span> <span class="n">Reader</span>
+<span class="kn">from</span> <span class="nn">..infocomp.vqa_infocpler</span> <span class="kn">import</span> <span class="n">VQAInfoCpler</span> <span class="k">as</span> <span class="n">InfoCpler</span>
+
+
+<span class="c1">#register your dataset module</span>
+<span class="nd">@DATASETS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">VQADATASET</span><span class="p">(</span><span class="n">BaseLoader</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reader</span><span class="p">,</span> <span class="n">info_cpler</span><span class="p">,</span> <span class="n">limit_nums</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">Reader</span><span class="p">,</span> <span class="n">reader</span><span class="p">,</span> <span class="n">InfoCpler</span><span class="p">,</span> <span class="n">info_cpler</span><span class="p">,</span> <span class="n">limit_nums</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="n">item_feature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">item_feature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">infocpler</span><span class="o">.</span><span class="n">completeInfo</span><span class="p">(</span><span class="n">item_feature</span><span class="p">)</span>
+        <span class="c1"># choose the items for different tasks</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">item</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>add your dataset type in the <code class="docutils literal notranslate"><span class="pre">mixk/data/_init_.py</span></code> before use it;</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.builder</span> <span class="kn">import</span> <span class="n">build_mixk_test_loader</span><span class="p">,</span> <span class="n">build_mixk_train_loader</span>
+<span class="kn">from</span> <span class="nn">.loaders.vqa_loader</span> <span class="kn">import</span> <span class="n">VQADATASET</span>
+<span class="kn">import</span> <span class="nn">...</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;VQADATASET&#39;</span><span class="p">,</span>  <span class="c1"># add the dataset_type in the list</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="add-dataset-reader-py">
+<h4>add dataset_reader.py<a class="headerlink" href="#add-dataset-reader-py" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p>Import the dataset reader class  in the <code class="docutils literal notranslate"><span class="pre">mixk/data/reader/_init_.py</span></code>;</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.vqa_reader</span> <span class="kn">import</span> <span class="n">VQAReader</span>
+</pre></div>
+</div>
+<p>build your dataset_reader.py as vqa_reader.py, the key point is as follows:</p>
+<ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">VQAReader</span></code> should inherit from the parent class <code class="docutils literal notranslate"><span class="pre">mixkDataReader</span></code> . It will read the parameters of the <code class="docutils literal notranslate"><span class="pre">vqa_reader_train_cfg</span></code> in the parent class;</p></li>
+<li><p>write the <code class="docutils literal notranslate"><span class="pre">__getitem__()</span></code> function according to different task.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.base_reader</span> <span class="kn">import</span> <span class="n">mixkDataReader</span>
+<span class="o">...</span>
+
+<span class="c1"># inherit from the parent class</span>
+<span class="k">class</span> <span class="nc">VQAReader</span><span class="p">(</span><span class="n">mixkDataReader</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>  <span class="c1"># get the params of the `vqa_reader_train_cfg`</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mix_annotations</span><span class="p">)</span>
+
+    <span class="c1"># writer the getitem function according to different task.</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="o">...</span>
+        <span class="k">return</span> <span class="n">item_feature</span>
+</pre></div>
+</div>
+</section>
+<section id="add-dataset-infocpler-py">
+<h4>add dataset_infocpler.py<a class="headerlink" href="#add-dataset-infocpler-py" title="Permalink to this heading"></a></h4>
+<p>Import the dataset infocpler class  in the <code class="docutils literal notranslate"><span class="pre">mixk/data/infocomp/_init_.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.vqa_infocpler</span> <span class="kn">import</span> <span class="n">VQAInfoCpler</span>
+</pre></div>
+</div>
+<p>build your dataset_infocpler.py as vqa_infocpler.py, the key point is as follows:</p>
+<ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">VQAInfoCpler</span></code> should inherit from the parent class <code class="docutils literal notranslate"><span class="pre">BaseInfoCpler</span></code> . It will read the parameters of the <code class="docutils literal notranslate"><span class="pre">vqa_info_cpler_cfg</span></code> in the parent class;</p></li>
+<li><p>write <code class="docutils literal notranslate"><span class="pre">completeInfo</span></code> function according to different task.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.base_infocpler</span> <span class="kn">import</span> <span class="n">BaseInfoCpler</span>
+<span class="o">...</span>
+
+<span class="c1"># inherit from the parent class</span>
+<span class="k">class</span> <span class="nc">VQAInfoCpler</span><span class="p">(</span><span class="n">BaseInfoCpler</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>  <span class="c1"># get the params of the `vqa_info_cpler_cfg` and preprocess the data</span>
+
+    <span class="c1"># writer completeInfo function according to different task</span>
+    <span class="k">def</span> <span class="nf">completeInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item_feature</span><span class="p">:</span> <span class="n">ItemFeature</span><span class="p">):</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Tutorial1-config.html" class="btn btn-neutral float-left" title="Tutorial 1: Learn about Configs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Tutorial3-customize_models.html" class="btn btn-neutral float-right" title="Tutorial 3: Customize Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

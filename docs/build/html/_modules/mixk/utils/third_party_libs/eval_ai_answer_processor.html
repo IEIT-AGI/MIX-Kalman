@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mixk.utils.third_party_libs.eval_ai_answer_processor &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      <li>mixk.utils.third_party_libs.eval_ai_answer_processor</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mixk.utils.third_party_libs.eval_ai_answer_processor</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) Facebook, Inc. and its affiliates.</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+
+<div class="viewcode-block" id="EvalAIAnswerProcessor"><a class="viewcode-back" href="../../../../sources/mixk.utils.third_party_libs.html#mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor">[docs]</a><span class="k">class</span> <span class="nc">EvalAIAnswerProcessor</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Processes an answer similar to Eval AI copied from https://github.com/fa</span>
+<span class="sd">    cebookresearch/mmf/blob/c46b3b3391275b4181567db80943473a89ab98ab/pythia/tas</span>
+<span class="sd">    ks/processors.py#L897.&quot;&quot;&quot;</span>
+
+    <span class="n">CONTRACTIONS</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;aint&#39;</span><span class="p">:</span> <span class="s2">&quot;ain&#39;t&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;arent&#39;</span><span class="p">:</span> <span class="s2">&quot;aren&#39;t&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;cant&#39;</span><span class="p">:</span> <span class="s2">&quot;can&#39;t&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;couldve&#39;</span><span class="p">:</span> <span class="s2">&quot;could&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;couldnt&#39;</span><span class="p">:</span> <span class="s2">&quot;couldn&#39;t&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;couldn&#39;tve&quot;</span><span class="p">:</span> <span class="s2">&quot;couldn&#39;t&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;couldnt&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;couldn&#39;t&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;didnt&#39;</span><span class="p">:</span> <span class="s2">&quot;didn&#39;t&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;doesnt&#39;</span><span class="p">:</span> <span class="s2">&quot;doesn&#39;t&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;dont&#39;</span><span class="p">:</span> <span class="s2">&quot;don&#39;t&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;hadnt&#39;</span><span class="p">:</span> <span class="s2">&quot;hadn&#39;t&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hadnt&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;hadn&#39;t&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hadn&#39;tve&quot;</span><span class="p">:</span> <span class="s2">&quot;hadn&#39;t&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;hasnt&#39;</span><span class="p">:</span> <span class="s2">&quot;hasn&#39;t&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;havent&#39;</span><span class="p">:</span> <span class="s2">&quot;haven&#39;t&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;hed&#39;</span><span class="p">:</span> <span class="s2">&quot;he&#39;d&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hed&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;he&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;he&#39;dve&quot;</span><span class="p">:</span> <span class="s2">&quot;he&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;hes&#39;</span><span class="p">:</span> <span class="s2">&quot;he&#39;s&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;howd&#39;</span><span class="p">:</span> <span class="s2">&quot;how&#39;d&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;howll&#39;</span><span class="p">:</span> <span class="s2">&quot;how&#39;ll&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;hows&#39;</span><span class="p">:</span> <span class="s2">&quot;how&#39;s&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Id&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;I&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;I&#39;dve&quot;</span><span class="p">:</span> <span class="s2">&quot;I&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;Im&#39;</span><span class="p">:</span> <span class="s2">&quot;I&#39;m&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;Ive&#39;</span><span class="p">:</span> <span class="s2">&quot;I&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;isnt&#39;</span><span class="p">:</span> <span class="s2">&quot;isn&#39;t&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;itd&#39;</span><span class="p">:</span> <span class="s2">&quot;it&#39;d&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;itd&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;it&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;it&#39;dve&quot;</span><span class="p">:</span> <span class="s2">&quot;it&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;itll&#39;</span><span class="p">:</span> <span class="s2">&quot;it&#39;ll&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;let&#39;s&quot;</span><span class="p">:</span> <span class="s2">&quot;let&#39;s&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;maam&#39;</span><span class="p">:</span> <span class="s2">&quot;ma&#39;am&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;mightnt&#39;</span><span class="p">:</span> <span class="s2">&quot;mightn&#39;t&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mightnt&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;mightn&#39;t&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mightn&#39;tve&quot;</span><span class="p">:</span> <span class="s2">&quot;mightn&#39;t&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;mightve&#39;</span><span class="p">:</span> <span class="s2">&quot;might&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;mustnt&#39;</span><span class="p">:</span> <span class="s2">&quot;mustn&#39;t&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;mustve&#39;</span><span class="p">:</span> <span class="s2">&quot;must&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;neednt&#39;</span><span class="p">:</span> <span class="s2">&quot;needn&#39;t&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;notve&#39;</span><span class="p">:</span> <span class="s2">&quot;not&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;oclock&#39;</span><span class="p">:</span> <span class="s2">&quot;o&#39;clock&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;oughtnt&#39;</span><span class="p">:</span> <span class="s2">&quot;oughtn&#39;t&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ow&#39;s&#39;at&quot;</span><span class="p">:</span> <span class="s2">&quot;&#39;ow&#39;s&#39;at&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;&#39;ows&#39;at&quot;</span><span class="p">:</span> <span class="s2">&quot;&#39;ow&#39;s&#39;at&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;&#39;ow&#39;sat&quot;</span><span class="p">:</span> <span class="s2">&quot;&#39;ow&#39;s&#39;at&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;shant&#39;</span><span class="p">:</span> <span class="s2">&quot;shan&#39;t&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;shed&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;she&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;she&#39;dve&quot;</span><span class="p">:</span> <span class="s2">&quot;she&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;she&#39;s&quot;</span><span class="p">:</span> <span class="s2">&quot;she&#39;s&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;shouldve&#39;</span><span class="p">:</span> <span class="s2">&quot;should&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;shouldnt&#39;</span><span class="p">:</span> <span class="s2">&quot;shouldn&#39;t&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;shouldnt&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;shouldn&#39;t&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;shouldn&#39;tve&quot;</span><span class="p">:</span> <span class="s2">&quot;shouldn&#39;t&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;somebody&#39;d&quot;</span><span class="p">:</span> <span class="s1">&#39;somebodyd&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;somebodyd&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;somebody&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;somebody&#39;dve&quot;</span><span class="p">:</span> <span class="s2">&quot;somebody&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;somebodyll&#39;</span><span class="p">:</span> <span class="s2">&quot;somebody&#39;ll&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;somebodys&#39;</span><span class="p">:</span> <span class="s2">&quot;somebody&#39;s&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;someoned&#39;</span><span class="p">:</span> <span class="s2">&quot;someone&#39;d&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;someoned&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;someone&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;someone&#39;dve&quot;</span><span class="p">:</span> <span class="s2">&quot;someone&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;someonell&#39;</span><span class="p">:</span> <span class="s2">&quot;someone&#39;ll&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;someones&#39;</span><span class="p">:</span> <span class="s2">&quot;someone&#39;s&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;somethingd&#39;</span><span class="p">:</span> <span class="s2">&quot;something&#39;d&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;somethingd&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;something&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;something&#39;dve&quot;</span><span class="p">:</span> <span class="s2">&quot;something&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;somethingll&#39;</span><span class="p">:</span> <span class="s2">&quot;something&#39;ll&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;thats&#39;</span><span class="p">:</span> <span class="s2">&quot;that&#39;s&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;thered&#39;</span><span class="p">:</span> <span class="s2">&quot;there&#39;d&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;thered&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;there&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;there&#39;dve&quot;</span><span class="p">:</span> <span class="s2">&quot;there&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;therere&#39;</span><span class="p">:</span> <span class="s2">&quot;there&#39;re&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;theres&#39;</span><span class="p">:</span> <span class="s2">&quot;there&#39;s&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;theyd&#39;</span><span class="p">:</span> <span class="s2">&quot;they&#39;d&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;theyd&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;they&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;they&#39;dve&quot;</span><span class="p">:</span> <span class="s2">&quot;they&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;theyll&#39;</span><span class="p">:</span> <span class="s2">&quot;they&#39;ll&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;theyre&#39;</span><span class="p">:</span> <span class="s2">&quot;they&#39;re&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;theyve&#39;</span><span class="p">:</span> <span class="s2">&quot;they&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;twas&#39;</span><span class="p">:</span> <span class="s2">&quot;&#39;twas&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;wasnt&#39;</span><span class="p">:</span> <span class="s2">&quot;wasn&#39;t&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;wed&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;we&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;we&#39;dve&quot;</span><span class="p">:</span> <span class="s2">&quot;we&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;weve&#39;</span><span class="p">:</span> <span class="s2">&quot;we&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;werent&#39;</span><span class="p">:</span> <span class="s2">&quot;weren&#39;t&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;whatll&#39;</span><span class="p">:</span> <span class="s2">&quot;what&#39;ll&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;whatre&#39;</span><span class="p">:</span> <span class="s2">&quot;what&#39;re&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;whats&#39;</span><span class="p">:</span> <span class="s2">&quot;what&#39;s&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;whatve&#39;</span><span class="p">:</span> <span class="s2">&quot;what&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;whens&#39;</span><span class="p">:</span> <span class="s2">&quot;when&#39;s&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;whered&#39;</span><span class="p">:</span> <span class="s2">&quot;where&#39;d&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;wheres&#39;</span><span class="p">:</span> <span class="s2">&quot;where&#39;s&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;whereve&#39;</span><span class="p">:</span> <span class="s2">&quot;where&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;whod&#39;</span><span class="p">:</span> <span class="s2">&quot;who&#39;d&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;whod&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;who&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;who&#39;dve&quot;</span><span class="p">:</span> <span class="s2">&quot;who&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;wholl&#39;</span><span class="p">:</span> <span class="s2">&quot;who&#39;ll&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;whos&#39;</span><span class="p">:</span> <span class="s2">&quot;who&#39;s&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;whove&#39;</span><span class="p">:</span> <span class="s2">&quot;who&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;whyll&#39;</span><span class="p">:</span> <span class="s2">&quot;why&#39;ll&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;whyre&#39;</span><span class="p">:</span> <span class="s2">&quot;why&#39;re&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;whys&#39;</span><span class="p">:</span> <span class="s2">&quot;why&#39;s&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;wont&#39;</span><span class="p">:</span> <span class="s2">&quot;won&#39;t&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;wouldve&#39;</span><span class="p">:</span> <span class="s2">&quot;would&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;wouldnt&#39;</span><span class="p">:</span> <span class="s2">&quot;wouldn&#39;t&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;wouldnt&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;wouldn&#39;t&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;wouldn&#39;tve&quot;</span><span class="p">:</span> <span class="s2">&quot;wouldn&#39;t&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;yall&#39;</span><span class="p">:</span> <span class="s2">&quot;y&#39;all&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;yall&#39;ll&quot;</span><span class="p">:</span> <span class="s2">&quot;y&#39;all&#39;ll&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&#39;allll&quot;</span><span class="p">:</span> <span class="s2">&quot;y&#39;all&#39;ll&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;yall&#39;d&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;y&#39;all&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&#39;alld&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;y&#39;all&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&#39;all&#39;dve&quot;</span><span class="p">:</span> <span class="s2">&quot;y&#39;all&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;youd&#39;</span><span class="p">:</span> <span class="s2">&quot;you&#39;d&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;youd&#39;ve&quot;</span><span class="p">:</span> <span class="s2">&quot;you&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;you&#39;dve&quot;</span><span class="p">:</span> <span class="s2">&quot;you&#39;d&#39;ve&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;youll&#39;</span><span class="p">:</span> <span class="s2">&quot;you&#39;ll&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;youre&#39;</span><span class="p">:</span> <span class="s2">&quot;you&#39;re&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;youve&#39;</span><span class="p">:</span> <span class="s2">&quot;you&#39;ve&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">NUMBER_MAP</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;none&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;zero&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;one&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;two&#39;</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;three&#39;</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;four&#39;</span><span class="p">:</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;five&#39;</span><span class="p">:</span> <span class="s1">&#39;5&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;six&#39;</span><span class="p">:</span> <span class="s1">&#39;6&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;seven&#39;</span><span class="p">:</span> <span class="s1">&#39;7&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;eight&#39;</span><span class="p">:</span> <span class="s1">&#39;8&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;nine&#39;</span><span class="p">:</span> <span class="s1">&#39;9&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;ten&#39;</span><span class="p">:</span> <span class="s1">&#39;10&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">ARTICLES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;an&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">]</span>
+    <span class="n">PERIOD_STRIP</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?!&lt;=\d)(\.)(?!\d)&#39;</span><span class="p">)</span>
+    <span class="n">COMMA_STRIP</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?&lt;=\d)(\,)+(?=\d)&#39;</span><span class="p">)</span>
+    <span class="n">PUNCTUATIONS</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;;&#39;</span><span class="p">,</span>
+        <span class="sa">r</span><span class="s1">&#39;/&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;[&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;]&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&quot;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;{&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;}&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;(&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;=&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;+&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;_&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&lt;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;@&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;`&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;,&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;?&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;!&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="EvalAIAnswerProcessor.word_tokenize"><a class="viewcode-back" href="../../../../sources/mixk.utils.third_party_libs.html#mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.word_tokenize">[docs]</a>    <span class="k">def</span> <span class="nf">word_tokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+        <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;s&quot;</span><span class="p">,</span> <span class="s2">&quot; &#39;s&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">word</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="EvalAIAnswerProcessor.process_punctuation"><a class="viewcode-back" href="../../../../sources/mixk.utils.third_party_libs.html#mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.process_punctuation">[docs]</a>    <span class="k">def</span> <span class="nf">process_punctuation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_text</span><span class="p">):</span>
+        <span class="n">out_text</span> <span class="o">=</span> <span class="n">in_text</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">PUNCTUATIONS</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="ow">in</span> <span class="n">in_text</span> <span class="ow">or</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">in_text</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">COMMA_STRIP</span><span class="p">,</span> <span class="n">in_text</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="n">out_text</span> <span class="o">=</span> <span class="n">out_text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">out_text</span> <span class="o">=</span> <span class="n">out_text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">out_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PERIOD_STRIP</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">out_text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out_text</span></div>
+
+<div class="viewcode-block" id="EvalAIAnswerProcessor.process_digit_article"><a class="viewcode-back" href="../../../../sources/mixk.utils.third_party_libs.html#mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.process_digit_article">[docs]</a>    <span class="k">def</span> <span class="nf">process_digit_article</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_text</span><span class="p">):</span>
+        <span class="n">out_text</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">temp_text</span> <span class="o">=</span> <span class="n">in_text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">temp_text</span><span class="p">:</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NUMBER_MAP</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">word</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ARTICLES</span><span class="p">:</span>
+                <span class="n">out_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">for</span> <span class="n">word_id</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">out_text</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTRACTIONS</span><span class="p">:</span>
+                <span class="n">out_text</span><span class="p">[</span><span class="n">word_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTRACTIONS</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+        <span class="n">out_text</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out_text</span></div>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_punctuation</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_digit_article</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">item</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

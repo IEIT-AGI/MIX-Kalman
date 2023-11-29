@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Benchmark and Model Zoo &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="../Quickrun/quickrun.html" />
+    <link rel="prev" title="Get started" href="get_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="get_started.html">Get started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Benchmark and Model Zoo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#baselines">Baselines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lxmert">LXMERT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uniter">UNITER</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vilbert">ViLBERT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#devlbert">DeVLBert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#oscar">Oscar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vinvl-oscar">VinVL-Oscar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mcan">MCAN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lcgn">LCGN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hgl">HGL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#r2c">R2C</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#visdial-bert">VisDial-BERT</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="getstarted.html">&lt;no title&gt;</a> &raquo;</li>
+      <li>Benchmark and Model Zoo</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getstart/model_zoo.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="benchmark-and-model-zoo">
+<h1>Benchmark and Model Zoo<a class="headerlink" href="#benchmark-and-model-zoo" title="Permalink to this heading"></a></h1>
+<section id="baselines">
+<h2>Baselines<a class="headerlink" href="#baselines" title="Permalink to this heading"></a></h2>
+<section id="lxmert">
+<h3>LXMERT<a class="headerlink" href="#lxmert" title="Permalink to this heading"></a></h3>
+<p>Please refer to <a class="reference external" href="https://github.com/IEIT-AGI/MIX-Kalman/tree/master/configs/lxmert">LXMERT</a> for details.</p>
+</section>
+<section id="uniter">
+<h3>UNITER<a class="headerlink" href="#uniter" title="Permalink to this heading"></a></h3>
+<p>Please refer to <a class="reference external" href="https://github.com/IEIT-AGI/MIX-Kalman/tree/master/configs/uniter">UNITER</a> for details.</p>
+</section>
+<section id="vilbert">
+<h3>ViLBERT<a class="headerlink" href="#vilbert" title="Permalink to this heading"></a></h3>
+<p>Please refer to <a class="reference external" href="https://github.com/IEIT-AGI/MIX-Kalman/tree/master/configs/vilbert">ViLBERT</a> for details.</p>
+</section>
+<section id="devlbert">
+<h3>DeVLBert<a class="headerlink" href="#devlbert" title="Permalink to this heading"></a></h3>
+<p>Please refer to <a class="reference external" href="https://github.com/IEIT-AGI/MIX-Kalman/tree/master/configs/devlbert">DeVLBert</a> for details.</p>
+</section>
+<section id="oscar">
+<h3>Oscar<a class="headerlink" href="#oscar" title="Permalink to this heading"></a></h3>
+<p>Please refer to <a class="reference external" href="https://github.com/IEIT-AGI/MIX-Kalman/tree/master/configs/oscar">Oscar</a> for details.</p>
+</section>
+<section id="vinvl-oscar">
+<h3>VinVL-Oscar<a class="headerlink" href="#vinvl-oscar" title="Permalink to this heading"></a></h3>
+<p>Please refer to <a class="reference external" href="https://github.com/IEIT-AGI/MIX-Kalman/tree/master/configs/vinvl">VinVL-Oscar</a> for details.</p>
+</section>
+<section id="mcan">
+<h3>MCAN<a class="headerlink" href="#mcan" title="Permalink to this heading"></a></h3>
+<p>Please refer to <a class="reference external" href="https://github.com/IEIT-AGI/MIX-Kalman/tree/master/configs/mcan">MCAN</a> for details.</p>
+</section>
+<section id="lcgn">
+<h3>LCGN<a class="headerlink" href="#lcgn" title="Permalink to this heading"></a></h3>
+<p>Please refer to <a class="reference external" href="https://github.com/IEIT-AGI/MIX-Kalman/tree/master/configs/lcgn">LCGN</a> for details.</p>
+</section>
+<section id="hgl">
+<h3>HGL<a class="headerlink" href="#hgl" title="Permalink to this heading"></a></h3>
+<p>Please refer to <a class="reference external" href="https://github.com/IEIT-AGI/MIX-Kalman/tree/master/configs/hgl">HGL</a> for details.</p>
+</section>
+<section id="r2c">
+<h3>R2C<a class="headerlink" href="#r2c" title="Permalink to this heading"></a></h3>
+<p>Please refer to <a class="reference external" href="https://github.com/IEIT-AGI/MIX-Kalman/tree/master/configs/r2c">R2C</a> for details.</p>
+</section>
+<section id="visdial-bert">
+<h3>VisDial-BERT<a class="headerlink" href="#visdial-bert" title="Permalink to this heading"></a></h3>
+<p>Please refer to <a class="reference external" href="https://github.com/IEIT-AGI/MIX-Kalman/tree/master/configs/visual_dialog_bert">VisDial-BERT</a> for details.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="get_started.html" class="btn btn-neutral float-left" title="Get started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../Quickrun/quickrun.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

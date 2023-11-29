@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mixk.models package &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mixk.models.backbones package" href="mixk.models.backbones.html" />
+    <link rel="prev" title="mixk.evaluation package" href="mixk.evaluation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="mixk.html">mixk package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="mixk.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mixk.data.html">mixk.data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.engine.html">mixk.engine package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.evaluation.html">mixk.evaluation package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">mixk.models package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mixk-models-builder-module">mixk.models.builder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.solver.html">mixk.solver package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.utils.html">mixk.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.html#module-mixk.version">mixk.version module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.html#module-mixk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="mixk.html">mixk package</a> &raquo;</li>
+      <li>mixk.models package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/sources/mixk.models.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mixk-models-package">
+<h1>mixk.models package<a class="headerlink" href="#mixk-models-package" title="Permalink to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mixk.models.backbones.html">mixk.models.backbones package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.backbones.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.backbones.html#module-mixk.models.backbones.ban">mixk.models.backbones.ban module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.backbones.html#module-mixk.models.backbones.cagraph_backbone">mixk.models.backbones.cagraph_backbone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.backbones.html#module-mixk.models.backbones.cmrin_backbone">mixk.models.backbones.cmrin_backbone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.backbones.html#mixk-models-backbones-hgl-backbone-module">mixk.models.backbones.hgl_backbone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.backbones.html#mixk-models-backbones-imageembedding-module">mixk.models.backbones.imageembedding module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.backbones.html#mixk-models-backbones-lcgn-backbone-module">mixk.models.backbones.lcgn_backbone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.backbones.html#mixk-models-backbones-mmt-module">mixk.models.backbones.mmt module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.backbones.html#mixk-models-backbones-r2c-backbone-module">mixk.models.backbones.r2c_backbone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.backbones.html#mixk-models-backbones-resc-backbone-module">mixk.models.backbones.resc_backbone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.backbones.html#mixk-models-backbones-twobranchembedding-module">mixk.models.backbones.twobranchembedding module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.backbones.html#mixk-models-backbones-visdial-principles-backbone-module">mixk.models.backbones.visdial_principles_backbone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.backbones.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mixk.models.combine_layers.html">mixk.models.combine_layers package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.combine_layers.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.combine_layers.html#module-mixk.models.combine_layers.branchcombinelayers">mixk.models.combine_layers.branchcombinelayers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.combine_layers.html#module-mixk.models.combine_layers.modalcombinelayer">mixk.models.combine_layers.modalcombinelayer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.combine_layers.html#module-mixk.models.combine_layers">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mixk.models.embedding.html">mixk.models.embedding package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.embedding.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.embedding.html#mixk-models-embedding-bertimgembedding-module">mixk.models.embedding.bertimgembedding module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.embedding.html#mixk-models-embedding-textembedding-module">mixk.models.embedding.textembedding module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.embedding.html#mixk-models-embedding-visual-dialog-embedding-module">mixk.models.embedding.visual_dialog_embedding module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.embedding.html#mixk-models-embedding-vocab-module">mixk.models.embedding.vocab module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.embedding.html#mixk-models-embedding-wordembedding-module">mixk.models.embedding.wordembedding module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.embedding.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mixk.models.encoder.html">mixk.models.encoder package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.encoder.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.encoder.html#mixk-models-encoder-imageencoder-module">mixk.models.encoder.imageencoder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.encoder.html#mixk-models-encoder-lcgnencoder-module">mixk.models.encoder.lcgnencoder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.encoder.html#mixk-models-encoder-oscar-module">mixk.models.encoder.oscar module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.encoder.html#mixk-models-encoder-textbert-module">mixk.models.encoder.textbert module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.encoder.html#mixk-models-encoder-visdiag-lstm-module">mixk.models.encoder.visdiag_lstm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.encoder.html#mixk-models-encoder-visualbert-module">mixk.models.encoder.visualbert module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.encoder.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mixk.models.heads.html">mixk.models.heads package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.heads.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.heads.html#mixk-models-heads-classifier-module">mixk.models.heads.classifier module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.heads.html#mixk-models-heads-classifier-mix-module">mixk.models.heads.classifier_mix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.heads.html#mixk-models-heads-decoder-module">mixk.models.heads.decoder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.heads.html#mixk-models-heads-decoder-mix-module">mixk.models.heads.decoder_mix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.heads.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mixk.models.losses.html">mixk.models.losses package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.losses.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.losses.html#mixk-models-losses-base-loss-module">mixk.models.losses.base_loss module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.losses.html#mixk-models-losses-diverse-loss-module">mixk.models.losses.diverse_loss module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.losses.html#mixk-models-losses-losses-module">mixk.models.losses.losses module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.losses.html#mixk-models-losses-yolo-loss-module">mixk.models.losses.yolo_loss module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.losses.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mixk.models.visual_dialog_model.html">mixk.models.visual_dialog_model package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.visual_dialog_model.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.visual_dialog_model.html#mixk-models-visual-dialog-model-vilbert-dialog-module">mixk.models.visual_dialog_model.vilbert_dialog module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.visual_dialog_model.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mixk.models.vqa_models.html">mixk.models.vqa_models package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.vqa_models.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mixk.models.vqa_models.devlbert.html">mixk.models.vqa_models.devlbert package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.devlbert.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.devlbert.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.devlbert.html#mixk-models-vqa-models-devlbert-devlbert-module">mixk.models.vqa_models.devlbert.devlbert module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.devlbert.html#mixk-models-vqa-models-devlbert-devlbert-tasks-module">mixk.models.vqa_models.devlbert.devlbert_tasks module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.devlbert.html#mixk-models-vqa-models-devlbert-postprocess-evaluator-module">mixk.models.vqa_models.devlbert.postprocess_evaluator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.devlbert.html#mixk-models-vqa-models-devlbert-task-utils-module">mixk.models.vqa_models.devlbert.task_utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.devlbert.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.models.vqa_models.lxmert.html">mixk.models.vqa_models.lxmert package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.lxmert.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.lxmert.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.lxmert.html#mixk-models-vqa-models-lxmert-lxmert-module">mixk.models.vqa_models.lxmert.lxmert module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.lxmert.html#mixk-models-vqa-models-lxmert-lxmert-pretrain-module">mixk.models.vqa_models.lxmert.lxmert_pretrain module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.lxmert.html#mixk-models-vqa-models-lxmert-lxmert-qa-answer-table-module">mixk.models.vqa_models.lxmert.lxmert_qa_answer_table module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.lxmert.html#mixk-models-vqa-models-lxmert-lxmert-task-module">mixk.models.vqa_models.lxmert.lxmert_task module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.lxmert.html#mixk-models-vqa-models-lxmert-postprocess-evaluator-module">mixk.models.vqa_models.lxmert.postprocess_evaluator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.lxmert.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.models.vqa_models.oscar.html">mixk.models.vqa_models.oscar package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.oscar.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.oscar.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.oscar.html#mixk-models-vqa-models-oscar-postprocess-evaluator-module">mixk.models.vqa_models.oscar.postprocess_evaluator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.oscar.html#mixk-models-vqa-models-oscar-run-gqa-module">mixk.models.vqa_models.oscar.run_gqa module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.oscar.html#mixk-models-vqa-models-oscar-run-nlvr-module">mixk.models.vqa_models.oscar.run_nlvr module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.oscar.html#mixk-models-vqa-models-oscar-run-vqa-module">mixk.models.vqa_models.oscar.run_vqa module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.oscar.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.models.vqa_models.uniter.html">mixk.models.vqa_models.uniter package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.uniter.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.uniter.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.uniter.html#mixk-models-vqa-models-uniter-misc-module">mixk.models.vqa_models.uniter.misc module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.uniter.html#mixk-models-vqa-models-uniter-postprocess-evaluator-module">mixk.models.vqa_models.uniter.postprocess_evaluator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.uniter.html#mixk-models-vqa-models-uniter-train-nlvr2-module">mixk.models.vqa_models.uniter.train_nlvr2 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.uniter.html#mixk-models-vqa-models-uniter-train-vcr-module">mixk.models.vqa_models.uniter.train_vcr module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.uniter.html#mixk-models-vqa-models-uniter-train-ve-module">mixk.models.vqa_models.uniter.train_ve module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.uniter.html#mixk-models-vqa-models-uniter-train-vqa-module">mixk.models.vqa_models.uniter.train_vqa module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.uniter.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.models.vqa_models.vilbert.html">mixk.models.vqa_models.vilbert package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.vilbert.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.vilbert.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.vilbert.html#mixk-models-vqa-models-vilbert-postprocess-evaluator-module">mixk.models.vqa_models.vilbert.postprocess_evaluator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.vilbert.html#mixk-models-vqa-models-vilbert-task-utils-module">mixk.models.vqa_models.vilbert.task_utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.vilbert.html#mixk-models-vqa-models-vilbert-utils-module">mixk.models.vqa_models.vilbert.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.vilbert.html#mixk-models-vqa-models-vilbert-vilbert-module">mixk.models.vqa_models.vilbert.vilbert module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.vilbert.html#mixk-models-vqa-models-vilbert-vilbert-tasks-module">mixk.models.vqa_models.vilbert.vilbert_tasks module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.models.vqa_models.vilbert.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.vqa_models.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.vqa_models.html#mixk-models-vqa-models-base-model-module">mixk.models.vqa_models.base_model module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.vqa_models.html#mixk-models-vqa-models-cagraph-module">mixk.models.vqa_models.cagraph module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.vqa_models.html#mixk-models-vqa-models-hgl-module">mixk.models.vqa_models.hgl module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.vqa_models.html#mixk-models-vqa-models-lcgn-module">mixk.models.vqa_models.lcgn module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.vqa_models.html#mixk-models-vqa-models-m4c-module">mixk.models.vqa_models.m4c module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.vqa_models.html#mixk-models-vqa-models-mcan-mix-module">mixk.models.vqa_models.mcan_mix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.vqa_models.html#mixk-models-vqa-models-r2c-module">mixk.models.vqa_models.r2c module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.vqa_models.html#mixk-models-vqa-models-visdial-principles-module">mixk.models.vqa_models.visdial_principles module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.vqa_models.html#mixk-models-vqa-models-visual-dialog-bert-module">mixk.models.vqa_models.visual_dialog_bert module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.models.vqa_models.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="mixk-models-builder-module">
+<h2>mixk.models.builder module<a class="headerlink" href="#mixk-models-builder-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mixk.evaluation.html" class="btn btn-neutral float-left" title="mixk.evaluation package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mixk.models.backbones.html" class="btn btn-neutral float-right" title="mixk.models.backbones package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

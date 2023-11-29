@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mixk.evaluation.metric &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>mixk.evaluation.metric</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mixk.evaluation.metric</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">.evaluator_mixk</span> <span class="kn">import</span> <span class="n">METRICS</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">ABCMeta</span>
+
+
+<div class="viewcode-block" id="BaseMetric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.BaseMetric">[docs]</a><span class="k">class</span> <span class="nc">BaseMetric</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;base_metric&#39;</span>
+
+<div class="viewcode-block" id="BaseMetric.evaluate"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.BaseMetric.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">model_outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="c1"># predictions, labels = self.data_pre_process(model_outputs, labels, *args,</span>
+        <span class="c1">#                                             **kwargs)</span>
+        <span class="c1"># predictions = self.model_outputs</span>
+        <span class="c1"># labels = self.labels</span>
+        <span class="c1"># metric_result = self.calculate(predictions, labels)</span>
+        <span class="n">metric_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">model_outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">metric_result</span></div>
+
+    <span class="c1"># @staticmethod</span>
+    <span class="c1"># def list_to_tensor(list_data: list) -&gt; torch.tensor:</span>
+    <span class="c1">#   # tensor_size = (len(list_data), list_data[0].shape[1])</span>
+    <span class="c1">#   if len(list_data[0].shape) == 1:</span>
+    <span class="c1">#     tensor_size = (len(list_data), list_data[0].shape[0])</span>
+    <span class="c1">#   else:</span>
+    <span class="c1">#     tensor_size = (len(list_data), list_data[0].shape[1])</span>
+    <span class="c1">#   tensor_dtype = list_data[0].dtype</span>
+    <span class="c1">#   tensor_data = torch.zeros(size=tensor_size, dtype=tensor_dtype)</span>
+    <span class="c1">#   for idx, data in enumerate(list_data):</span>
+    <span class="c1">#     tensor_data[idx] = data</span>
+    <span class="c1">#</span>
+    <span class="c1">#   return tensor_data</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_name</span>
+
+    <span class="c1"># @abstractmethod</span>
+    <span class="c1"># def data_pre_process(self, model_outputs, labels, *args, **kwargs):</span>
+    <span class="c1">#   pass</span>
+
+<div class="viewcode-block" id="BaseMetric.calculate"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.BaseMetric.calculate">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predictions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="VQAAccuracyMetric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.VQAAccuracyMetric">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">VQAAccuracyMetric</span><span class="p">(</span><span class="n">BaseMetric</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;vqa_accuracy_metric&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="VQAAccuracyMetric.calculate"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.VQAAccuracyMetric.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predictions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">one_hots</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">new_zeros</span><span class="p">(</span><span class="o">*</span><span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">one_hots</span><span class="o">.</span><span class="n">scatter_</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">predictions</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">accuracy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">one_hots</span> <span class="o">*</span> <span class="n">labels</span><span class="p">)</span> <span class="o">/</span> <span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">accuracy</span></div></div>
+
+
+<span class="c1"># def data_pre_process(self, model_outputs, labels, *args, **kwargs):</span>
+<span class="c1">#   labels = self.list_to_tensor(labels)</span>
+<span class="c1">#   scores_list = list(model_output[&#39;scores&#39;] for model_output in model_outputs)</span>
+<span class="c1">#   scores_tensor = self.list_to_tensor(scores_list)</span>
+<span class="c1">#   predictions = VQAAccuracyMetric._get_accuracy(scores_tensor)</span>
+<span class="c1">#   return predictions, labels</span>
+
+<span class="c1"># @staticmethod</span>
+<span class="c1"># def _get_accuracy(output):</span>
+<span class="c1">#   output = VQAAccuracyMetric._masked_unk_softmax(output, 1, 0)</span>
+<span class="c1">#   output = output.argmax(dim=1)  # argmax</span>
+<span class="c1">#   return output</span>
+<span class="c1">#</span>
+<span class="c1"># @staticmethod</span>
+<span class="c1"># def _masked_unk_softmax(x, dim, mask_idx):</span>
+<span class="c1">#   x1 = torch.nn.functional.softmax(x, dim=dim)</span>
+<span class="c1">#   x1[:, mask_idx] = 0</span>
+<span class="c1">#   x1_sum = torch.sum(x1, dim=1, keepdim=True)</span>
+<span class="c1">#   y = x1 / x1_sum</span>
+<span class="c1">#   return y</span>
+
+
+<div class="viewcode-block" id="VisDialMetric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.VisDialMetric">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">VisDialMetric</span><span class="p">(</span><span class="n">BaseMetric</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;visual_dialog_metric&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">mixk.utils.third_party_libs</span> <span class="kn">import</span> <span class="n">SparseGTMetrics</span><span class="p">,</span> <span class="n">NDCG</span>
+        <span class="kn">import</span> <span class="nn">logging</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sparse_metrics</span> <span class="o">=</span> <span class="n">SparseGTMetrics</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ndcg</span> <span class="o">=</span> <span class="n">NDCG</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desired_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r@1&#39;</span><span class="p">,</span> <span class="s1">&#39;r@5&#39;</span><span class="p">,</span> <span class="s1">&#39;r@10&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;mrr&#39;</span><span class="p">,</span> <span class="s1">&#39;ndcg&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="VisDialMetric.calculate"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.VisDialMetric.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="nb">list</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;sparse_metrics&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">sparse_metrics</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;ndcg&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ndcg</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;predictions.key:</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> is not equal to  labels.key</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">all_metrics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sparse_metrics</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">all_metrics</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ndcg</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">all_metrics</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">desired_keys</span><span class="p">}</span></div></div>
+
+
+<div class="viewcode-block" id="VCRAccuracyMetric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.VCRAccuracyMetric">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">VCRAccuracyMetric</span><span class="p">(</span><span class="n">BaseMetric</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;vcr_accuracy_metric&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="VCRAccuracyMetric.calculate"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.VCRAccuracyMetric.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predictions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># one_hots = labels.new_zeros(*labels.shape)</span>
+        <span class="c1"># one_hots.scatter_(1, predictions.view(-1, 1), 1)</span>
+        <span class="c1"># accuracy = torch.sum(one_hots * labels) / labels.shape[0]</span>
+        <span class="n">accuracy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">predictions</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> <span class="o">/</span> <span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># predictions = predictions.view(-1, 1)</span>
+        <span class="c1"># labels = np.array(labels)</span>
+        <span class="c1"># predictions = np.array(predictions)</span>
+        <span class="c1"># accuracy = len(set(labels) &amp; set(predictions)) / labels.shape[0]</span>
+        <span class="c1"># cal_num = 0</span>
+        <span class="c1"># for i in range(len(labels)):</span>
+        <span class="c1">#   if labels[i][0] == predictions.view(-1, 1)[i][0]:</span>
+        <span class="c1">#     cal_num += 1</span>
+        <span class="c1"># accuracy = cal_num / labels.shape[0]</span>
+        <span class="k">return</span> <span class="n">accuracy</span></div></div>
+
+
+<div class="viewcode-block" id="AccuracyMetric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.AccuracyMetric">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">AccuracyMetric</span><span class="p">(</span><span class="n">BaseMetric</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;accuracy_metric&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="AccuracyMetric.data_pre_process"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.AccuracyMetric.data_pre_process">[docs]</a>    <span class="k">def</span> <span class="nf">data_pre_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">labels_tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_to_tensor</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+        <span class="n">scores_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model_output</span><span class="p">[</span><span class="s1">&#39;scores&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">model_output</span> <span class="ow">in</span> <span class="n">model_outputs</span><span class="p">)</span>
+        <span class="n">scores_tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_to_tensor</span><span class="p">(</span><span class="n">scores_list</span><span class="p">)</span>
+
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">scores_tensor</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">scores_tensor</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">scores_tensor</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="p">(</span><span class="n">labels_tensor</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">labels_tensor</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">labels_tensor</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">flag</span> <span class="k">else</span> <span class="n">labels_tensor</span>
+
+        <span class="k">return</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span></div>
+
+<div class="viewcode-block" id="AccuracyMetric.calculate"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.AccuracyMetric.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predictions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">accuracy</span> <span class="o">=</span> <span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="n">predictions</span><span class="o">.</span><span class="n">square</span><span class="p">())</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">accuracy</span></div></div>
+
+
+<div class="viewcode-block" id="CaptionBleu4Metric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.CaptionBleu4Metric">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">CaptionBleu4Metric</span><span class="p">(</span><span class="n">BaseMetric</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;caption_bleu4_metric&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">nltk.translate.bleu_score</span> <span class="k">as</span> <span class="nn">bleu_score_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bleu_score_func</span> <span class="o">=</span> <span class="n">bleu_score_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_caption_processor</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="CaptionBleu4Metric.evaluate"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.CaptionBleu4Metric.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">references</span><span class="p">,</span> <span class="n">hypotheses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_pre_process</span><span class="p">(</span><span class="n">model_outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="n">bleu4_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">references</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bleu4_score</span></div>
+
+<div class="viewcode-block" id="CaptionBleu4Metric.data_pre_process"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.CaptionBleu4Metric.data_pre_process">[docs]</a>    <span class="k">def</span> <span class="nf">data_pre_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">labels</span><span class="p">,</span> <span class="n">model_outputs</span></div>
+
+<div class="viewcode-block" id="CaptionBleu4Metric.calculate"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.CaptionBleu4Metric.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">references</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">references</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">hypotheses</span><span class="p">)</span>
+        <span class="n">bleu4_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bleu_score_func</span><span class="o">.</span><span class="n">corpus_bleu</span><span class="p">(</span><span class="n">references</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bleu4_score</span></div></div>
+
+
+<div class="viewcode-block" id="VQAEvalAIAccuracyMetric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.VQAEvalAIAccuracyMetric">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">VQAEvalAIAccuracyMetric</span><span class="p">(</span><span class="n">BaseMetric</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;vqa_eval_ai_accuracy_metric&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">evalai_answer_processor</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># EvalAIAnswerProcessor()</span>
+
+<div class="viewcode-block" id="VQAEvalAIAccuracyMetric.data_pre_process"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.VQAEvalAIAccuracyMetric.data_pre_process">[docs]</a>    <span class="k">def</span> <span class="nf">data_pre_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="VQAEvalAIAccuracyMetric.calculate"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.VQAEvalAIAccuracyMetric.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predictions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="RecallAtK"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.RecallAtK">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">RecallAtK</span><span class="p">(</span><span class="n">BaseMetric</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;recall@k&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_k</span> <span class="o">=</span> <span class="n">top_k</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">top_k</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_k</span>
+
+    <span class="nd">@top_k</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">top_k</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_k</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_k</span> <span class="o">=</span> <span class="n">top_k</span>
+
+<div class="viewcode-block" id="RecallAtK.calculate"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.RecallAtK.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predictions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;k&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;kwargs have not k &#39;</span><span class="p">)</span>
+        <span class="n">ranks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ranks</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
+        <span class="n">recall</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">le</span><span class="p">(</span><span class="n">ranks</span><span class="p">,</span> <span class="n">k</span><span class="p">)))</span> <span class="o">/</span> <span class="n">ranks</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">recall</span></div>
+
+<div class="viewcode-block" id="RecallAtK.get_ranks"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.RecallAtK.get_ranks">[docs]</a>    <span class="k">def</span> <span class="nf">get_ranks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">ranks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_to_ranks</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+        <span class="n">gt_ranks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gt_ranks</span><span class="p">(</span><span class="n">ranks</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+        <span class="n">ranks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_ranks</span><span class="p">(</span><span class="n">gt_ranks</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ranks</span><span class="o">.</span><span class="n">float</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RecallAtK.score_to_ranks"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.RecallAtK.score_to_ranks">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">score_to_ranks</span><span class="p">(</span><span class="n">scores</span><span class="p">):</span>
+        <span class="c1"># sort in descending order - largest score gets highest rank</span>
+        <span class="n">sorted_ranks</span><span class="p">,</span> <span class="n">ranked_idx</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">descending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># convert from ranked_idx to ranks</span>
+        <span class="n">ranks</span> <span class="o">=</span> <span class="n">ranked_idx</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ranked_idx</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+                <span class="n">ranks</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">ranked_idx</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]]</span> <span class="o">=</span> <span class="n">j</span>
+        <span class="n">ranks</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">ranks</span></div>
+
+<div class="viewcode-block" id="RecallAtK.get_gt_ranks"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.RecallAtK.get_gt_ranks">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_gt_ranks</span><span class="p">(</span><span class="n">ranks</span><span class="p">,</span> <span class="n">ans_ind</span><span class="p">):</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">ans_ind</span> <span class="o">=</span> <span class="n">ans_ind</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">ans_ind</span> <span class="o">=</span> <span class="n">ans_ind</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">gt_ranks</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">(</span><span class="n">ans_ind</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ans_ind</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)):</span>
+            <span class="n">gt_ranks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ranks</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">ans_ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">long</span><span class="p">()])</span>
+        <span class="k">return</span> <span class="n">gt_ranks</span></div>
+
+<div class="viewcode-block" id="RecallAtK.data_pre_process"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.RecallAtK.data_pre_process">[docs]</a>    <span class="k">def</span> <span class="nf">data_pre_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_to_tensor</span><span class="p">(</span><span class="n">model_outputs</span><span class="p">[</span><span class="s1">&#39;scores&#39;</span><span class="p">])</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_to_tensor</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span></div></div>
+
+
+<div class="viewcode-block" id="RecallAt1"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.RecallAt1">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">RecallAt1</span><span class="p">(</span><span class="n">RecallAtK</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;r@1&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">top_k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RecallAt5"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.RecallAt5">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">RecallAt5</span><span class="p">(</span><span class="n">RecallAtK</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;r@5&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">top_k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RecallAt10"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.RecallAt10">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">RecallAt10</span><span class="p">(</span><span class="n">RecallAtK</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;r@10&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">top_k</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MeanRankMetric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.MeanRankMetric">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">MeanRankMetric</span><span class="p">(</span><span class="n">RecallAtK</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate MeanRank which specifies what was the average rank of the</span>
+<span class="sd">    chosen candidate.</span>
+
+<span class="sd">    **Key**: ``mean_rank``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;mean_rank&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MeanRankMetric.calculate"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.MeanRankMetric.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predictions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">ranks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ranks</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ranks</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MeanReciprocalRankMetric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.MeanReciprocalRankMetric">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">MeanReciprocalRankMetric</span><span class="p">(</span><span class="n">RecallAtK</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;mean_reciprocal_rank&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MeanReciprocalRankMetric.calculate"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.MeanReciprocalRankMetric.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predictions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">ranks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ranks</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ranks</span><span class="o">.</span><span class="n">reciprocal</span><span class="p">())</span></div></div>
+
+
+<div class="viewcode-block" id="TextVQAAccuracyMetric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.TextVQAAccuracyMetric">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">TextVQAAccuracyMetric</span><span class="p">(</span><span class="n">BaseMetric</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;text_vqa_accuracy_metric&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">mixk.utils.third_party_libs</span> <span class="kn">import</span> <span class="n">EvalAIAnswerProcessor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">answer_processor</span> <span class="o">=</span> <span class="n">EvalAIAnswerProcessor</span><span class="p">()</span>
+
+<div class="viewcode-block" id="TextVQAAccuracyMetric.calculate"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.TextVQAAccuracyMetric.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predictions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">pred_scores</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">pred_answer</span><span class="p">,</span> <span class="n">gt_answer</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+            <span class="n">pred_answer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">answer_processor</span><span class="p">(</span><span class="n">pred_answer</span><span class="p">)</span>
+            <span class="n">unique_answer_scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_answer_scores</span><span class="p">(</span><span class="n">gt_answer</span><span class="p">)</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">unique_answer_scores</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pred_answer</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+            <span class="n">pred_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+
+        <span class="n">accuracy</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">pred_scores</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">pred_scores</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">accuracy</span></div>
+
+    <span class="k">def</span> <span class="nf">_compute_answer_scores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_answers</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;compute the accuracy (soft score) of human answers.&quot;&quot;&quot;</span>
+        <span class="n">answers</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">answer_processor</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">raw_answers</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">answers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
+        <span class="n">gt_answers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">answers</span><span class="p">))</span>
+        <span class="n">unique_answers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">answers</span><span class="p">)</span>
+        <span class="n">unique_answer_scores</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">unique_answer</span> <span class="ow">in</span> <span class="n">unique_answers</span><span class="p">:</span>
+            <span class="n">accs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">gt_answer</span> <span class="ow">in</span> <span class="n">gt_answers</span><span class="p">:</span>
+                <span class="n">other_answers</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">gt_answers</span> <span class="k">if</span> <span class="n">item</span> <span class="o">!=</span> <span class="n">gt_answer</span><span class="p">]</span>
+                <span class="n">matching_answers</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">other_answers</span> <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">unique_answer</span><span class="p">]</span>
+                <span class="n">acc</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">matching_answers</span><span class="p">))</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span>
+                <span class="n">accs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
+            <span class="n">unique_answer_scores</span><span class="p">[</span><span class="n">unique_answer</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">accs</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">accs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">unique_answer_scores</span></div>
+
+
+<div class="viewcode-block" id="STVQA_ANLS_Metric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.STVQA_ANLS_Metric">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">STVQA_ANLS_Metric</span><span class="p">(</span><span class="n">TextVQAAccuracyMetric</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;stvqa_anls_metric&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="STVQAAccuracyMetric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.STVQAAccuracyMetric">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">STVQAAccuracyMetric</span><span class="p">(</span><span class="n">TextVQAAccuracyMetric</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;stvqa_accuracy_metric&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__int__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OCRVQAAccuracyMetric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.OCRVQAAccuracyMetric">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">OCRVQAAccuracyMetric</span><span class="p">(</span><span class="n">STVQAAccuracyMetric</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;ocrvqa_accuracy_metric&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__int__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TextCapsBleu4Metric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.TextCapsBleu4Metric">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">TextCapsBleu4Metric</span><span class="p">(</span><span class="n">TextVQAAccuracyMetric</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;textcaps_bleu4_metric&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="F1Metric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.F1Metric">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">F1Metric</span><span class="p">(</span><span class="n">BaseMetric</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;f1_metric&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="F1Metric.calculate"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.F1Metric.calculate">[docs]</a>    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predictions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="F1Metric.data_pre_process"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.F1Metric.data_pre_process">[docs]</a>    <span class="k">def</span> <span class="nf">data_pre_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="MacroF1Metric"><a class="viewcode-back" href="../../../sources/mixk.evaluation.html#mixk.evaluation.metric.MacroF1Metric">[docs]</a><span class="nd">@METRICS</span><span class="o">.</span><span class="n">register_module</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">MacroF1Metric</span><span class="p">(</span><span class="n">F1Metric</span><span class="p">):</span>
+    <span class="n">metric_name</span> <span class="o">=</span> <span class="s1">&#39;macro_f1_metric&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

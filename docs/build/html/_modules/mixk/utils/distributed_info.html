@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mixk.utils.distributed_info &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>mixk.utils.distributed_info</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for mixk.utils.distributed_info</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.distributed</span> <span class="k">as</span> <span class="nn">dist</span>
+
+<span class="n">_LOCAL_PROCESS_GROUP</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A torch process group which only includes processes that on the same machine as the current process.</span>
+<span class="sd">This variable is set when processes are spawned by `launch()` in &quot;engine/launch.py&quot;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">G_NCCL</span> <span class="o">=</span> <span class="s1">&#39;nccl&#39;</span>
+<span class="n">G_GLOO</span> <span class="o">=</span> <span class="s1">&#39;gloo&#39;</span>
+<span class="n">G_CUDA</span> <span class="o">=</span> <span class="s1">&#39;cuda&#39;</span>
+
+
+<div class="viewcode-block" id="DistributedStatus"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.distributed_info.DistributedStatus">[docs]</a><span class="k">class</span> <span class="nc">DistributedStatus</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">AVAILABLE</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">INITIALIZED</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">AVAILABLE_AND_INITIALIZED</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">NO_AVAILABLE_INITIALIZED</span> <span class="o">=</span> <span class="mi">4</span></div>
+
+
+<div class="viewcode-block" id="get_dist_status"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.distributed_info.get_dist_status">[docs]</a><span class="k">def</span> <span class="nf">get_dist_status</span><span class="p">():</span>
+    <span class="n">dist_package_status</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span>
+    <span class="n">pg_init_status</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">is_initialized</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">dist_package_status</span> <span class="ow">and</span> <span class="n">pg_init_status</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">DistributedStatus</span><span class="o">.</span><span class="n">AVAILABLE_AND_INITIALIZED</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dist_package_status</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">DistributedStatus</span><span class="o">.</span><span class="n">AVAILABLE</span>
+        <span class="k">elif</span> <span class="n">pg_init_status</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">DistributedStatus</span><span class="o">.</span><span class="n">INITIALIZED</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">DistributedStatus</span><span class="o">.</span><span class="n">NO_AVAILABLE_INITIALIZED</span></div>
+
+
+<div class="viewcode-block" id="get_world_size"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.distributed_info.get_world_size">[docs]</a><span class="k">def</span> <span class="nf">get_world_size</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">get_dist_status</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="n">DistributedStatus</span><span class="o">.</span><span class="n">AVAILABLE_AND_INITIALIZED</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="ow">in</span> <span class="p">(</span><span class="n">DistributedStatus</span><span class="o">.</span><span class="n">AVAILABLE</span><span class="p">,</span> <span class="n">DistributedStatus</span><span class="o">.</span><span class="n">INITIALIZED</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="get_rank"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.distributed_info.get_rank">[docs]</a><span class="k">def</span> <span class="nf">get_rank</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">get_dist_status</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="n">DistributedStatus</span><span class="o">.</span><span class="n">AVAILABLE_AND_INITIALIZED</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_rank</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="ow">in</span> <span class="p">(</span><span class="n">DistributedStatus</span><span class="o">.</span><span class="n">AVAILABLE</span><span class="p">,</span> <span class="n">DistributedStatus</span><span class="o">.</span><span class="n">INITIALIZED</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="get_local_rank"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.distributed_info.get_local_rank">[docs]</a><span class="k">def</span> <span class="nf">get_local_rank</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        The rank of the current process within the local (per-machine) process group.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">get_dist_status</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="ow">in</span> <span class="p">(</span><span class="n">DistributedStatus</span><span class="o">.</span><span class="n">AVAILABLE</span><span class="p">,</span> <span class="n">DistributedStatus</span><span class="o">.</span><span class="n">INITIALIZED</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="n">_LOCAL_PROCESS_GROUP</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="n">DistributedStatus</span><span class="o">.</span><span class="n">AVAILABLE_AND_INITIALIZED</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="n">_LOCAL_PROCESS_GROUP</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_local_size"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.distributed_info.get_local_size">[docs]</a><span class="k">def</span> <span class="nf">get_local_size</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        The size of the per-machine process group,</span>
+<span class="sd">          i.e. the number of processes per machine.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">get_dist_status</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="ow">in</span> <span class="p">(</span><span class="n">DistributedStatus</span><span class="o">.</span><span class="n">AVAILABLE</span><span class="p">,</span> <span class="n">DistributedStatus</span><span class="o">.</span><span class="n">INITIALIZED</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="n">_LOCAL_PROCESS_GROUP</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="n">DistributedStatus</span><span class="o">.</span><span class="n">AVAILABLE_AND_INITIALIZED</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="n">_LOCAL_PROCESS_GROUP</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="is_main_process"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.distributed_info.is_main_process">[docs]</a><span class="k">def</span> <span class="nf">is_main_process</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">get_rank</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="master_only_run"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.distributed_info.master_only_run">[docs]</a><span class="k">def</span> <span class="nf">master_only_run</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_main_process</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span></div>
+
+
+<div class="viewcode-block" id="synchronize"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.distributed_info.synchronize">[docs]</a><span class="k">def</span> <span class="nf">synchronize</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Helper function to synchronize (barrier) among all processes when using</span>
+<span class="sd">    distributed training.&quot;&quot;&quot;</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">get_dist_status</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="ow">in</span> <span class="p">(</span><span class="n">DistributedStatus</span><span class="o">.</span><span class="n">AVAILABLE</span><span class="p">,</span> <span class="n">DistributedStatus</span><span class="o">.</span><span class="n">INITIALIZED</span><span class="p">):</span>
+        <span class="k">return</span>
+    <span class="n">num_processes</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">num_processes</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dist</span><span class="o">.</span><span class="n">barrier</span><span class="p">()</span></div>
+
+
+<span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_get_global_gloo_group</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return a process group based on gloo backend, containing all the ranks</span>
+<span class="sd">    The result is cached.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span> <span class="o">==</span> <span class="n">G_NCCL</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dist</span><span class="o">.</span><span class="n">new_group</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">G_GLOO</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dist</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">WORLD</span>
+
+
+<span class="k">def</span> <span class="nf">_serialize_to_tensor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>  <span class="c1"># serialize2tensor -&gt; is_serialize</span>
+    <span class="n">backend</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">backend</span> <span class="ow">in</span> <span class="p">[</span><span class="n">G_GLOO</span><span class="p">,</span> <span class="n">G_NCCL</span><span class="p">]</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span> <span class="k">if</span> <span class="n">backend</span> <span class="ow">is</span> <span class="n">G_GLOO</span> <span class="k">else</span> <span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+    <span class="n">bytes_data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">b2s</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ByteStorage</span><span class="o">.</span><span class="n">from_buffer</span><span class="p">(</span><span class="n">bytes_data</span><span class="p">)</span>
+    <span class="n">s2t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ByteTensor</span><span class="p">(</span><span class="n">b2s</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">s2t</span>
+
+
+<span class="k">def</span> <span class="nf">_pad_to_largest_tensor</span><span class="p">(</span><span class="n">tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">          Returns:</span>
+<span class="sd">              list[int]: size of the tensor, on each rank</span>
+<span class="sd">              Tensor: padded tensor that has the max size</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">world_size</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">world_size</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;dist.gather/all_gather must be called from ranks with in the given group&#39;</span><span class="p">,</span> <span class="n">world_size</span><span class="p">)</span>
+
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">int64</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">device</span>
+    <span class="n">local_tensor_size</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">tensor</span><span class="o">.</span><span class="n">numel</span><span class="p">()],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">tensor_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">world_size</span><span class="p">)]</span>
+    <span class="n">dist</span><span class="o">.</span><span class="n">all_gather</span><span class="p">(</span><span class="n">tensor_sizes</span><span class="p">,</span> <span class="n">local_tensor_size</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
+    <span class="n">tensor_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">item</span><span class="p">())</span> <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">tensor_sizes</span><span class="p">]</span>
+    <span class="n">max_tensor_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">tensor_sizes</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">local_tensor_size</span> <span class="o">!=</span> <span class="n">max_tensor_size</span><span class="p">:</span>
+        <span class="n">pad_size</span> <span class="o">=</span> <span class="n">max_tensor_size</span> <span class="o">-</span> <span class="n">local_tensor_size</span>
+        <span class="n">pad</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">pad_size</span><span class="p">,</span> <span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">tensor</span><span class="p">,</span> <span class="n">pad</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tensor</span><span class="p">,</span> <span class="n">tensor_sizes</span>
+
+
+<div class="viewcode-block" id="is_single_processes"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.distributed_info.is_single_processes">[docs]</a><span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">is_single_processes</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">get_world_size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="n">_get_global_gloo_group</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="all_gather"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.distributed_info.all_gather">[docs]</a><span class="k">def</span> <span class="nf">all_gather</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Run all_gather on arbitrary picklable data (not necessarily tensors).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data: any picklable object</span>
+<span class="sd">        group: a torch process group. By default, will use a group which</span>
+<span class="sd">            contains all ranks on gloo backend.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[data]: list of data gathered from each rank</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">is_single_processes</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">data</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">group</span> <span class="o">=</span> <span class="n">_get_global_gloo_group</span><span class="p">()</span>
+
+    <span class="n">tensor</span> <span class="o">=</span> <span class="n">_serialize_to_tensor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span>
+    <span class="n">tensor</span><span class="p">,</span> <span class="n">tensor_sizes</span> <span class="o">=</span> <span class="n">_pad_to_largest_tensor</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span>
+    <span class="n">max_tensor_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">tensor_sizes</span><span class="p">)</span>
+    <span class="n">tensor_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">max_tensor_size</span><span class="p">,</span> <span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">tensor</span><span class="o">.</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tensor_sizes</span><span class="p">]</span>
+
+    <span class="n">dist</span><span class="o">.</span><span class="n">all_gather</span><span class="p">(</span><span class="n">tensor_list</span><span class="p">,</span> <span class="n">tensor</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
+    <span class="n">datum</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">length</span><span class="p">,</span> <span class="n">tensor</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tensor_sizes</span><span class="p">,</span> <span class="n">tensor_list</span><span class="p">):</span>
+        <span class="n">single_data</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
+        <span class="n">single_data</span> <span class="o">=</span> <span class="n">single_data</span><span class="p">[:</span><span class="n">length</span><span class="p">]</span>
+        <span class="n">datum</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">single_data</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">datum</span></div>
+
+
+<div class="viewcode-block" id="gather"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.distributed_info.gather">[docs]</a><span class="k">def</span> <span class="nf">gather</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dst_rank</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Run gather on arbitrary picklable data (not necessarily tensors).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data: any picklable object</span>
+<span class="sd">        dst (int): destination rank</span>
+<span class="sd">        group: a torch process group. By default, will use a group which</span>
+<span class="sd">            contains all ranks on gloo backend.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[data]: on dst, a list of data gathered from each rank. Otherwise,</span>
+<span class="sd">            an empty list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">is_single_processes</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">data</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">group</span> <span class="o">=</span> <span class="n">_get_global_gloo_group</span><span class="p">()</span>
+
+    <span class="n">tensor</span> <span class="o">=</span> <span class="n">_serialize_to_tensor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span>
+    <span class="n">tensor</span><span class="p">,</span> <span class="n">tensor_sizes</span> <span class="o">=</span> <span class="n">_pad_to_largest_tensor</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">)</span> <span class="o">==</span> <span class="n">dst_rank</span><span class="p">:</span>
+        <span class="n">max_tensor_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">tensor_sizes</span><span class="p">)</span>
+        <span class="n">tensor_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">max_tensor_size</span><span class="p">,</span> <span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">tensor</span><span class="o">.</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tensor_sizes</span><span class="p">]</span>
+        <span class="n">dist</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">tensor_list</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">dst_rank</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
+
+        <span class="n">datum</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">length</span><span class="p">,</span> <span class="n">tensor</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tensor_sizes</span><span class="p">,</span> <span class="n">tensor_list</span><span class="p">):</span>
+            <span class="n">single_data</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
+            <span class="n">single_data</span> <span class="o">=</span> <span class="n">single_data</span><span class="p">[:</span><span class="n">length</span><span class="p">]</span>
+            <span class="n">datum</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">single_data</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">datum</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dist</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">[],</span> <span class="n">dst</span><span class="o">=</span><span class="n">dst_rank</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="shared_random_seed"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.distributed_info.shared_random_seed">[docs]</a><span class="k">def</span> <span class="nf">shared_random_seed</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">31</span><span class="p">,</span> <span class="n">select_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns:</span>
+<span class="sd">      int: a random number that is the same across all workers.</span>
+<span class="sd">          If workers need a shared RNG, they can use this shared seed to</span>
+<span class="sd">          create one.</span>
+
+<span class="sd">    All workers must call this function, otherwise it will deadlock.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">random_ints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="p">)</span>
+    <span class="n">all_random_ints</span> <span class="o">=</span> <span class="n">all_gather</span><span class="p">(</span><span class="n">random_ints</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_random_ints</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">select_idx</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">all_random_ints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">all_random_ints</span><span class="p">[</span><span class="n">select_idx</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="reduce_dict"><a class="viewcode-back" href="../../../sources/mixk.utils.html#mixk.utils.distributed_info.reduce_dict">[docs]</a><span class="k">def</span> <span class="nf">reduce_dict</span><span class="p">(</span><span class="n">input_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">is_average</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Reduce the values in the dictionary from all processes so that process</span>
+<span class="sd">    with rank 0 has the reduced results.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_dict (dict): inputs to be reduced. All the values must be scalar CUDA Tensor.</span>
+<span class="sd">        is_average (bool): whether to do average or sum</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        a dict with the same keys as input_dict, after reduction.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">world_size</span> <span class="o">=</span> <span class="n">get_world_size</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">world_size</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">input_dict</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">input_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">dist</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_main_process</span><span class="p">()</span> <span class="ow">and</span> <span class="n">is_average</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">/=</span> <span class="n">world_size</span>
+        <span class="n">output_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">input_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">values</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="n">output_dict</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

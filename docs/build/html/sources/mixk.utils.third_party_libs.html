@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mixk.utils.third_party_libs package &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="mixk.utils package" href="mixk.utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getstart/model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="mixk.html">mixk package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="mixk.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mixk.data.html">mixk.data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.engine.html">mixk.engine package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.evaluation.html">mixk.evaluation package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.models.html">mixk.models package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mixk.solver.html">mixk.solver package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="mixk.utils.html">mixk.utils package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="mixk.utils.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#module-mixk.utils.Timer">mixk.utils.Timer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#module-mixk.utils.checkpoint">mixk.utils.checkpoint module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#module-mixk.utils.collect_running_env">mixk.utils.collect_running_env module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#module-mixk.utils.common_function">mixk.utils.common_function module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#mixk-utils-config-module">mixk.utils.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#module-mixk.utils.data_utils">mixk.utils.data_utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#mixk-utils-default-argument-module">mixk.utils.default_argument module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#module-mixk.utils.disable_ouput">mixk.utils.disable_ouput module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#module-mixk.utils.distributed_info">mixk.utils.distributed_info module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#module-mixk.utils.enable_ouput">mixk.utils.enable_ouput module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#module-mixk.utils.history_buffer">mixk.utils.history_buffer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#module-mixk.utils.imix_checkpoint">mixk.utils.imix_checkpoint module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#module-mixk.utils.launch">mixk.utils.launch module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#module-mixk.utils.logger">mixk.utils.logger module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#module-mixk.utils.modeling">mixk.utils.modeling module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#module-mixk.utils.registry">mixk.utils.registry module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mixk.utils.html#module-mixk.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.html#module-mixk.version">mixk.version module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixk.html#module-mixk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="mixk.html">mixk package</a> &raquo;</li>
+          <li><a href="mixk.utils.html">mixk.utils package</a> &raquo;</li>
+      <li>mixk.utils.third_party_libs package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/sources/mixk.utils.third_party_libs.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mixk-utils-third-party-libs-package">
+<h1>mixk.utils.third_party_libs package<a class="headerlink" href="#mixk-utils-third-party-libs-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-mixk.utils.third_party_libs.download">
+<span id="mixk-utils-third-party-libs-download-module"></span><h2>mixk.utils.third_party_libs.download module<a class="headerlink" href="#module-mixk.utils.third_party_libs.download" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.download.download">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.download.</span></span><span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/download.html#download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.download.download" title="Permalink to this definition"></a></dt>
+<dd><p>Download a file from a given URL to a directory. If file exists, will
+not overwrite the existing file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – </p></li>
+<li><p><strong>dir</strong> (<em>str</em>) – the directory to download the file</p></li>
+<li><p><strong>filename</strong> (<em>str</em><em> or </em><em>None</em>) – the basename to save the file.
+Will use the name in the URL if not given.</p></li>
+<li><p><strong>progress</strong> (<em>bool</em>) – whether to use tqdm to draw a progress bar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the path to the downloaded file or the existing one.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-mixk.utils.third_party_libs.eval_ai_answer_processor">
+<span id="mixk-utils-third-party-libs-eval-ai-answer-processor-module"></span><h2>mixk.utils.third_party_libs.eval_ai_answer_processor module<a class="headerlink" href="#module-mixk.utils.third_party_libs.eval_ai_answer_processor" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.eval_ai_answer_processor.</span></span><span class="sig-name descname"><span class="pre">EvalAIAnswerProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/eval_ai_answer_processor.html#EvalAIAnswerProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Processes an answer similar to Eval AI copied from <a class="reference external" href="https://github.com/fa">https://github.com/fa</a>
+cebookresearch/mmf/blob/c46b3b3391275b4181567db80943473a89ab98ab/pythia/tas
+ks/processors.py#L897.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.ARTICLES">
+<span class="sig-name descname"><span class="pre">ARTICLES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['a',</span> <span class="pre">'an',</span> <span class="pre">'the']</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.ARTICLES" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.COMMA_STRIP">
+<span class="sig-name descname"><span class="pre">COMMA_STRIP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('(?&lt;=\\d)(\\,)+(?=\\d)')</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.COMMA_STRIP" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.CONTRACTIONS">
+<span class="sig-name descname"><span class="pre">CONTRACTIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&quot;'ow'sat&quot;:</span> <span class="pre">&quot;'ow's'at&quot;,</span> <span class="pre">&quot;'ows'at&quot;:</span> <span class="pre">&quot;'ow's'at&quot;,</span> <span class="pre">&quot;I'dve&quot;:</span> <span class="pre">&quot;I'd've&quot;,</span> <span class="pre">&quot;Id've&quot;:</span> <span class="pre">&quot;I'd've&quot;,</span> <span class="pre">'Im':</span> <span class="pre">&quot;I'm&quot;,</span> <span class="pre">'Ive':</span> <span class="pre">&quot;I've&quot;,</span> <span class="pre">'aint':</span> <span class="pre">&quot;ain't&quot;,</span> <span class="pre">'arent':</span> <span class="pre">&quot;aren't&quot;,</span> <span class="pre">'cant':</span> <span class="pre">&quot;can't&quot;,</span> <span class="pre">&quot;couldn'tve&quot;:</span> <span class="pre">&quot;couldn't've&quot;,</span> <span class="pre">'couldnt':</span> <span class="pre">&quot;couldn't&quot;,</span> <span class="pre">&quot;couldnt've&quot;:</span> <span class="pre">&quot;couldn't've&quot;,</span> <span class="pre">'couldve':</span> <span class="pre">&quot;could've&quot;,</span> <span class="pre">'didnt':</span> <span class="pre">&quot;didn't&quot;,</span> <span class="pre">'doesnt':</span> <span class="pre">&quot;doesn't&quot;,</span> <span class="pre">'dont':</span> <span class="pre">&quot;don't&quot;,</span> <span class="pre">&quot;hadn'tve&quot;:</span> <span class="pre">&quot;hadn't've&quot;,</span> <span class="pre">'hadnt':</span> <span class="pre">&quot;hadn't&quot;,</span> <span class="pre">&quot;hadnt've&quot;:</span> <span class="pre">&quot;hadn't've&quot;,</span> <span class="pre">'hasnt':</span> <span class="pre">&quot;hasn't&quot;,</span> <span class="pre">'havent':</span> <span class="pre">&quot;haven't&quot;,</span> <span class="pre">&quot;he'dve&quot;:</span> <span class="pre">&quot;he'd've&quot;,</span> <span class="pre">'hed':</span> <span class="pre">&quot;he'd&quot;,</span> <span class="pre">&quot;hed've&quot;:</span> <span class="pre">&quot;he'd've&quot;,</span> <span class="pre">'hes':</span> <span class="pre">&quot;he's&quot;,</span> <span class="pre">'howd':</span> <span class="pre">&quot;how'd&quot;,</span> <span class="pre">'howll':</span> <span class="pre">&quot;how'll&quot;,</span> <span class="pre">'hows':</span> <span class="pre">&quot;how's&quot;,</span> <span class="pre">'isnt':</span> <span class="pre">&quot;isn't&quot;,</span> <span class="pre">&quot;it'dve&quot;:</span> <span class="pre">&quot;it'd've&quot;,</span> <span class="pre">'itd':</span> <span class="pre">&quot;it'd&quot;,</span> <span class="pre">&quot;itd've&quot;:</span> <span class="pre">&quot;it'd've&quot;,</span> <span class="pre">'itll':</span> <span class="pre">&quot;it'll&quot;,</span> <span class="pre">&quot;let's&quot;:</span> <span class="pre">&quot;let's&quot;,</span> <span class="pre">'maam':</span> <span class="pre">&quot;ma'am&quot;,</span> <span class="pre">&quot;mightn'tve&quot;:</span> <span class="pre">&quot;mightn't've&quot;,</span> <span class="pre">'mightnt':</span> <span class="pre">&quot;mightn't&quot;,</span> <span class="pre">&quot;mightnt've&quot;:</span> <span class="pre">&quot;mightn't've&quot;,</span> <span class="pre">'mightve':</span> <span class="pre">&quot;might've&quot;,</span> <span class="pre">'mustnt':</span> <span class="pre">&quot;mustn't&quot;,</span> <span class="pre">'mustve':</span> <span class="pre">&quot;must've&quot;,</span> <span class="pre">'neednt':</span> <span class="pre">&quot;needn't&quot;,</span> <span class="pre">'notve':</span> <span class="pre">&quot;not've&quot;,</span> <span class="pre">'oclock':</span> <span class="pre">&quot;o'clock&quot;,</span> <span class="pre">'oughtnt':</span> <span class="pre">&quot;oughtn't&quot;,</span> <span class="pre">&quot;ow's'at&quot;:</span> <span class="pre">&quot;'ow's'at&quot;,</span> <span class="pre">'shant':</span> <span class="pre">&quot;shan't&quot;,</span> <span class="pre">&quot;she'dve&quot;:</span> <span class="pre">&quot;she'd've&quot;,</span> <span class="pre">&quot;she's&quot;:</span> <span class="pre">&quot;she's&quot;,</span> <span class="pre">&quot;shed've&quot;:</span> <span class="pre">&quot;she'd've&quot;,</span> <span class="pre">&quot;shouldn'tve&quot;:</span> <span class="pre">&quot;shouldn't've&quot;,</span> <span class="pre">'shouldnt':</span> <span class="pre">&quot;shouldn't&quot;,</span> <span class="pre">&quot;shouldnt've&quot;:</span> <span class="pre">&quot;shouldn't've&quot;,</span> <span class="pre">'shouldve':</span> <span class="pre">&quot;should've&quot;,</span> <span class="pre">&quot;somebody'd&quot;:</span> <span class="pre">'somebodyd',</span> <span class="pre">&quot;somebody'dve&quot;:</span> <span class="pre">&quot;somebody'd've&quot;,</span> <span class="pre">&quot;somebodyd've&quot;:</span> <span class="pre">&quot;somebody'd've&quot;,</span> <span class="pre">'somebodyll':</span> <span class="pre">&quot;somebody'll&quot;,</span> <span class="pre">'somebodys':</span> <span class="pre">&quot;somebody's&quot;,</span> <span class="pre">&quot;someone'dve&quot;:</span> <span class="pre">&quot;someone'd've&quot;,</span> <span class="pre">'someoned':</span> <span class="pre">&quot;someone'd&quot;,</span> <span class="pre">&quot;someoned've&quot;:</span> <span class="pre">&quot;someone'd've&quot;,</span> <span class="pre">'someonell':</span> <span class="pre">&quot;someone'll&quot;,</span> <span class="pre">'someones':</span> <span class="pre">&quot;someone's&quot;,</span> <span class="pre">&quot;something'dve&quot;:</span> <span class="pre">&quot;something'd've&quot;,</span> <span class="pre">'somethingd':</span> <span class="pre">&quot;something'd&quot;,</span> <span class="pre">&quot;somethingd've&quot;:</span> <span class="pre">&quot;something'd've&quot;,</span> <span class="pre">'somethingll':</span> <span class="pre">&quot;something'll&quot;,</span> <span class="pre">'thats':</span> <span class="pre">&quot;that's&quot;,</span> <span class="pre">&quot;there'dve&quot;:</span> <span class="pre">&quot;there'd've&quot;,</span> <span class="pre">'thered':</span> <span class="pre">&quot;there'd&quot;,</span> <span class="pre">&quot;thered've&quot;:</span> <span class="pre">&quot;there'd've&quot;,</span> <span class="pre">'therere':</span> <span class="pre">&quot;there're&quot;,</span> <span class="pre">'theres':</span> <span class="pre">&quot;there's&quot;,</span> <span class="pre">&quot;they'dve&quot;:</span> <span class="pre">&quot;they'd've&quot;,</span> <span class="pre">'theyd':</span> <span class="pre">&quot;they'd&quot;,</span> <span class="pre">&quot;theyd've&quot;:</span> <span class="pre">&quot;they'd've&quot;,</span> <span class="pre">'theyll':</span> <span class="pre">&quot;they'll&quot;,</span> <span class="pre">'theyre':</span> <span class="pre">&quot;they're&quot;,</span> <span class="pre">'theyve':</span> <span class="pre">&quot;they've&quot;,</span> <span class="pre">'twas':</span> <span class="pre">&quot;'twas&quot;,</span> <span class="pre">'wasnt':</span> <span class="pre">&quot;wasn't&quot;,</span> <span class="pre">&quot;we'dve&quot;:</span> <span class="pre">&quot;we'd've&quot;,</span> <span class="pre">&quot;wed've&quot;:</span> <span class="pre">&quot;we'd've&quot;,</span> <span class="pre">'werent':</span> <span class="pre">&quot;weren't&quot;,</span> <span class="pre">'weve':</span> <span class="pre">&quot;we've&quot;,</span> <span class="pre">'whatll':</span> <span class="pre">&quot;what'll&quot;,</span> <span class="pre">'whatre':</span> <span class="pre">&quot;what're&quot;,</span> <span class="pre">'whats':</span> <span class="pre">&quot;what's&quot;,</span> <span class="pre">'whatve':</span> <span class="pre">&quot;what've&quot;,</span> <span class="pre">'whens':</span> <span class="pre">&quot;when's&quot;,</span> <span class="pre">'whered':</span> <span class="pre">&quot;where'd&quot;,</span> <span class="pre">'wheres':</span> <span class="pre">&quot;where's&quot;,</span> <span class="pre">'whereve':</span> <span class="pre">&quot;where've&quot;,</span> <span class="pre">&quot;who'dve&quot;:</span> <span class="pre">&quot;who'd've&quot;,</span> <span class="pre">'whod':</span> <span class="pre">&quot;who'd&quot;,</span> <span class="pre">&quot;whod've&quot;:</span> <span class="pre">&quot;who'd've&quot;,</span> <span class="pre">'wholl':</span> <span class="pre">&quot;who'll&quot;,</span> <span class="pre">'whos':</span> <span class="pre">&quot;who's&quot;,</span> <span class="pre">'whove':</span> <span class="pre">&quot;who've&quot;,</span> <span class="pre">'whyll':</span> <span class="pre">&quot;why'll&quot;,</span> <span class="pre">'whyre':</span> <span class="pre">&quot;why're&quot;,</span> <span class="pre">'whys':</span> <span class="pre">&quot;why's&quot;,</span> <span class="pre">'wont':</span> <span class="pre">&quot;won't&quot;,</span> <span class="pre">&quot;wouldn'tve&quot;:</span> <span class="pre">&quot;wouldn't've&quot;,</span> <span class="pre">'wouldnt':</span> <span class="pre">&quot;wouldn't&quot;,</span> <span class="pre">&quot;wouldnt've&quot;:</span> <span class="pre">&quot;wouldn't've&quot;,</span> <span class="pre">'wouldve':</span> <span class="pre">&quot;would've&quot;,</span> <span class="pre">&quot;y'all'dve&quot;:</span> <span class="pre">&quot;y'all'd've&quot;,</span> <span class="pre">&quot;y'alld've&quot;:</span> <span class="pre">&quot;y'all'd've&quot;,</span> <span class="pre">&quot;y'allll&quot;:</span> <span class="pre">&quot;y'all'll&quot;,</span> <span class="pre">'yall':</span> <span class="pre">&quot;y'all&quot;,</span> <span class="pre">&quot;yall'd've&quot;:</span> <span class="pre">&quot;y'all'd've&quot;,</span> <span class="pre">&quot;yall'll&quot;:</span> <span class="pre">&quot;y'all'll&quot;,</span> <span class="pre">&quot;you'dve&quot;:</span> <span class="pre">&quot;you'd've&quot;,</span> <span class="pre">'youd':</span> <span class="pre">&quot;you'd&quot;,</span> <span class="pre">&quot;youd've&quot;:</span> <span class="pre">&quot;you'd've&quot;,</span> <span class="pre">'youll':</span> <span class="pre">&quot;you'll&quot;,</span> <span class="pre">'youre':</span> <span class="pre">&quot;you're&quot;,</span> <span class="pre">'youve':</span> <span class="pre">&quot;you've&quot;}</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.CONTRACTIONS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.NUMBER_MAP">
+<span class="sig-name descname"><span class="pre">NUMBER_MAP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'eight':</span> <span class="pre">'8',</span> <span class="pre">'five':</span> <span class="pre">'5',</span> <span class="pre">'four':</span> <span class="pre">'4',</span> <span class="pre">'nine':</span> <span class="pre">'9',</span> <span class="pre">'none':</span> <span class="pre">'0',</span> <span class="pre">'one':</span> <span class="pre">'1',</span> <span class="pre">'seven':</span> <span class="pre">'7',</span> <span class="pre">'six':</span> <span class="pre">'6',</span> <span class="pre">'ten':</span> <span class="pre">'10',</span> <span class="pre">'three':</span> <span class="pre">'3',</span> <span class="pre">'two':</span> <span class="pre">'2',</span> <span class="pre">'zero':</span> <span class="pre">'0'}</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.NUMBER_MAP" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.PERIOD_STRIP">
+<span class="sig-name descname"><span class="pre">PERIOD_STRIP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('(?!&lt;=\\d)(\\.)(?!\\d)')</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.PERIOD_STRIP" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.PUNCTUATIONS">
+<span class="sig-name descname"><span class="pre">PUNCTUATIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[';',</span> <span class="pre">'/',</span> <span class="pre">'[',</span> <span class="pre">']',</span> <span class="pre">'&quot;',</span> <span class="pre">'{',</span> <span class="pre">'}',</span> <span class="pre">'(',</span> <span class="pre">')',</span> <span class="pre">'=',</span> <span class="pre">'+',</span> <span class="pre">'\\',</span> <span class="pre">'_',</span> <span class="pre">'-',</span> <span class="pre">'&gt;',</span> <span class="pre">'&lt;',</span> <span class="pre">'&#64;',</span> <span class="pre">'`',</span> <span class="pre">',',</span> <span class="pre">'?',</span> <span class="pre">'!']</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.PUNCTUATIONS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.process_digit_article">
+<span class="sig-name descname"><span class="pre">process_digit_article</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/eval_ai_answer_processor.html#EvalAIAnswerProcessor.process_digit_article"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.process_digit_article" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.process_punctuation">
+<span class="sig-name descname"><span class="pre">process_punctuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/eval_ai_answer_processor.html#EvalAIAnswerProcessor.process_punctuation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.process_punctuation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.word_tokenize">
+<span class="sig-name descname"><span class="pre">word_tokenize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/eval_ai_answer_processor.html#EvalAIAnswerProcessor.word_tokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.eval_ai_answer_processor.EvalAIAnswerProcessor.word_tokenize" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mixk.utils.third_party_libs.file_io">
+<span id="mixk-utils-third-party-libs-file-io-module"></span><h2>mixk.utils.third_party_libs.file_io module<a class="headerlink" href="#module-mixk.utils.third_party_libs.file_io" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.file_io.LazyPath">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.file_io.</span></span><span class="sig-name descname"><span class="pre">LazyPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#LazyPath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.file_io.LazyPath" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PathLike</span></code></p>
+<p>A path that’s lazily evaluated when it’s used.</p>
+<p>Users should be careful to not use it like a str, because
+it behaves differently from a str.
+Path manipulation functions in Python such as <cite>os.path.*</cite> all accept
+PathLike objects already.</p>
+<p>It can be materialized to a str using <cite>os.fspath</cite>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.file_io.PathManager">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.file_io.</span></span><span class="sig-name descname"><span class="pre">PathManager</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;mixk.utils.third_party_libs.file_io.PathManagerBase</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.file_io.PathManager" title="Permalink to this definition"></a></dt>
+<dd><p>A global PathManager.</p>
+<p>Any sufficiently complicated/important project should create their own
+PathManager instead of using the global PathManager, to avoid conflicts
+when multiple projects have conflicting PathHandlers.</p>
+<p>History: at first, PathManager is part of detectron2 <em>only</em>, and therefore
+does not consider cross-projects conflict issues. It is later used by more
+projects and moved to fvcore to faciliate more use across projects and lead
+to some conflicts.
+Now the class <cite>PathManagerBase</cite> is added to help create per-project path manager,
+and this global is still named “PathManager” to keep backward compatibility.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.file_io.file_lock">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.file_io.</span></span><span class="sig-name descname"><span class="pre">file_lock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#file_lock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.file_io.file_lock" title="Permalink to this definition"></a></dt>
+<dd><p>A file lock. Once entered, it is guaranteed that no one else holds the
+same lock. Others trying to enter the lock will block for 30 minutes and
+raise an exception.</p>
+<p>This is useful to make sure workers don’t cache files to the same location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – a path to be locked. This function will create a lock named
+<cite>path + “.lock”</cite></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>filename = “/path/to/file”
+with file_lock(filename):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>if not os.path.isfile(filename):</dt><dd><p>do_create_file()</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.file_io.get_cache_dir">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.file_io.</span></span><span class="sig-name descname"><span class="pre">get_cache_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#get_cache_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.file_io.get_cache_dir" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a default directory to cache static files (usually downloaded
+from Internet), if None is provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cache_dir</strong> (<em>None</em><em> or </em><em>str</em>) – if not None, will be returned as is.
+If None, returns the default cache directory as:</p></li>
+<li><p><strong>$FVCORE_CACHE</strong> (<em>1</em><em>)</em>) – </p></li>
+<li><p><strong>set</strong> (<em>if</em>) – </p></li>
+<li><p><strong>~/.torch/fvcore_cache</strong> (<em>2</em><em>) </em><em>otherwise</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-mixk.utils.third_party_libs.text">
+<span id="mixk-utils-third-party-libs-text-module"></span><h2>mixk.utils.third_party_libs.text module<a class="headerlink" href="#module-mixk.utils.third_party_libs.text" title="Permalink to this heading"></a></h2>
+<p>Text utils module contains implementations for various decoding strategies
+like Greedy, Beam Search and Nucleus Sampling.</p>
+<p>In your model’s config you can specify <code class="docutils literal notranslate"><span class="pre">inference</span></code> attribute to use these strategies
+in the following way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model_config</span><span class="p">:</span>
+    <span class="n">some_model</span><span class="p">:</span>
+        <span class="n">inference</span><span class="p">:</span>
+            <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">greedy</span>
+            <span class="o">-</span> <span class="n">params</span><span class="p">:</span> <span class="p">{}</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.BeamSearch">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.text.</span></span><span class="sig-name descname"><span class="pre">BeamSearch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vocab</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#BeamSearch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.BeamSearch" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.utils.third_party_libs.text.TextDecoder" title="mixk.utils.third_party_libs.text.TextDecoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextDecoder</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.BeamSearch.decode">
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#BeamSearch.decode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.BeamSearch.decode" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.BeamSearch.get_result">
+<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#BeamSearch.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.BeamSearch.get_result" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.BeamSearch.init_batch">
+<span class="sig-name descname"><span class="pre">init_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#BeamSearch.init_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.BeamSearch.init_batch" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.NucleusSampling">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.text.</span></span><span class="sig-name descname"><span class="pre">NucleusSampling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vocab</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#NucleusSampling"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.NucleusSampling" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.utils.third_party_libs.text.TextDecoder" title="mixk.utils.third_party_libs.text.TextDecoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextDecoder</span></code></a></p>
+<p>Nucleus Sampling is a new text decoding strategy that avoids likelihood
+maximization. Rather, it works by sampling from the smallest set of top
+tokens which have a cumulative probability greater than a specified
+threshold.</p>
+<p>Present text decoding strategies like beam search do not work well on open-ended
+generation tasks (even on strong language models like GPT-2). They tend to repeat
+text a lot and the main reason behind it is that they try to maximize likelihood,
+which is a contrast from human-generated text which has a mix of high and low
+probability tokens.</p>
+<p>Nucleus Sampling is a stochastic approach and resolves this issue. Moreover,
+it improves upon other stochastic methods like top-k sampling by choosing the
+right amount of tokens to sample from. The overall result is better text
+generation on the same language model.</p>
+<p>Link to the paper introducing Nucleus Sampling (Section 6) -
+<a class="reference external" href="https://arxiv.org/pdf/1904.09751.pdf">https://arxiv.org/pdf/1904.09751.pdf</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vocab</strong> (<em>list</em>) – Collection of all words in vocabulary.</p></li>
+<li><p><strong>sum_threshold</strong> (<em>float</em>) – Ceiling of sum of probabilities of tokens to
+sample from.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.NucleusSampling.decode">
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#NucleusSampling.decode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.NucleusSampling.decode" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.NucleusSampling.get_result">
+<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#NucleusSampling.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.NucleusSampling.get_result" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.TextDecoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.text.</span></span><span class="sig-name descname"><span class="pre">TextDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vocab</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#TextDecoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.TextDecoder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class to be inherited by all decoding strategies. Contains
+implementations that are common for all strategies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vocab</strong> (<em>list</em>) – Collection of all words in vocabulary.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.TextDecoder.add_next_word">
+<span class="sig-name descname"><span class="pre">add_next_word</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seqs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prev_word_inds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_word_inds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#TextDecoder.add_next_word"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.TextDecoder.add_next_word" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.TextDecoder.find_complete_inds">
+<span class="sig-name descname"><span class="pre">find_complete_inds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">next_word_inds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#TextDecoder.find_complete_inds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.TextDecoder.find_complete_inds" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.TextDecoder.init_batch">
+<span class="sig-name descname"><span class="pre">init_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#TextDecoder.init_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.TextDecoder.init_batch" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.TextDecoder.update_data">
+<span class="sig-name descname"><span class="pre">update_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prev_word_inds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_word_inds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incomplete_inds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#TextDecoder.update_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.TextDecoder.update_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabDict">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.text.</span></span><span class="sig-name descname"><span class="pre">VocabDict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vocab_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabDict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabDict" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabDict.END_TOKEN">
+<span class="sig-name descname"><span class="pre">END_TOKEN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;/s&gt;'</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabDict.END_TOKEN" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabDict.EOS_INDEX">
+<span class="sig-name descname"><span class="pre">EOS_INDEX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabDict.EOS_INDEX" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabDict.PAD_INDEX">
+<span class="sig-name descname"><span class="pre">PAD_INDEX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabDict.PAD_INDEX" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabDict.PAD_TOKEN">
+<span class="sig-name descname"><span class="pre">PAD_TOKEN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;pad&gt;'</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabDict.PAD_TOKEN" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabDict.SOS_INDEX">
+<span class="sig-name descname"><span class="pre">SOS_INDEX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabDict.SOS_INDEX" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabDict.START_TOKEN">
+<span class="sig-name descname"><span class="pre">START_TOKEN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;s&gt;'</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabDict.START_TOKEN" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabDict.UNK_INDEX">
+<span class="sig-name descname"><span class="pre">UNK_INDEX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabDict.UNK_INDEX" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabDict.UNK_TOKEN">
+<span class="sig-name descname"><span class="pre">UNK_TOKEN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;unk&gt;'</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabDict.UNK_TOKEN" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabDict.get_size">
+<span class="sig-name descname"><span class="pre">get_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabDict.get_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabDict.get_size" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabDict.get_unk_index">
+<span class="sig-name descname"><span class="pre">get_unk_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabDict.get_unk_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabDict.get_unk_index" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabDict.get_unk_token">
+<span class="sig-name descname"><span class="pre">get_unk_token</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabDict.get_unk_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabDict.get_unk_token" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabDict.idx2word">
+<span class="sig-name descname"><span class="pre">idx2word</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_w</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabDict.idx2word"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabDict.idx2word" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabDict.tokenize_and_index">
+<span class="sig-name descname"><span class="pre">tokenize_and_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentence</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabDict.tokenize_and_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabDict.tokenize_and_index" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabDict.word2idx">
+<span class="sig-name descname"><span class="pre">word2idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabDict.word2idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabDict.word2idx" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabFromText">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.text.</span></span><span class="sig-name descname"><span class="pre">VocabFromText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentences</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">re.compile('(\\W+)')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_unk_extra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabFromText"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabFromText" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.utils.third_party_libs.text.VocabDict" title="mixk.utils.third_party_libs.text.VocabDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">VocabDict</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.VocabFromText.DEFAULT_TOKENS">
+<span class="sig-name descname"><span class="pre">DEFAULT_TOKENS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['&lt;pad&gt;',</span> <span class="pre">'&lt;unk&gt;',</span> <span class="pre">'&lt;s&gt;',</span> <span class="pre">'&lt;/s&gt;']</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.text.VocabFromText.DEFAULT_TOKENS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.generate_ngrams">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.text.</span></span><span class="sig-name descname"><span class="pre">generate_ngrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#generate_ngrams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.generate_ngrams" title="Permalink to this definition"></a></dt>
+<dd><p>Generate ngrams for particular ‘n’ from a list of tokens.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tokens</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of tokens for which the ngram are to be generated</p></li>
+<li><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – n for which ngrams are to be generated. Defaults to 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of ngrams generated.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.generate_ngrams_range">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.text.</span></span><span class="sig-name descname"><span class="pre">generate_ngrams_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ngram_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1,</span> <span class="pre">3)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#generate_ngrams_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.generate_ngrams_range" title="Permalink to this definition"></a></dt>
+<dd><p>Generates and returns a list of ngrams for all n present in ngram_range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tokens</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of string tokens for which ngram are to be generated</p></li>
+<li><p><strong>ngram_range</strong> (<em>List</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – List of ‘n’ for which ngrams are to be
+generated. For e.g. if ngram_range = (1, 4) then it will returns
+1grams, 2grams and 3grams. Defaults to (1, 3).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of ngrams for each n in ngram_range</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.load_str_list">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.text.</span></span><span class="sig-name descname"><span class="pre">load_str_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#load_str_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.load_str_list" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.tokenize">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.text.</span></span><span class="sig-name descname"><span class="pre">tokenize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">re.compile('(\\W+)')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#tokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.tokenize" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.text.word_tokenize">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.text.</span></span><span class="sig-name descname"><span class="pre">word_tokenize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#word_tokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.text.word_tokenize" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-mixk.utils.third_party_libs.visdial_metrics">
+<span id="mixk-utils-third-party-libs-visdial-metrics-module"></span><h2>mixk.utils.third_party_libs.visdial_metrics module<a class="headerlink" href="#module-mixk.utils.third_party_libs.visdial_metrics" title="Permalink to this heading"></a></h2>
+<p>A Metric observes output of certain model, for example, in form of logits or
+scores, and accumulates a particular metric with reference to some provided
+targets. In context of VisDial, we use Recall (&#64; 1, 5, 10), Mean Rank, Mean
+Reciprocal Rank (MRR) and Normalized Discounted Cumulative Gain (NDCG).</p>
+<dl class="simple">
+<dt>Each <code class="docutils literal notranslate"><span class="pre">Metric</span></code> must atleast implement three methods:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">observe</span></code>, update accumulated metric with currently observed outputs
+and targets.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">retrieve</span></code> to return the accumulated metric., an optionally reset
+internally accumulated metric (this is commonly done between two epochs
+after validation).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reset</span></code> to explicitly reset the internally accumulated metric.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Caveat, if you wish to implement your own class of Metric, make sure you call
+<code class="docutils literal notranslate"><span class="pre">detach</span></code> on output tensors (like logits), else it will cause memory leaks.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.visdial_metrics.NDCG">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.visdial_metrics.</span></span><span class="sig-name descname"><span class="pre">NDCG</span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/visdial_metrics.html#NDCG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.visdial_metrics.NDCG" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.visdial_metrics.NDCG.observe">
+<span class="sig-name descname"><span class="pre">observe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicted_scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_relevance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/visdial_metrics.html#NDCG.observe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.visdial_metrics.NDCG.observe" title="Permalink to this definition"></a></dt>
+<dd><p>Observe model output scores and target ground truth relevance and
+accumulate NDCG metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predicted_scores</strong> (<em>torch.Tensor</em>) – A tensor of shape (batch_size, num_options), because dense
+annotations are available for 1 randomly picked round out of 10.</p></li>
+<li><p><strong>target_relevance</strong> (<em>torch.Tensor</em>) – A tensor of shape same as predicted scores, indicating ground truth
+relevance of each answer option for a particular round.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.visdial_metrics.NDCG.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/visdial_metrics.html#NDCG.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.visdial_metrics.NDCG.reset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.visdial_metrics.NDCG.retrieve">
+<span class="sig-name descname"><span class="pre">retrieve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/visdial_metrics.html#NDCG.retrieve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.visdial_metrics.NDCG.retrieve" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.visdial_metrics.SparseGTMetrics">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.visdial_metrics.</span></span><span class="sig-name descname"><span class="pre">SparseGTMetrics</span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/visdial_metrics.html#SparseGTMetrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.visdial_metrics.SparseGTMetrics" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to accumulate all metrics with sparse ground truth annotations.</p>
+<p>These include Recall (&#64; 1, 5, 10), Mean Rank and Mean Reciprocal Rank.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.visdial_metrics.SparseGTMetrics.observe">
+<span class="sig-name descname"><span class="pre">observe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicted_scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_ranks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/visdial_metrics.html#SparseGTMetrics.observe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.visdial_metrics.SparseGTMetrics.observe" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.visdial_metrics.SparseGTMetrics.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/visdial_metrics.html#SparseGTMetrics.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.visdial_metrics.SparseGTMetrics.reset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.visdial_metrics.SparseGTMetrics.retrieve">
+<span class="sig-name descname"><span class="pre">retrieve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/visdial_metrics.html#SparseGTMetrics.retrieve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.visdial_metrics.SparseGTMetrics.retrieve" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.visdial_metrics.scores_to_ranks">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.visdial_metrics.</span></span><span class="sig-name descname"><span class="pre">scores_to_ranks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/visdial_metrics.html#scores_to_ranks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.visdial_metrics.scores_to_ranks" title="Permalink to this definition"></a></dt>
+<dd><p>Convert model output scores into ranks.</p>
+</dd></dl>
+
+</section>
+<section id="module-mixk.utils.third_party_libs">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mixk.utils.third_party_libs" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.BeamSearch">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.</span></span><span class="sig-name descname"><span class="pre">BeamSearch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vocab</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#BeamSearch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.BeamSearch" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.utils.third_party_libs.text.TextDecoder" title="mixk.utils.third_party_libs.text.TextDecoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextDecoder</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.BeamSearch.decode">
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#BeamSearch.decode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.BeamSearch.decode" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.BeamSearch.get_result">
+<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#BeamSearch.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.BeamSearch.get_result" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.BeamSearch.init_batch">
+<span class="sig-name descname"><span class="pre">init_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#BeamSearch.init_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.BeamSearch.init_batch" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.EvalAIAnswerProcessor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.</span></span><span class="sig-name descname"><span class="pre">EvalAIAnswerProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/eval_ai_answer_processor.html#EvalAIAnswerProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.EvalAIAnswerProcessor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Processes an answer similar to Eval AI copied from <a class="reference external" href="https://github.com/fa">https://github.com/fa</a>
+cebookresearch/mmf/blob/c46b3b3391275b4181567db80943473a89ab98ab/pythia/tas
+ks/processors.py#L897.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.EvalAIAnswerProcessor.ARTICLES">
+<span class="sig-name descname"><span class="pre">ARTICLES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['a',</span> <span class="pre">'an',</span> <span class="pre">'the']</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.EvalAIAnswerProcessor.ARTICLES" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.EvalAIAnswerProcessor.COMMA_STRIP">
+<span class="sig-name descname"><span class="pre">COMMA_STRIP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('(?&lt;=\\d)(\\,)+(?=\\d)')</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.EvalAIAnswerProcessor.COMMA_STRIP" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.EvalAIAnswerProcessor.CONTRACTIONS">
+<span class="sig-name descname"><span class="pre">CONTRACTIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&quot;'ow'sat&quot;:</span> <span class="pre">&quot;'ow's'at&quot;,</span> <span class="pre">&quot;'ows'at&quot;:</span> <span class="pre">&quot;'ow's'at&quot;,</span> <span class="pre">&quot;I'dve&quot;:</span> <span class="pre">&quot;I'd've&quot;,</span> <span class="pre">&quot;Id've&quot;:</span> <span class="pre">&quot;I'd've&quot;,</span> <span class="pre">'Im':</span> <span class="pre">&quot;I'm&quot;,</span> <span class="pre">'Ive':</span> <span class="pre">&quot;I've&quot;,</span> <span class="pre">'aint':</span> <span class="pre">&quot;ain't&quot;,</span> <span class="pre">'arent':</span> <span class="pre">&quot;aren't&quot;,</span> <span class="pre">'cant':</span> <span class="pre">&quot;can't&quot;,</span> <span class="pre">&quot;couldn'tve&quot;:</span> <span class="pre">&quot;couldn't've&quot;,</span> <span class="pre">'couldnt':</span> <span class="pre">&quot;couldn't&quot;,</span> <span class="pre">&quot;couldnt've&quot;:</span> <span class="pre">&quot;couldn't've&quot;,</span> <span class="pre">'couldve':</span> <span class="pre">&quot;could've&quot;,</span> <span class="pre">'didnt':</span> <span class="pre">&quot;didn't&quot;,</span> <span class="pre">'doesnt':</span> <span class="pre">&quot;doesn't&quot;,</span> <span class="pre">'dont':</span> <span class="pre">&quot;don't&quot;,</span> <span class="pre">&quot;hadn'tve&quot;:</span> <span class="pre">&quot;hadn't've&quot;,</span> <span class="pre">'hadnt':</span> <span class="pre">&quot;hadn't&quot;,</span> <span class="pre">&quot;hadnt've&quot;:</span> <span class="pre">&quot;hadn't've&quot;,</span> <span class="pre">'hasnt':</span> <span class="pre">&quot;hasn't&quot;,</span> <span class="pre">'havent':</span> <span class="pre">&quot;haven't&quot;,</span> <span class="pre">&quot;he'dve&quot;:</span> <span class="pre">&quot;he'd've&quot;,</span> <span class="pre">'hed':</span> <span class="pre">&quot;he'd&quot;,</span> <span class="pre">&quot;hed've&quot;:</span> <span class="pre">&quot;he'd've&quot;,</span> <span class="pre">'hes':</span> <span class="pre">&quot;he's&quot;,</span> <span class="pre">'howd':</span> <span class="pre">&quot;how'd&quot;,</span> <span class="pre">'howll':</span> <span class="pre">&quot;how'll&quot;,</span> <span class="pre">'hows':</span> <span class="pre">&quot;how's&quot;,</span> <span class="pre">'isnt':</span> <span class="pre">&quot;isn't&quot;,</span> <span class="pre">&quot;it'dve&quot;:</span> <span class="pre">&quot;it'd've&quot;,</span> <span class="pre">'itd':</span> <span class="pre">&quot;it'd&quot;,</span> <span class="pre">&quot;itd've&quot;:</span> <span class="pre">&quot;it'd've&quot;,</span> <span class="pre">'itll':</span> <span class="pre">&quot;it'll&quot;,</span> <span class="pre">&quot;let's&quot;:</span> <span class="pre">&quot;let's&quot;,</span> <span class="pre">'maam':</span> <span class="pre">&quot;ma'am&quot;,</span> <span class="pre">&quot;mightn'tve&quot;:</span> <span class="pre">&quot;mightn't've&quot;,</span> <span class="pre">'mightnt':</span> <span class="pre">&quot;mightn't&quot;,</span> <span class="pre">&quot;mightnt've&quot;:</span> <span class="pre">&quot;mightn't've&quot;,</span> <span class="pre">'mightve':</span> <span class="pre">&quot;might've&quot;,</span> <span class="pre">'mustnt':</span> <span class="pre">&quot;mustn't&quot;,</span> <span class="pre">'mustve':</span> <span class="pre">&quot;must've&quot;,</span> <span class="pre">'neednt':</span> <span class="pre">&quot;needn't&quot;,</span> <span class="pre">'notve':</span> <span class="pre">&quot;not've&quot;,</span> <span class="pre">'oclock':</span> <span class="pre">&quot;o'clock&quot;,</span> <span class="pre">'oughtnt':</span> <span class="pre">&quot;oughtn't&quot;,</span> <span class="pre">&quot;ow's'at&quot;:</span> <span class="pre">&quot;'ow's'at&quot;,</span> <span class="pre">'shant':</span> <span class="pre">&quot;shan't&quot;,</span> <span class="pre">&quot;she'dve&quot;:</span> <span class="pre">&quot;she'd've&quot;,</span> <span class="pre">&quot;she's&quot;:</span> <span class="pre">&quot;she's&quot;,</span> <span class="pre">&quot;shed've&quot;:</span> <span class="pre">&quot;she'd've&quot;,</span> <span class="pre">&quot;shouldn'tve&quot;:</span> <span class="pre">&quot;shouldn't've&quot;,</span> <span class="pre">'shouldnt':</span> <span class="pre">&quot;shouldn't&quot;,</span> <span class="pre">&quot;shouldnt've&quot;:</span> <span class="pre">&quot;shouldn't've&quot;,</span> <span class="pre">'shouldve':</span> <span class="pre">&quot;should've&quot;,</span> <span class="pre">&quot;somebody'd&quot;:</span> <span class="pre">'somebodyd',</span> <span class="pre">&quot;somebody'dve&quot;:</span> <span class="pre">&quot;somebody'd've&quot;,</span> <span class="pre">&quot;somebodyd've&quot;:</span> <span class="pre">&quot;somebody'd've&quot;,</span> <span class="pre">'somebodyll':</span> <span class="pre">&quot;somebody'll&quot;,</span> <span class="pre">'somebodys':</span> <span class="pre">&quot;somebody's&quot;,</span> <span class="pre">&quot;someone'dve&quot;:</span> <span class="pre">&quot;someone'd've&quot;,</span> <span class="pre">'someoned':</span> <span class="pre">&quot;someone'd&quot;,</span> <span class="pre">&quot;someoned've&quot;:</span> <span class="pre">&quot;someone'd've&quot;,</span> <span class="pre">'someonell':</span> <span class="pre">&quot;someone'll&quot;,</span> <span class="pre">'someones':</span> <span class="pre">&quot;someone's&quot;,</span> <span class="pre">&quot;something'dve&quot;:</span> <span class="pre">&quot;something'd've&quot;,</span> <span class="pre">'somethingd':</span> <span class="pre">&quot;something'd&quot;,</span> <span class="pre">&quot;somethingd've&quot;:</span> <span class="pre">&quot;something'd've&quot;,</span> <span class="pre">'somethingll':</span> <span class="pre">&quot;something'll&quot;,</span> <span class="pre">'thats':</span> <span class="pre">&quot;that's&quot;,</span> <span class="pre">&quot;there'dve&quot;:</span> <span class="pre">&quot;there'd've&quot;,</span> <span class="pre">'thered':</span> <span class="pre">&quot;there'd&quot;,</span> <span class="pre">&quot;thered've&quot;:</span> <span class="pre">&quot;there'd've&quot;,</span> <span class="pre">'therere':</span> <span class="pre">&quot;there're&quot;,</span> <span class="pre">'theres':</span> <span class="pre">&quot;there's&quot;,</span> <span class="pre">&quot;they'dve&quot;:</span> <span class="pre">&quot;they'd've&quot;,</span> <span class="pre">'theyd':</span> <span class="pre">&quot;they'd&quot;,</span> <span class="pre">&quot;theyd've&quot;:</span> <span class="pre">&quot;they'd've&quot;,</span> <span class="pre">'theyll':</span> <span class="pre">&quot;they'll&quot;,</span> <span class="pre">'theyre':</span> <span class="pre">&quot;they're&quot;,</span> <span class="pre">'theyve':</span> <span class="pre">&quot;they've&quot;,</span> <span class="pre">'twas':</span> <span class="pre">&quot;'twas&quot;,</span> <span class="pre">'wasnt':</span> <span class="pre">&quot;wasn't&quot;,</span> <span class="pre">&quot;we'dve&quot;:</span> <span class="pre">&quot;we'd've&quot;,</span> <span class="pre">&quot;wed've&quot;:</span> <span class="pre">&quot;we'd've&quot;,</span> <span class="pre">'werent':</span> <span class="pre">&quot;weren't&quot;,</span> <span class="pre">'weve':</span> <span class="pre">&quot;we've&quot;,</span> <span class="pre">'whatll':</span> <span class="pre">&quot;what'll&quot;,</span> <span class="pre">'whatre':</span> <span class="pre">&quot;what're&quot;,</span> <span class="pre">'whats':</span> <span class="pre">&quot;what's&quot;,</span> <span class="pre">'whatve':</span> <span class="pre">&quot;what've&quot;,</span> <span class="pre">'whens':</span> <span class="pre">&quot;when's&quot;,</span> <span class="pre">'whered':</span> <span class="pre">&quot;where'd&quot;,</span> <span class="pre">'wheres':</span> <span class="pre">&quot;where's&quot;,</span> <span class="pre">'whereve':</span> <span class="pre">&quot;where've&quot;,</span> <span class="pre">&quot;who'dve&quot;:</span> <span class="pre">&quot;who'd've&quot;,</span> <span class="pre">'whod':</span> <span class="pre">&quot;who'd&quot;,</span> <span class="pre">&quot;whod've&quot;:</span> <span class="pre">&quot;who'd've&quot;,</span> <span class="pre">'wholl':</span> <span class="pre">&quot;who'll&quot;,</span> <span class="pre">'whos':</span> <span class="pre">&quot;who's&quot;,</span> <span class="pre">'whove':</span> <span class="pre">&quot;who've&quot;,</span> <span class="pre">'whyll':</span> <span class="pre">&quot;why'll&quot;,</span> <span class="pre">'whyre':</span> <span class="pre">&quot;why're&quot;,</span> <span class="pre">'whys':</span> <span class="pre">&quot;why's&quot;,</span> <span class="pre">'wont':</span> <span class="pre">&quot;won't&quot;,</span> <span class="pre">&quot;wouldn'tve&quot;:</span> <span class="pre">&quot;wouldn't've&quot;,</span> <span class="pre">'wouldnt':</span> <span class="pre">&quot;wouldn't&quot;,</span> <span class="pre">&quot;wouldnt've&quot;:</span> <span class="pre">&quot;wouldn't've&quot;,</span> <span class="pre">'wouldve':</span> <span class="pre">&quot;would've&quot;,</span> <span class="pre">&quot;y'all'dve&quot;:</span> <span class="pre">&quot;y'all'd've&quot;,</span> <span class="pre">&quot;y'alld've&quot;:</span> <span class="pre">&quot;y'all'd've&quot;,</span> <span class="pre">&quot;y'allll&quot;:</span> <span class="pre">&quot;y'all'll&quot;,</span> <span class="pre">'yall':</span> <span class="pre">&quot;y'all&quot;,</span> <span class="pre">&quot;yall'd've&quot;:</span> <span class="pre">&quot;y'all'd've&quot;,</span> <span class="pre">&quot;yall'll&quot;:</span> <span class="pre">&quot;y'all'll&quot;,</span> <span class="pre">&quot;you'dve&quot;:</span> <span class="pre">&quot;you'd've&quot;,</span> <span class="pre">'youd':</span> <span class="pre">&quot;you'd&quot;,</span> <span class="pre">&quot;youd've&quot;:</span> <span class="pre">&quot;you'd've&quot;,</span> <span class="pre">'youll':</span> <span class="pre">&quot;you'll&quot;,</span> <span class="pre">'youre':</span> <span class="pre">&quot;you're&quot;,</span> <span class="pre">'youve':</span> <span class="pre">&quot;you've&quot;}</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.EvalAIAnswerProcessor.CONTRACTIONS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.EvalAIAnswerProcessor.NUMBER_MAP">
+<span class="sig-name descname"><span class="pre">NUMBER_MAP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'eight':</span> <span class="pre">'8',</span> <span class="pre">'five':</span> <span class="pre">'5',</span> <span class="pre">'four':</span> <span class="pre">'4',</span> <span class="pre">'nine':</span> <span class="pre">'9',</span> <span class="pre">'none':</span> <span class="pre">'0',</span> <span class="pre">'one':</span> <span class="pre">'1',</span> <span class="pre">'seven':</span> <span class="pre">'7',</span> <span class="pre">'six':</span> <span class="pre">'6',</span> <span class="pre">'ten':</span> <span class="pre">'10',</span> <span class="pre">'three':</span> <span class="pre">'3',</span> <span class="pre">'two':</span> <span class="pre">'2',</span> <span class="pre">'zero':</span> <span class="pre">'0'}</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.EvalAIAnswerProcessor.NUMBER_MAP" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.EvalAIAnswerProcessor.PERIOD_STRIP">
+<span class="sig-name descname"><span class="pre">PERIOD_STRIP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('(?!&lt;=\\d)(\\.)(?!\\d)')</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.EvalAIAnswerProcessor.PERIOD_STRIP" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.EvalAIAnswerProcessor.PUNCTUATIONS">
+<span class="sig-name descname"><span class="pre">PUNCTUATIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[';',</span> <span class="pre">'/',</span> <span class="pre">'[',</span> <span class="pre">']',</span> <span class="pre">'&quot;',</span> <span class="pre">'{',</span> <span class="pre">'}',</span> <span class="pre">'(',</span> <span class="pre">')',</span> <span class="pre">'=',</span> <span class="pre">'+',</span> <span class="pre">'\\',</span> <span class="pre">'_',</span> <span class="pre">'-',</span> <span class="pre">'&gt;',</span> <span class="pre">'&lt;',</span> <span class="pre">'&#64;',</span> <span class="pre">'`',</span> <span class="pre">',',</span> <span class="pre">'?',</span> <span class="pre">'!']</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.EvalAIAnswerProcessor.PUNCTUATIONS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.EvalAIAnswerProcessor.process_digit_article">
+<span class="sig-name descname"><span class="pre">process_digit_article</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/eval_ai_answer_processor.html#EvalAIAnswerProcessor.process_digit_article"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.EvalAIAnswerProcessor.process_digit_article" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.EvalAIAnswerProcessor.process_punctuation">
+<span class="sig-name descname"><span class="pre">process_punctuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/eval_ai_answer_processor.html#EvalAIAnswerProcessor.process_punctuation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.EvalAIAnswerProcessor.process_punctuation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.EvalAIAnswerProcessor.word_tokenize">
+<span class="sig-name descname"><span class="pre">word_tokenize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/eval_ai_answer_processor.html#EvalAIAnswerProcessor.word_tokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.EvalAIAnswerProcessor.word_tokenize" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.HTTPURLHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.</span></span><span class="sig-name descname"><span class="pre">HTTPURLHandler</span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#HTTPURLHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.HTTPURLHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PathHandler</span></code></p>
+<p>Download URLs and cache them to disk.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.LazyPath">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.</span></span><span class="sig-name descname"><span class="pre">LazyPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#LazyPath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.LazyPath" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PathLike</span></code></p>
+<p>A path that’s lazily evaluated when it’s used.</p>
+<p>Users should be careful to not use it like a str, because
+it behaves differently from a str.
+Path manipulation functions in Python such as <cite>os.path.*</cite> all accept
+PathLike objects already.</p>
+<p>It can be materialized to a str using <cite>os.fspath</cite>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.NativePathHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.</span></span><span class="sig-name descname"><span class="pre">NativePathHandler</span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#NativePathHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.NativePathHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PathHandler</span></code></p>
+<p>Handles paths that can be accessed using Python native system calls.</p>
+<p>This handler uses <cite>open()</cite> and <cite>os.*</cite> calls on the given path.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.NucleusSampling">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.</span></span><span class="sig-name descname"><span class="pre">NucleusSampling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vocab</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#NucleusSampling"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.NucleusSampling" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.utils.third_party_libs.text.TextDecoder" title="mixk.utils.third_party_libs.text.TextDecoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextDecoder</span></code></a></p>
+<p>Nucleus Sampling is a new text decoding strategy that avoids likelihood
+maximization. Rather, it works by sampling from the smallest set of top
+tokens which have a cumulative probability greater than a specified
+threshold.</p>
+<p>Present text decoding strategies like beam search do not work well on open-ended
+generation tasks (even on strong language models like GPT-2). They tend to repeat
+text a lot and the main reason behind it is that they try to maximize likelihood,
+which is a contrast from human-generated text which has a mix of high and low
+probability tokens.</p>
+<p>Nucleus Sampling is a stochastic approach and resolves this issue. Moreover,
+it improves upon other stochastic methods like top-k sampling by choosing the
+right amount of tokens to sample from. The overall result is better text
+generation on the same language model.</p>
+<p>Link to the paper introducing Nucleus Sampling (Section 6) -
+<a class="reference external" href="https://arxiv.org/pdf/1904.09751.pdf">https://arxiv.org/pdf/1904.09751.pdf</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vocab</strong> (<em>list</em>) – Collection of all words in vocabulary.</p></li>
+<li><p><strong>sum_threshold</strong> (<em>float</em>) – Ceiling of sum of probabilities of tokens to
+sample from.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.NucleusSampling.decode">
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#NucleusSampling.decode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.NucleusSampling.decode" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.NucleusSampling.get_result">
+<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#NucleusSampling.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.NucleusSampling.get_result" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.OneDrivePathHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.</span></span><span class="sig-name descname"><span class="pre">OneDrivePathHandler</span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#OneDrivePathHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.OneDrivePathHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PathHandler</span></code></p>
+<p>Map OneDrive (short) URLs to direct download links.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.OneDrivePathHandler.ONE_DRIVE_PREFIX">
+<span class="sig-name descname"><span class="pre">ONE_DRIVE_PREFIX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://1drv.ms/u/s!'</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.OneDrivePathHandler.ONE_DRIVE_PREFIX" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.OneDrivePathHandler.create_one_drive_direct_download">
+<span class="sig-name descname"><span class="pre">create_one_drive_direct_download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">one_drive_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#OneDrivePathHandler.create_one_drive_direct_download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.OneDrivePathHandler.create_one_drive_direct_download" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a short OneDrive URI into a download link that can be used
+with wget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>one_drive_url</strong> (<em>str</em>) – A OneDrive URI supported by this PathHandler</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A direct download URI for the file</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>result_url (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.PathManagerBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.</span></span><span class="sig-name descname"><span class="pre">PathManagerBase</span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#PathManagerBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.PathManagerBase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for users to open generic paths or translate generic paths to
+file names.</p>
+<p>path_manager.method(path) will do the following:
+1. Find a handler by checking the prefixes in <cite>self._path_handlers</cite>.
+2. Call handler.method(path) on the handler that’s found</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.PathManagerBase.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#PathManagerBase.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.PathManagerBase.copy" title="Permalink to this definition"></a></dt>
+<dd><p>Copies a source path to a destination path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src_path</strong> (<em>str</em>) – A URI supported by this PathHandler</p></li>
+<li><p><strong>dst_path</strong> (<em>str</em>) – A URI supported by this PathHandler</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em>) – Bool flag for forcing overwrite of existing file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True on success</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>status (bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.PathManagerBase.copy_from_local">
+<span class="sig-name descname"><span class="pre">copy_from_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#PathManagerBase.copy_from_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.PathManagerBase.copy_from_local" title="Permalink to this definition"></a></dt>
+<dd><p>Copies a local file to the specified URI.</p>
+<p>If the URI is another local path, this should be functionally identical
+to copy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>local_path</strong> (<em>str</em>) – a file path which exists on the local file system</p></li>
+<li><p><strong>dst_path</strong> (<em>str</em>) – A URI supported by this PathHandler</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em>) – Bool flag for forcing overwrite of existing URI</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True on success</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>status (bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.PathManagerBase.exists">
+<span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#PathManagerBase.exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.PathManagerBase.exists" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if there is a resource at the given URI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – A URI supported by this PathHandler</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>true if the path exists</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.PathManagerBase.get_local_path">
+<span class="sig-name descname"><span class="pre">get_local_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#PathManagerBase.get_local_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.PathManagerBase.get_local_path" title="Permalink to this definition"></a></dt>
+<dd><p>Get a filepath which is compatible with native Python I/O such as
+<cite>open</cite> and <cite>os.path</cite>.</p>
+<p>If URI points to a remote resource, this function may download and cache
+the resource to local disk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – A URI supported by this PathHandler</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a file path which exists on the local file system</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>local_path (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.PathManagerBase.isdir">
+<span class="sig-name descname"><span class="pre">isdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#PathManagerBase.isdir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.PathManagerBase.isdir" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the resource at the given URI is a directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – A URI supported by this PathHandler</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>true if the path is a directory</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.PathManagerBase.isfile">
+<span class="sig-name descname"><span class="pre">isfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#PathManagerBase.isfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.PathManagerBase.isfile" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if there the resource at the given URI is a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – A URI supported by this PathHandler</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>true if the path is a file</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.PathManagerBase.ls">
+<span class="sig-name descname"><span class="pre">ls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#PathManagerBase.ls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.PathManagerBase.ls" title="Permalink to this definition"></a></dt>
+<dd><p>List the contents of the directory at the provided URI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – A URI supported by this PathHandler</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of contents in given path</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.PathManagerBase.mkdirs">
+<span class="sig-name descname"><span class="pre">mkdirs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#PathManagerBase.mkdirs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.PathManagerBase.mkdirs" title="Permalink to this definition"></a></dt>
+<dd><p>Recursive directory creation function. Like mkdir(), but makes all
+intermediate-level directories needed to contain the leaf directory.
+Similar to the native <cite>os.makedirs</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – A URI supported by this PathHandler</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.PathManagerBase.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffering</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#PathManagerBase.open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.PathManagerBase.open" title="Permalink to this definition"></a></dt>
+<dd><p>Open a stream to a URI, similar to the built-in <cite>open</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – A URI supported by this PathHandler</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Specifies the mode in which the file is opened. It defaults
+to ‘r’.</p></li>
+<li><p><strong>buffering</strong> (<em>int</em>) – An optional integer used to set the buffering policy.
+Pass 0 to switch buffering off and an integer &gt;= 1 to indicate the
+size in bytes of a fixed-size chunk buffer. When no buffering
+argument is given, the default buffering policy depends on the
+underlying I/O implementation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a file-like object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.PathManagerBase.register_handler">
+<span class="sig-name descname"><span class="pre">register_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PathHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_override</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#PathManagerBase.register_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.PathManagerBase.register_handler" title="Permalink to this definition"></a></dt>
+<dd><p>Register a path handler associated with
+<cite>handler._get_supported_prefixes</cite> URI prefixes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handler</strong> (<em>PathHandler</em>) – </p></li>
+<li><p><strong>allow_override</strong> (<em>bool</em>) – allow overriding existing handler for prefix</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.PathManagerBase.rm">
+<span class="sig-name descname"><span class="pre">rm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#PathManagerBase.rm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.PathManagerBase.rm" title="Permalink to this definition"></a></dt>
+<dd><p>Remove the file (not directory) at the provided URI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – A URI supported by this PathHandler</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.PathManagerBase.set_strict_kwargs_checking">
+<span class="sig-name descname"><span class="pre">set_strict_kwargs_checking</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#PathManagerBase.set_strict_kwargs_checking"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.PathManagerBase.set_strict_kwargs_checking" title="Permalink to this definition"></a></dt>
+<dd><p>Toggles strict kwargs checking. If enabled, a ValueError is thrown
+if any unused parameters are passed to a PathHandler function. If
+disabled, only a warning is given.</p>
+<p>With a centralized file API, there’s a tradeoff of convenience and
+correctness delegating arguments to the proper I/O layers. An underlying
+<cite>PathHandler</cite> may support custom arguments which should not be statically
+exposed on the <cite>PathManager</cite> function. For example, a custom <cite>HTTPURLHandler</cite>
+may want to expose a <cite>cache_timeout</cite> argument for <cite>open()</cite> which specifies
+how old a locally cached resource can be before it’s refetched from the
+remote server. This argument would not make sense for a <cite>NativePathHandler</cite>.
+If strict kwargs checking is disabled, <cite>cache_timeout</cite> can be passed to
+<cite>PathManager.open</cite> which will forward the arguments to the underlying
+handler. By default, checking is enabled since it is innately unsafe:
+multiple <a href="#id1"><span class="problematic" id="id2">`</span></a>PathHandler`s could reuse arguments with different semantic
+meanings or types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>enable</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.PathManagerBase.symlink">
+<span class="sig-name descname"><span class="pre">symlink</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/file_io.html#PathManagerBase.symlink"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.PathManagerBase.symlink" title="Permalink to this definition"></a></dt>
+<dd><p>Symlink the src_path to the dst_path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src_path</strong> (<em>str</em>) – A URI supported by this PathHandler to symlink from</p></li>
+<li><p><strong>dst_path</strong> (<em>str</em>) – A URI supported by this PathHandler to symlink to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.TextDecoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.</span></span><span class="sig-name descname"><span class="pre">TextDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vocab</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#TextDecoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.TextDecoder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class to be inherited by all decoding strategies. Contains
+implementations that are common for all strategies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vocab</strong> (<em>list</em>) – Collection of all words in vocabulary.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.TextDecoder.add_next_word">
+<span class="sig-name descname"><span class="pre">add_next_word</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seqs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prev_word_inds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_word_inds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#TextDecoder.add_next_word"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.TextDecoder.add_next_word" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.TextDecoder.find_complete_inds">
+<span class="sig-name descname"><span class="pre">find_complete_inds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">next_word_inds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#TextDecoder.find_complete_inds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.TextDecoder.find_complete_inds" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.TextDecoder.init_batch">
+<span class="sig-name descname"><span class="pre">init_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#TextDecoder.init_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.TextDecoder.init_batch" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.TextDecoder.update_data">
+<span class="sig-name descname"><span class="pre">update_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prev_word_inds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_word_inds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incomplete_inds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#TextDecoder.update_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.TextDecoder.update_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabDict">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.</span></span><span class="sig-name descname"><span class="pre">VocabDict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vocab_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabDict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.VocabDict" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabDict.END_TOKEN">
+<span class="sig-name descname"><span class="pre">END_TOKEN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;/s&gt;'</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.VocabDict.END_TOKEN" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabDict.EOS_INDEX">
+<span class="sig-name descname"><span class="pre">EOS_INDEX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.VocabDict.EOS_INDEX" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabDict.PAD_INDEX">
+<span class="sig-name descname"><span class="pre">PAD_INDEX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.VocabDict.PAD_INDEX" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabDict.PAD_TOKEN">
+<span class="sig-name descname"><span class="pre">PAD_TOKEN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;pad&gt;'</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.VocabDict.PAD_TOKEN" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabDict.SOS_INDEX">
+<span class="sig-name descname"><span class="pre">SOS_INDEX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.VocabDict.SOS_INDEX" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabDict.START_TOKEN">
+<span class="sig-name descname"><span class="pre">START_TOKEN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;s&gt;'</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.VocabDict.START_TOKEN" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabDict.UNK_INDEX">
+<span class="sig-name descname"><span class="pre">UNK_INDEX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.VocabDict.UNK_INDEX" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabDict.UNK_TOKEN">
+<span class="sig-name descname"><span class="pre">UNK_TOKEN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;unk&gt;'</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.VocabDict.UNK_TOKEN" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabDict.get_size">
+<span class="sig-name descname"><span class="pre">get_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabDict.get_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.VocabDict.get_size" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabDict.get_unk_index">
+<span class="sig-name descname"><span class="pre">get_unk_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabDict.get_unk_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.VocabDict.get_unk_index" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabDict.get_unk_token">
+<span class="sig-name descname"><span class="pre">get_unk_token</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabDict.get_unk_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.VocabDict.get_unk_token" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabDict.idx2word">
+<span class="sig-name descname"><span class="pre">idx2word</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_w</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabDict.idx2word"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.VocabDict.idx2word" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabDict.tokenize_and_index">
+<span class="sig-name descname"><span class="pre">tokenize_and_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentence</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabDict.tokenize_and_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.VocabDict.tokenize_and_index" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabDict.word2idx">
+<span class="sig-name descname"><span class="pre">word2idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabDict.word2idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.VocabDict.word2idx" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabFromText">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.</span></span><span class="sig-name descname"><span class="pre">VocabFromText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentences</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">re.compile('(\\W+)')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_unk_extra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#VocabFromText"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.VocabFromText" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mixk.utils.third_party_libs.text.VocabDict" title="mixk.utils.third_party_libs.text.VocabDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">VocabDict</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.VocabFromText.DEFAULT_TOKENS">
+<span class="sig-name descname"><span class="pre">DEFAULT_TOKENS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['&lt;pad&gt;',</span> <span class="pre">'&lt;unk&gt;',</span> <span class="pre">'&lt;s&gt;',</span> <span class="pre">'&lt;/s&gt;']</span></em><a class="headerlink" href="#mixk.utils.third_party_libs.VocabFromText.DEFAULT_TOKENS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.download">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.</span></span><span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/download.html#download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.download" title="Permalink to this definition"></a></dt>
+<dd><p>Download a file from a given URL to a directory. If file exists, will
+not overwrite the existing file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – </p></li>
+<li><p><strong>dir</strong> (<em>str</em>) – the directory to download the file</p></li>
+<li><p><strong>filename</strong> (<em>str</em><em> or </em><em>None</em>) – the basename to save the file.
+Will use the name in the URL if not given.</p></li>
+<li><p><strong>progress</strong> (<em>bool</em>) – whether to use tqdm to draw a progress bar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the path to the downloaded file or the existing one.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.tokenize">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.</span></span><span class="sig-name descname"><span class="pre">tokenize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">re.compile('(\\W+)')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#tokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.tokenize" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mixk.utils.third_party_libs.word_tokenize">
+<span class="sig-prename descclassname"><span class="pre">mixk.utils.third_party_libs.</span></span><span class="sig-name descname"><span class="pre">word_tokenize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mixk/utils/third_party_libs/text.html#word_tokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mixk.utils.third_party_libs.word_tokenize" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mixk.utils.html" class="btn btn-neutral float-left" title="mixk.utils package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

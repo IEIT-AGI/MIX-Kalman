@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get started &mdash; MIX-Kalman 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Benchmark and Model Zoo" href="model_zoo.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="getstarted.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MIX-Kalman
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Get started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#a-from-scratch-setup-script">A from-scratch setup script</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#developing-with-multiple-mix-kalman-versions">Developing with multiple MIX-Kalman versions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#verification">Verification</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="model_zoo.html">Benchmark and Model Zoo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Run</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/1_exist_data_model.html">1: Inference and train with existing models and datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/2_new_data_model.html">2: Train with customized datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Quickrun/3_exist_data_new_model.html">3: Train with customized models and existing datasets</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial-engine.html">Tutorial: Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial1-config.html">Tutorial 1: Learn about Configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial2-customize_dataset.html">Tutorial 2: Customize Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial3-customize_models.html">Tutorial 3: Customize Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial4-customize_Schedule_and_Runtime_Settings.html">Tutorial 4: Customize Schedule and Runtime Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial5-customize_hooks.html">Tutorial 5: Customize hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/Tutorial6-finetune.html">Tutorial 6: Finetuning Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Useful Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../log_visualization.html">Log Visualization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sources/mixk.html">mixk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MIX-Kalman</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="getstarted.html">&lt;no title&gt;</a> &raquo;</li>
+      <li>Get started</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getstart/get_started.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="get-started">
+<h1>Get started<a class="headerlink" href="#get-started" title="Permalink to this heading"></a></h1>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Linux</p></li>
+<li><p>Python 3.8+=</p></li>
+<li><p>PyTorch 1.7+=</p></li>
+<li><p>CUDA 10.1+</p></li>
+<li><p>numpy 1.19.4+=</p></li>
+<li><p>transformers 3.4.0+=</p></li>
+</ul>
+<p>There are still some dependent packages not listed,  which wil all be installed in the step 4.</p>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
+<ol>
+<li><p>Create a conda virtual environment and activate it.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>conda create -n MIX-Kalman <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8 -y
+conda activate MIX-Kalman
+</pre></div>
+</div>
+</li>
+<li><p>Install PyTorch and torchvision following the <a class="reference external" href="https://pytorch.org/">official instructions</a>, e.g.,</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>conda install pytorch torchvision -c pytorch
+</pre></div>
+</div>
+<p>Note: Make sure that your compilation CUDA version and runtime CUDA version match.
+You can check the supported CUDA version for precompiled packages on the <a class="reference external" href="https://pytorch.org/">PyTorch website</a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">E.g.</span></code> If you have CUDA 10.1 installed under <code class="docutils literal notranslate"><span class="pre">/usr/local/cuda</span></code> and would like to install
+PyTorch 1.6+, you need to install the prebuilt PyTorch with CUDA 10.1.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>conda install pytorch <span class="nv">cudatoolkit</span><span class="o">=</span><span class="m">10</span>.1 torchvision -c pytorch
+</pre></div>
+</div>
+</li>
+<li><p>Clone the MIX-Kalman repository.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/multimodal-framework/MIX-Kalman.git
+<span class="nb">cd</span> MIX-Kalman
+</pre></div>
+</div>
+</li>
+<li><p>Install build requirements and then install MIX-Kalman.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip install -r requirements.txt
+pip install -v -e .  <span class="c1"># or &quot;python setup.py develop&quot;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Note:</p>
+<p>a. Following the above instructions, MIX-Kalman is installed on <code class="docutils literal notranslate"><span class="pre">dev</span></code> mode , any local modifications made to the code will take effect without the need to reinstall it.</p>
+<section id="a-from-scratch-setup-script">
+<h3>A from-scratch setup script<a class="headerlink" href="#a-from-scratch-setup-script" title="Permalink to this heading"></a></h3>
+<p>Assuming that you already have CUDA 10.1 installed, here is a full script for setting up MIX-Kalman with conda.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>conda create -n MIX-Kalman <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8 -y
+conda activate MIX-Kalman
+
+conda install <span class="nv">pytorch</span><span class="o">==</span><span class="m">1</span>.6.0 <span class="nv">torchvision</span><span class="o">==</span><span class="m">0</span>.7.0 <span class="nv">cudatoolkit</span><span class="o">=</span><span class="m">10</span>.1 -c pytorch -y
+
+<span class="c1"># install MIX-Kalman</span>
+git clone https://github.com/multimodal-framework/MIX-Kalman.git
+<span class="nb">cd</span> MIX-Kalman
+pip install -r requirements.txt
+pip install -v -e .
+</pre></div>
+</div>
+</section>
+<section id="developing-with-multiple-mix-kalman-versions">
+<h3>Developing with multiple MIX-Kalman versions<a class="headerlink" href="#developing-with-multiple-mix-kalman-versions" title="Permalink to this heading"></a></h3>
+<p>The train and test scripts already modify the <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> to ensure the script use the MIX-Kalman in the current directory.</p>
+<p>To use the default MIX-Kalman installed in the environment rather than that you are working with, you can remove the following line in those scripts</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>dirname <span class="nv">$0</span><span class="k">)</span><span class="s2">/..&quot;</span>:<span class="nv">$PYTHONPATH</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="verification">
+<h2>Verification<a class="headerlink" href="#verification" title="Permalink to this heading"></a></h2>
+<p>To verify whether MIX-Kalman and the required environment are installed correctly, we can run sample Python code to initialize a train job (use <a class="reference external" href="https://github.com/IEIT-AGI/MIX-Kalman/tree/master/configs/lxmert/LXMERT.md">LXMERT</a> as an example):</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> MIX-Kalman
+<span class="nb">export</span> <span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">&quot;your/path/MIX-Kalman&quot;</span> <span class="c1"># set Python search path as your MIX-Kalman directory path</span>
+python tools/run.py --config-file configs/lxmert/lxmert_vqa.py
+</pre></div>
+</div>
+<p>The above code is supposed to run successfully upon you finish the installation.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="getstarted.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="model_zoo.html" class="btn btn-neutral float-right" title="Benchmark and Model Zoo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MIX-Kalman IEIT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
