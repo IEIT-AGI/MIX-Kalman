@@ -17,7 +17,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v0.1.0 is our first release. MIX·Kalman v0.1.0 supports mainstream multi-modal datasets, models and mixed precision training. And it supports distribute training across multiple GPUs and multiple nodes.
+MIX·Kalman v0.1 supports mainstream multi-modal datasets, models and mixed precision training. And it supports distribute training across multiple GPUs and multiple nodes.
 
 MIX·Kalman's subsequent version will optimize the framework further. We will add more dual-stream and single-stream pre-training models, add more data process methods such as mask, back translation and unsupervised data enhancement, and support launch multiple jobs for training on a single machine simultaneously.
 
